@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  #########################################
+  #  KAFKA (DÙNG IMAGE CONFLUENT)
+  #########################################
+  kafka:
+    image: 'confluentinc/cp-kafka:latest'
+    container_name: kafka-broker
+    ports:
+      # Port 9092: Thằng Producer/Consumer bên ngoài (máy mày) nói chuyện
+      - '9092:9092'
+      # Port 29092: Thằng Producer/Consumer bên trong Docker (ví dụ Spark) nói chuyện
+      - '29092:29092'
+      # Port 9093: Port nội bộ của KRaft (thay Zookeeper)
+      - '9093:9093'
+    volumes:
+      # Lưu data của Kafka
+      - 'kafka_data:/var/lib/kafka/data'
+    environment:
+      # --- ĐÂY LÀ PHẦN QUAN TRỌNG NHẤT ---
+
+      # 1. DÁN CÁI MÃ MÀY VỪA COPY VÀO ĐÂY
+      KAFKA_CLUSTER_ID: 'uLq1fE_uR8q_A-0b1c2D3e' # <--- DÁN MÃ CỦA MÀY VÀO ĐÂY
+
+      # 2. Cấu hình KRaft (thay Zookeeper)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      # Nó tự bầu nó làm "quản lý" (controller)
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
+
+      # 3. Cấu hình "tai nghe" (Listeners)
+      # Nó sẽ "nghe" từ 3 nguồn:
+      # - PLAINTEXT: Nội bộ Docker (port 29092)
+      # - CONTROLLER: Nội bộ KRaft (port 9093)
+      # - EXTERNAL: Bên ngoài máy mày (port 9092)
+      KAFKA_LISTENERS: 'PLAINTEXT://:29092,CONTROLLER://:9093,EXTERNAL://:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,EXTERNAL://localhost:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+
+      # 4. Cấu hình cơ bản (bắt buộc cho KRaft)
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+
+  #########################################
+  #  MONGODB (KHO CHỨA VÀNG)
+  #########################################
+  mongodb:
+    image: 'mongo:latest'
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - 'mongo_data:/data/db'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+
+# Docker sẽ tự tạo 2 thư mục này
+volumes:
+  kafka_data:
+  mongo_data:

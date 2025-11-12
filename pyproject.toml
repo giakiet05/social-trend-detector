@@ -10,12 +10,12 @@ dependencies = [
     # Producer dependencies
     "apify-client>=2.2.1",
     "kafka-python>=2.2.15",
-    # Consumer dependencies (will add later)
-    # "pyspark>=3.5.0",
-    # "openai>=1.0.0",
-    # "pymongo>=4.0.0",
-    # Dashboard dependencies (will add later)
-    # "streamlit>=1.30.0",
-    # "pymongo>=4.0.0",
-    # "plotly>=5.0.0",
+    "openai>=2.7.2",
+    "pymongo>=4.15.4",
+    "scikit-learn>=1.7.2",
+    "numpy>=2.3.4",
+    "pandas>=2.3.3",
+    "pyspark==3.5.3",
+    "streamlit>=1.51.0",
+    "plotly>=6.4.0",
 ]

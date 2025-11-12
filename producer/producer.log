@@ -1,147 +1,66 @@
-2025-11-10 09:23:40 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:40 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:40 - kafka.client - WARNING - No node available during check_version; sleeping 0.04 secs
-2025-11-10 09:23:40 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:40 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:40 - kafka.client - WARNING - No node available during check_version; sleeping 0.10 secs
-2025-11-10 09:23:40 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:40 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:40 - kafka.client - WARNING - No node available during check_version; sleeping 0.23 secs
-2025-11-10 09:23:40 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:40 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:40 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:40 - kafka.client - WARNING - No node available during check_version; sleeping 0.36 secs
-2025-11-10 09:23:41 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:23:41 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:41 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:41 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
-2025-11-10 09:23:41 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:41 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:41 - kafka.client - WARNING - No node available during check_version; sleeping 0.81 secs
-2025-11-10 09:23:41 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:23:41 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:41 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:41 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
-2025-11-10 09:23:41 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connect attempt returned error 111. Disconnecting.
-2025-11-10 09:23:41 - kafka.conn - ERROR - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. KafkaConnectionError: 111 ECONNREFUSED
-2025-11-10 09:23:41 - kafka.client - WARNING - No node available during check_version; sleeping 0.45 secs
-2025-11-10 09:23:42 - clients.kafka_client - ERROR - Failed to initialize Kafka Producer: NoBrokersAvailable
-Traceback (most recent call last):
-  File "/home/giakiet05/programming/projects/tiktok-trend-detector/producer/clients/kafka_client.py", line 20, in __init__
-    self.producer = KafkaProducer(
-                    ~~~~~~~~~~~~~^
-        bootstrap_servers=bootstrap_servers,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    ...<5 lines>...
-        retry_backoff_ms=1000    # Wait 1 second between retries
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "/home/giakiet05/programming/projects/tiktok-trend-detector/.venv/lib/python3.13/site-packages/kafka/producer/kafka.py", line 481, in __init__
-    client = self.config['kafka_client'](
-        metrics=self._metrics, metric_group_prefix='producer',
-        wakeup_timeout_ms=self.config['max_block_ms'],
-        **self.config)
-  File "/home/giakiet05/programming/projects/tiktok-trend-detector/.venv/lib/python3.13/site-packages/kafka/client_async.py", line 262, in __init__
-    self.config['api_version'] = self.check_version()
-                                 ~~~~~~~~~~~~~~~~~~^^
-  File "/home/giakiet05/programming/projects/tiktok-trend-detector/.venv/lib/python3.13/site-packages/kafka/client_async.py", line 1074, in check_version
-    raise Errors.NoBrokersAvailable()
-kafka.errors.NoBrokersAvailable: NoBrokersAvailable
-2025-11-10 09:23:57 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:23:57 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
-2025-11-10 09:23:57 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
-2025-11-10 09:23:57 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
-2025-11-10 09:23:57 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
-2025-11-10 09:24:03 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:24:03 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
-2025-11-10 09:24:03 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
-2025-11-10 09:24:03 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
-2025-11-10 09:24:03 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
-2025-11-10 09:24:05 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:24:05 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
-2025-11-10 09:24:05 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
-2025-11-10 09:24:05 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
-2025-11-10 09:24:05 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
-2025-11-10 09:25:45 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:25:45 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
-2025-11-10 09:25:45 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
-2025-11-10 09:25:45 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
-2025-11-10 09:25:45 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
-2025-11-10 09:25:45 - __main__ - INFO - ============================================================
-2025-11-10 09:25:45 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
-2025-11-10 09:25:45 - __main__ - INFO - ============================================================
-2025-11-10 09:25:45 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
-2025-11-10 09:25:45 - loaders.csv_loader - INFO - Parsed 5 videos...
-2025-11-10 09:25:45 - loaders.csv_loader - INFO - Parsed 10 videos...
-2025-11-10 09:25:45 - loaders.csv_loader - INFO - Successfully loaded 10 videos from CSV
-2025-11-10 09:25:45 - __main__ - INFO - 📦 Will send 10 videos to Kafka topic: tiktok-raw-data
-2025-11-10 09:25:46 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:25:46 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
-2025-11-10 09:25:46 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
-2025-11-10 09:25:46 - kafka.cluster - ERROR - Topic tiktok-raw-data not found in cluster metadata
-2025-11-10 09:25:47 - __main__ - INFO - ✅ [1/10] Sent video: 7498288274008575250
-2025-11-10 09:25:48 - __main__ - INFO - ✅ [2/10] Sent video: 7565834865657105684
-2025-11-10 09:25:49 - __main__ - INFO - ✅ [3/10] Sent video: 7540140934764449042
-2025-11-10 09:25:50 - __main__ - INFO - ✅ [4/10] Sent video: 7564283447565438228
-2025-11-10 09:25:51 - __main__ - INFO - ✅ [5/10] Sent video: 7563615273245232405
-2025-11-10 09:25:52 - __main__ - INFO - ✅ [6/10] Sent video: 7564002872845815048
-2025-11-10 09:25:53 - __main__ - INFO - ✅ [7/10] Sent video: 7551295195191446801
-2025-11-10 09:25:54 - __main__ - INFO - ✅ [8/10] Sent video: 7564652065826376981
-2025-11-10 09:25:55 - __main__ - INFO - ✅ [9/10] Sent video: 7565386907572604181
-2025-11-10 09:25:56 - __main__ - INFO - ✅ [10/10] Sent video: 7564264750364790036
-2025-11-10 09:25:56 - __main__ - INFO - ============================================================
-2025-11-10 09:25:56 - __main__ - INFO - 🎉 COMPLETED: 10/10 videos sent successfully
-2025-11-10 09:25:56 - __main__ - INFO - ============================================================
-2025-11-10 09:25:56 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
-2025-11-10 09:25:56 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
-2025-11-10 09:25:56 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
-2025-11-10 09:25:56 - clients.kafka_client - INFO - Kafka producer closed successfully
-2025-11-10 09:26:46 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:26:46 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
-2025-11-10 09:26:46 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
-2025-11-10 09:26:46 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
-2025-11-10 09:26:46 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
-2025-11-10 09:26:46 - __main__ - INFO - ============================================================
-2025-11-10 09:26:46 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
-2025-11-10 09:26:46 - __main__ - INFO - ============================================================
-2025-11-10 09:26:46 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
-2025-11-10 09:26:46 - loaders.csv_loader - INFO - Parsed 5 videos...
-2025-11-10 09:26:46 - loaders.csv_loader - INFO - Parsed 10 videos...
-2025-11-10 09:26:46 - loaders.csv_loader - INFO - Successfully loaded 10 videos from CSV
-2025-11-10 09:26:46 - __main__ - INFO - 📦 Will send 10 videos to Kafka topic: tiktok-raw-data
-2025-11-10 09:26:47 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
-2025-11-10 09:26:47 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
-2025-11-10 09:26:47 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
-2025-11-10 09:26:47 - __main__ - INFO - ✅ [1/10] Sent video: 7498288274008575250
-2025-11-10 09:26:48 - __main__ - INFO - ✅ [2/10] Sent video: 7565834865657105684
-2025-11-10 09:26:49 - __main__ - INFO - ✅ [3/10] Sent video: 7540140934764449042
-2025-11-10 09:26:50 - __main__ - INFO - ✅ [4/10] Sent video: 7564283447565438228
-2025-11-10 09:26:51 - __main__ - INFO - ✅ [5/10] Sent video: 7563615273245232405
-2025-11-10 09:26:52 - __main__ - INFO - ✅ [6/10] Sent video: 7564002872845815048
-2025-11-10 09:26:53 - __main__ - INFO - ✅ [7/10] Sent video: 7551295195191446801
-2025-11-10 09:26:54 - __main__ - INFO - ✅ [8/10] Sent video: 7564652065826376981
-2025-11-10 09:26:55 - __main__ - INFO - ✅ [9/10] Sent video: 7565386907572604181
-2025-11-10 09:26:56 - __main__ - INFO - ✅ [10/10] Sent video: 7564264750364790036
-2025-11-10 09:26:56 - __main__ - INFO - ============================================================
-2025-11-10 09:26:56 - __main__ - INFO - 🎉 COMPLETED: 10/10 videos sent successfully
-2025-11-10 09:26:56 - __main__ - INFO - ============================================================
-2025-11-10 09:26:56 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
-2025-11-10 09:26:56 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
-2025-11-10 09:26:56 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
-2025-11-10 09:26:56 - clients.kafka_client - INFO - Kafka producer closed successfully
+2025-11-12 09:34:24 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 09:34:24 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-12 09:34:24 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 09:34:24 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
+2025-11-12 09:34:24 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
+2025-11-12 09:34:24 - __main__ - INFO - ============================================================
+2025-11-12 09:34:24 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
+2025-11-12 09:34:24 - __main__ - INFO - ============================================================
+2025-11-12 09:34:24 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
+2025-11-12 09:34:24 - loaders.csv_loader - INFO - Parsed 5 videos...
+2025-11-12 09:34:24 - loaders.csv_loader - INFO - Parsed 10 videos...
+2025-11-12 09:34:24 - loaders.csv_loader - INFO - Successfully loaded 10 videos from CSV
+2025-11-12 09:34:24 - __main__ - INFO - 📦 Will send 10 videos to Kafka topic: tiktok-raw-data
+2025-11-12 09:34:25 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 09:34:25 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 09:34:25 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 09:34:25 - __main__ - INFO - ✅ [1/10] Sent video: 7498288274008575250
+2025-11-12 09:34:26 - __main__ - INFO - ✅ [2/10] Sent video: 7565834865657105684
+2025-11-12 09:34:27 - __main__ - INFO - ✅ [3/10] Sent video: 7540140934764449042
+2025-11-12 09:34:28 - __main__ - INFO - ✅ [4/10] Sent video: 7564283447565438228
+2025-11-12 09:34:29 - __main__ - INFO - ✅ [5/10] Sent video: 7563615273245232405
+2025-11-12 09:34:30 - __main__ - INFO - ✅ [6/10] Sent video: 7564002872845815048
+2025-11-12 09:34:31 - __main__ - INFO - ✅ [7/10] Sent video: 7551295195191446801
+2025-11-12 09:34:32 - __main__ - INFO - ✅ [8/10] Sent video: 7564652065826376981
+2025-11-12 09:34:33 - __main__ - INFO - ✅ [9/10] Sent video: 7565386907572604181
+2025-11-12 09:34:34 - __main__ - INFO - ✅ [10/10] Sent video: 7564264750364790036
+2025-11-12 09:34:34 - __main__ - INFO - ============================================================
+2025-11-12 09:34:34 - __main__ - INFO - 🎉 COMPLETED: 10/10 videos sent successfully
+2025-11-12 09:34:34 - __main__ - INFO - ============================================================
+2025-11-12 09:34:34 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
+2025-11-12 09:34:34 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-12 09:34:34 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 09:34:34 - clients.kafka_client - INFO - Kafka producer closed successfully
+2025-11-12 10:20:00 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 10:20:00 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-12 10:20:00 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 10:20:00 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
+2025-11-12 10:20:00 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
+2025-11-12 10:20:00 - __main__ - INFO - ============================================================
+2025-11-12 10:20:00 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
+2025-11-12 10:20:00 - __main__ - INFO - ============================================================
+2025-11-12 10:20:00 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
+2025-11-12 10:20:00 - loaders.csv_loader - INFO - Parsed 5 videos...
+2025-11-12 10:20:00 - loaders.csv_loader - INFO - Parsed 10 videos...
+2025-11-12 10:20:00 - loaders.csv_loader - INFO - Successfully loaded 10 videos from CSV
+2025-11-12 10:20:00 - __main__ - INFO - 📦 Will send 10 videos to Kafka topic: tiktok-raw-data
+2025-11-12 10:20:01 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 10:20:01 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 10:20:01 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 10:20:01 - __main__ - INFO - ✅ [1/10] Sent video: 7498288274008575250
+2025-11-12 10:20:02 - __main__ - INFO - ✅ [2/10] Sent video: 7565834865657105684
+2025-11-12 10:20:03 - __main__ - INFO - ✅ [3/10] Sent video: 7540140934764449042
+2025-11-12 10:20:04 - __main__ - INFO - ✅ [4/10] Sent video: 7564283447565438228
+2025-11-12 10:20:05 - __main__ - INFO - ✅ [5/10] Sent video: 7563615273245232405
+2025-11-12 10:20:06 - __main__ - INFO - ✅ [6/10] Sent video: 7564002872845815048
+2025-11-12 10:20:07 - __main__ - INFO - ✅ [7/10] Sent video: 7551295195191446801
+2025-11-12 10:20:08 - __main__ - INFO - ✅ [8/10] Sent video: 7564652065826376981
+2025-11-12 10:20:09 - __main__ - INFO - ✅ [9/10] Sent video: 7565386907572604181
+2025-11-12 10:20:10 - __main__ - INFO - ✅ [10/10] Sent video: 7564264750364790036
+2025-11-12 10:20:10 - __main__ - INFO - ============================================================
+2025-11-12 10:20:10 - __main__ - INFO - 🎉 COMPLETED: 10/10 videos sent successfully
+2025-11-12 10:20:10 - __main__ - INFO - ============================================================
+2025-11-12 10:20:10 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
+2025-11-12 10:20:10 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-12 10:20:10 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 10:20:10 - clients.kafka_client - INFO - Kafka producer closed successfully

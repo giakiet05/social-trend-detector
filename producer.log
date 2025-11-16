@@ -1,0 +1,537 @@
+2025-11-12 10:27:48 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 10:27:48 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-12 10:27:48 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 10:27:48 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
+2025-11-12 10:27:48 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
+2025-11-12 10:27:48 - __main__ - INFO - ============================================================
+2025-11-12 10:27:48 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
+2025-11-12 10:27:48 - __main__ - INFO - ============================================================
+2025-11-12 10:27:48 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
+2025-11-12 10:27:48 - loaders.csv_loader - INFO - Parsed 5 videos...
+2025-11-12 10:27:48 - loaders.csv_loader - INFO - Parsed 10 videos...
+2025-11-12 10:27:48 - loaders.csv_loader - INFO - Successfully loaded 10 videos from CSV
+2025-11-12 10:27:48 - __main__ - INFO - 📦 Will send 10 videos to Kafka topic: tiktok-raw-data
+2025-11-12 10:27:49 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 10:27:49 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 10:27:49 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 10:27:49 - __main__ - INFO - ✅ [1/10] Sent video: 7498288274008575250
+2025-11-12 10:27:50 - __main__ - INFO - ✅ [2/10] Sent video: 7565834865657105684
+2025-11-12 10:27:51 - __main__ - INFO - ✅ [3/10] Sent video: 7540140934764449042
+2025-11-12 10:27:52 - __main__ - INFO - ✅ [4/10] Sent video: 7564283447565438228
+2025-11-12 10:27:53 - __main__ - INFO - ✅ [5/10] Sent video: 7563615273245232405
+2025-11-12 10:27:54 - __main__ - INFO - ✅ [6/10] Sent video: 7564002872845815048
+2025-11-12 10:27:55 - __main__ - INFO - ✅ [7/10] Sent video: 7551295195191446801
+2025-11-12 10:27:56 - __main__ - INFO - ✅ [8/10] Sent video: 7564652065826376981
+2025-11-12 10:27:57 - __main__ - INFO - ✅ [9/10] Sent video: 7565386907572604181
+2025-11-12 10:27:58 - __main__ - INFO - ✅ [10/10] Sent video: 7564264750364790036
+2025-11-12 10:27:58 - __main__ - INFO - ============================================================
+2025-11-12 10:27:58 - __main__ - INFO - 🎉 COMPLETED: 10/10 videos sent successfully
+2025-11-12 10:27:58 - __main__ - INFO - ============================================================
+2025-11-12 10:27:58 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
+2025-11-12 10:27:58 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-12 10:27:58 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 10:27:58 - clients.kafka_client - INFO - Kafka producer closed successfully
+2025-11-12 10:29:56 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 10:29:56 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-12 10:29:56 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 10:29:56 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
+2025-11-12 10:29:56 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
+2025-11-12 10:29:56 - __main__ - INFO - ============================================================
+2025-11-12 10:29:56 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
+2025-11-12 10:29:56 - __main__ - INFO - ============================================================
+2025-11-12 10:29:56 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
+2025-11-12 10:29:56 - loaders.csv_loader - INFO - Parsed 5 videos...
+2025-11-12 10:29:56 - loaders.csv_loader - INFO - Parsed 10 videos...
+2025-11-12 10:29:56 - loaders.csv_loader - INFO - Successfully loaded 10 videos from CSV
+2025-11-12 10:29:56 - __main__ - INFO - 📦 Will send 10 videos to Kafka topic: tiktok-raw-data
+2025-11-12 10:29:57 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 10:29:57 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 10:29:57 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 10:29:57 - __main__ - INFO - ✅ [1/10] Sent video: 7498288274008575250
+2025-11-12 10:29:58 - __main__ - INFO - ✅ [2/10] Sent video: 7565834865657105684
+2025-11-12 10:29:59 - __main__ - INFO - ✅ [3/10] Sent video: 7540140934764449042
+2025-11-12 10:30:00 - __main__ - INFO - ✅ [4/10] Sent video: 7564283447565438228
+2025-11-12 10:30:01 - __main__ - INFO - ✅ [5/10] Sent video: 7563615273245232405
+2025-11-12 10:30:02 - __main__ - INFO - ✅ [6/10] Sent video: 7564002872845815048
+2025-11-12 10:30:03 - __main__ - INFO - ✅ [7/10] Sent video: 7551295195191446801
+2025-11-12 10:30:04 - __main__ - INFO - ✅ [8/10] Sent video: 7564652065826376981
+2025-11-12 10:30:05 - __main__ - INFO - ✅ [9/10] Sent video: 7565386907572604181
+2025-11-12 10:30:06 - __main__ - INFO - ✅ [10/10] Sent video: 7564264750364790036
+2025-11-12 10:30:06 - __main__ - INFO - ============================================================
+2025-11-12 10:30:06 - __main__ - INFO - 🎉 COMPLETED: 10/10 videos sent successfully
+2025-11-12 10:30:06 - __main__ - INFO - ============================================================
+2025-11-12 10:30:06 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
+2025-11-12 10:30:06 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-12 10:30:06 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 10:30:06 - clients.kafka_client - INFO - Kafka producer closed successfully
+2025-11-12 12:14:08 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 12:14:08 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-12 12:14:08 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 12:14:08 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
+2025-11-12 12:14:08 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
+2025-11-12 12:14:08 - __main__ - INFO - ============================================================
+2025-11-12 12:14:08 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
+2025-11-12 12:14:08 - __main__ - INFO - ============================================================
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 5 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 10 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 15 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 20 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 25 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 30 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 35 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 40 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 45 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 50 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 55 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 60 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 65 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 70 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 75 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 80 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 85 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 90 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 95 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Parsed 100 videos...
+2025-11-12 12:14:08 - loaders.csv_loader - INFO - Successfully loaded 100 videos from CSV
+2025-11-12 12:14:08 - __main__ - INFO - 📦 Will send 100 videos to Kafka topic: tiktok-raw-data
+2025-11-12 12:14:09 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 12:14:09 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 12:14:09 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 12:14:09 - __main__ - INFO - ✅ [1/100] Sent video: 7565574004866600214
+2025-11-12 12:14:10 - __main__ - INFO - ✅ [2/100] Sent video: 7563865435964280082
+2025-11-12 12:14:11 - __main__ - INFO - ✅ [3/100] Sent video: 7565757654233140487
+2025-11-12 12:14:12 - __main__ - INFO - ✅ [4/100] Sent video: 7563031642424528136
+2025-11-12 12:14:13 - __main__ - INFO - ✅ [5/100] Sent video: 7563024026134662422
+2025-11-12 12:14:14 - __main__ - INFO - ✅ [6/100] Sent video: 7563192131695824159
+2025-11-12 12:14:15 - __main__ - INFO - ✅ [7/100] Sent video: 7378696691941149995
+2025-11-12 12:14:16 - __main__ - INFO - ✅ [8/100] Sent video: 7562614511706901782
+2025-11-12 12:14:17 - __main__ - INFO - ✅ [9/100] Sent video: 7563996482202848530
+2025-11-12 12:14:18 - __main__ - INFO - ✅ [10/100] Sent video: 7564675440644836630
+2025-11-12 12:14:19 - __main__ - INFO - ✅ [11/100] Sent video: 7563571467493838100
+2025-11-12 12:14:20 - __main__ - INFO - ✅ [12/100] Sent video: 7392044623545388295
+2025-11-12 12:14:21 - __main__ - INFO - ✅ [13/100] Sent video: 7505844925896903958
+2025-11-12 12:14:22 - __main__ - INFO - ✅ [14/100] Sent video: 7494874887577259310
+2025-11-12 12:14:23 - __main__ - INFO - ✅ [15/100] Sent video: 7558602187127950622
+2025-11-12 12:14:24 - __main__ - INFO - ✅ [16/100] Sent video: 7526311627239591190
+2025-11-12 12:14:25 - __main__ - INFO - ✅ [17/100] Sent video: 7439577602127416622
+2025-11-12 12:14:26 - __main__ - INFO - ✅ [18/100] Sent video: 7516995945951710495
+2025-11-12 12:14:27 - __main__ - INFO - ✅ [19/100] Sent video: 7465885800610270496
+2025-11-12 12:14:28 - __main__ - INFO - ✅ [20/100] Sent video: 7465677958670257430
+2025-11-12 12:14:29 - __main__ - INFO - ✅ [21/100] Sent video: 7455144997331995909
+2025-11-12 12:14:30 - __main__ - INFO - ✅ [22/100] Sent video: 7506361937643670830
+2025-11-12 12:14:31 - __main__ - INFO - ✅ [23/100] Sent video: 7547112625306422550
+2025-11-12 12:14:32 - __main__ - INFO - ✅ [24/100] Sent video: 7535490351818165526
+2025-11-12 12:14:33 - __main__ - INFO - ✅ [25/100] Sent video: 7531050294445149471
+2025-11-12 12:14:34 - __main__ - INFO - ✅ [26/100] Sent video: 7374900254480600325
+2025-11-12 12:14:35 - __main__ - INFO - ✅ [27/100] Sent video: 7547644728020339986
+2025-11-12 12:14:36 - __main__ - INFO - ✅ [28/100] Sent video: 7506835430130634006
+2025-11-12 12:14:37 - __main__ - INFO - ✅ [29/100] Sent video: 7547442443524836630
+2025-11-12 12:14:38 - __main__ - INFO - ✅ [30/100] Sent video: 7546148859722861829
+2025-11-12 12:14:39 - __main__ - INFO - ✅ [31/100] Sent video: 7370520570070338859
+2025-11-12 12:14:40 - __main__ - INFO - ✅ [32/100] Sent video: 6937746497207356677
+2025-11-12 12:14:41 - __main__ - INFO - ✅ [33/100] Sent video: 7359664652566973728
+2025-11-12 12:14:42 - __main__ - INFO - ✅ [34/100] Sent video: 7441338213626563886
+2025-11-12 12:14:43 - __main__ - INFO - ✅ [35/100] Sent video: 7294393755585629470
+2025-11-12 12:14:44 - __main__ - INFO - ✅ [36/100] Sent video: 6863571836983184645
+2025-11-12 12:14:45 - __main__ - INFO - ✅ [37/100] Sent video: 7230188119872654619
+2025-11-12 12:14:46 - __main__ - INFO - ✅ [38/100] Sent video: 7278141576805715231
+2025-11-12 12:14:47 - __main__ - INFO - ✅ [39/100] Sent video: 7356340985770626346
+2025-11-12 12:14:48 - __main__ - INFO - ✅ [40/100] Sent video: 7425089921188236575
+2025-11-12 12:14:49 - __main__ - INFO - ✅ [41/100] Sent video: 7448612324140780830
+2025-11-12 12:14:50 - __main__ - INFO - ✅ [42/100] Sent video: 7535526606043876638
+2025-11-12 12:14:51 - __main__ - INFO - ✅ [43/100] Sent video: 7375968672118066475
+2025-11-12 12:14:52 - __main__ - INFO - ✅ [44/100] Sent video: 7411958603906567455
+2025-11-12 12:14:53 - __main__ - INFO - ✅ [45/100] Sent video: 7447569704077610247
+2025-11-12 12:14:54 - __main__ - INFO - ✅ [46/100] Sent video: 7406204719414250782
+2025-11-12 12:14:55 - __main__ - INFO - ✅ [47/100] Sent video: 7470729967454686510
+2025-11-12 12:14:56 - __main__ - INFO - ✅ [48/100] Sent video: 7386563959559638305
+2025-11-12 12:14:57 - __main__ - INFO - ✅ [49/100] Sent video: 7463433839105428743
+2025-11-12 12:14:58 - __main__ - INFO - ✅ [50/100] Sent video: 7191780620438129962
+2025-11-12 12:14:59 - __main__ - INFO - ✅ [51/100] Sent video: 7377044015620918560
+2025-11-12 12:15:00 - __main__ - INFO - ✅ [52/100] Sent video: 7260999211427351854
+2025-11-12 12:15:01 - __main__ - INFO - ✅ [53/100] Sent video: 7394586031577746730
+2025-11-12 12:15:02 - __main__ - INFO - ✅ [54/100] Sent video: 7399106065452879134
+2025-11-12 12:15:03 - __main__ - INFO - ✅ [55/100] Sent video: 7446777084963212575
+2025-11-12 12:15:04 - __main__ - INFO - ✅ [56/100] Sent video: 7554405985045974290
+2025-11-12 12:15:05 - __main__ - INFO - ✅ [57/100] Sent video: 7342506433407208746
+2025-11-12 12:15:06 - __main__ - INFO - ✅ [58/100] Sent video: 7365318749802532128
+2025-11-12 12:15:07 - __main__ - INFO - ✅ [59/100] Sent video: 7554318898552638738
+2025-11-12 12:15:08 - __main__ - INFO - ✅ [60/100] Sent video: 7563099575553101086
+2025-11-12 12:15:09 - __main__ - INFO - ✅ [61/100] Sent video: 7306282450458627374
+2025-11-12 12:15:10 - __main__ - INFO - ✅ [62/100] Sent video: 7417173277363260718
+2025-11-12 12:15:11 - __main__ - INFO - ✅ [63/100] Sent video: 7262348958591241515
+2025-11-12 12:15:12 - __main__ - INFO - ✅ [64/100] Sent video: 7496360083295718674
+2025-11-12 12:15:13 - __main__ - INFO - ✅ [65/100] Sent video: 7435115256948493598
+2025-11-12 12:15:14 - __main__ - INFO - ✅ [66/100] Sent video: 7449437250263321902
+2025-11-12 12:15:16 - __main__ - INFO - ✅ [67/100] Sent video: 7362210801412885802
+2025-11-12 12:15:17 - __main__ - INFO - ✅ [68/100] Sent video: 7292474421837663489
+2025-11-12 12:15:18 - __main__ - INFO - ✅ [69/100] Sent video: 7363129913249090862
+2025-11-12 12:15:19 - __main__ - INFO - ✅ [70/100] Sent video: 7327772135986924842
+2025-11-12 12:15:20 - __main__ - INFO - ✅ [71/100] Sent video: 7202637027550989614
+2025-11-12 12:15:21 - __main__ - INFO - ✅ [72/100] Sent video: 7554405911104687368
+2025-11-12 12:15:22 - __main__ - INFO - ✅ [73/100] Sent video: 7372686646795308295
+2025-11-12 12:15:23 - __main__ - INFO - ✅ [74/100] Sent video: 7405099272946912544
+2025-11-12 12:15:24 - __main__ - INFO - ✅ [75/100] Sent video: 7251641604010691883
+2025-11-12 12:15:25 - __main__ - INFO - ✅ [76/100] Sent video: 7446782264798743850
+2025-11-12 12:15:26 - __main__ - INFO - ✅ [77/100] Sent video: 7372204017771973930
+2025-11-12 12:15:27 - __main__ - INFO - ✅ [78/100] Sent video: 7462320092697742623
+2025-11-12 12:15:28 - __main__ - INFO - ✅ [79/100] Sent video: 7355107926509456683
+2025-11-12 12:15:29 - __main__ - INFO - ✅ [80/100] Sent video: 7075778590062988546
+2025-11-12 12:15:30 - __main__ - INFO - ✅ [81/100] Sent video: 7059420819948195073
+2025-11-12 12:15:31 - __main__ - INFO - ✅ [82/100] Sent video: 7073852463710833922
+2025-11-12 12:15:32 - __main__ - INFO - ✅ [83/100] Sent video: 7067918602845818113
+2025-11-12 12:15:33 - __main__ - INFO - ✅ [84/100] Sent video: 7070529710219906305
+2025-11-12 12:15:34 - __main__ - INFO - ✅ [85/100] Sent video: 7074607140366814466
+2025-11-12 12:15:35 - __main__ - INFO - ✅ [86/100] Sent video: 7071719219359943938
+2025-11-12 12:15:36 - __main__ - INFO - ✅ [87/100] Sent video: 7075325293338103041
+2025-11-12 12:15:37 - __main__ - INFO - ✅ [88/100] Sent video: 7072646976453577986
+2025-11-12 12:15:38 - __main__ - INFO - ✅ [89/100] Sent video: 7545442730462203143
+2025-11-12 12:15:39 - __main__ - INFO - ✅ [90/100] Sent video: 7542939665171500319
+2025-11-12 12:15:40 - __main__ - INFO - ✅ [91/100] Sent video: 7508918784191941934
+2025-11-12 12:15:41 - __main__ - INFO - ✅ [92/100] Sent video: 7481022957234572590
+2025-11-12 12:15:42 - __main__ - INFO - ✅ [93/100] Sent video: 7469012501993393413
+2025-11-12 12:15:43 - __main__ - INFO - ✅ [94/100] Sent video: 7548287772419788054
+2025-11-12 12:15:44 - __main__ - INFO - ✅ [95/100] Sent video: 7561088730862275862
+2025-11-12 12:15:45 - __main__ - INFO - ✅ [96/100] Sent video: 7555011394253491457
+2025-11-12 12:15:46 - __main__ - INFO - ✅ [97/100] Sent video: 7560783880299597064
+2025-11-12 12:15:47 - __main__ - INFO - ✅ [98/100] Sent video: 7502693174154972459
+2025-11-12 12:15:48 - __main__ - INFO - ✅ [99/100] Sent video: 7480748439811132718
+2025-11-12 12:15:49 - __main__ - INFO - ✅ [100/100] Sent video: 7536166590824336695
+2025-11-12 12:15:49 - __main__ - INFO - ============================================================
+2025-11-12 12:15:49 - __main__ - INFO - 🎉 COMPLETED: 100/100 videos sent successfully
+2025-11-12 12:15:49 - __main__ - INFO - ============================================================
+2025-11-12 12:15:49 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
+2025-11-12 12:15:49 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-12 12:15:49 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 12:15:49 - clients.kafka_client - INFO - Kafka producer closed successfully
+2025-11-12 12:15:51 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 12:15:51 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-12 12:15:51 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 12:15:51 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
+2025-11-12 12:15:51 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
+2025-11-12 12:15:51 - __main__ - INFO - ============================================================
+2025-11-12 12:15:51 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
+2025-11-12 12:15:51 - __main__ - INFO - ============================================================
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 5 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 10 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 15 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 20 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 25 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 30 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 35 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 40 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 45 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 50 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 55 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 60 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 65 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 70 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 75 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 80 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 85 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 90 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 95 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Parsed 100 videos...
+2025-11-12 12:15:51 - loaders.csv_loader - INFO - Successfully loaded 100 videos from CSV
+2025-11-12 12:15:51 - __main__ - INFO - 📦 Will send 100 videos to Kafka topic: tiktok-raw-data
+2025-11-12 12:15:52 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 12:15:52 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 12:15:52 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 12:15:52 - __main__ - INFO - ✅ [1/100] Sent video: 7565574004866600214
+2025-11-12 12:15:53 - __main__ - INFO - ✅ [2/100] Sent video: 7563865435964280082
+2025-11-12 12:15:54 - __main__ - INFO - ✅ [3/100] Sent video: 7565757654233140487
+2025-11-12 12:15:55 - __main__ - INFO - ✅ [4/100] Sent video: 7563031642424528136
+2025-11-12 12:15:56 - __main__ - INFO - ✅ [5/100] Sent video: 7563024026134662422
+2025-11-12 12:15:57 - __main__ - INFO - ✅ [6/100] Sent video: 7563192131695824159
+2025-11-12 12:15:58 - __main__ - INFO - ✅ [7/100] Sent video: 7378696691941149995
+2025-11-12 12:15:59 - __main__ - INFO - ✅ [8/100] Sent video: 7562614511706901782
+2025-11-12 12:16:00 - __main__ - INFO - ✅ [9/100] Sent video: 7563996482202848530
+2025-11-12 12:16:01 - __main__ - INFO - ✅ [10/100] Sent video: 7564675440644836630
+2025-11-12 12:16:02 - __main__ - INFO - ✅ [11/100] Sent video: 7563571467493838100
+2025-11-12 12:16:03 - __main__ - INFO - ✅ [12/100] Sent video: 7392044623545388295
+2025-11-12 12:16:04 - __main__ - INFO - ✅ [13/100] Sent video: 7505844925896903958
+2025-11-12 12:16:05 - __main__ - INFO - ✅ [14/100] Sent video: 7494874887577259310
+2025-11-12 12:16:06 - __main__ - INFO - ✅ [15/100] Sent video: 7558602187127950622
+2025-11-12 12:16:07 - __main__ - INFO - ✅ [16/100] Sent video: 7526311627239591190
+2025-11-12 12:16:08 - __main__ - INFO - ✅ [17/100] Sent video: 7439577602127416622
+2025-11-12 12:16:09 - __main__ - INFO - ✅ [18/100] Sent video: 7516995945951710495
+2025-11-12 12:16:10 - __main__ - INFO - ✅ [19/100] Sent video: 7465885800610270496
+2025-11-12 12:16:11 - __main__ - INFO - ✅ [20/100] Sent video: 7465677958670257430
+2025-11-12 12:16:12 - __main__ - INFO - ✅ [21/100] Sent video: 7455144997331995909
+2025-11-12 12:16:13 - __main__ - INFO - ✅ [22/100] Sent video: 7506361937643670830
+2025-11-12 12:16:14 - __main__ - INFO - ✅ [23/100] Sent video: 7547112625306422550
+2025-11-12 12:16:15 - __main__ - INFO - ✅ [24/100] Sent video: 7535490351818165526
+2025-11-12 12:16:16 - __main__ - INFO - ✅ [25/100] Sent video: 7531050294445149471
+2025-11-12 12:16:17 - __main__ - INFO - ✅ [26/100] Sent video: 7374900254480600325
+2025-11-12 12:16:18 - __main__ - INFO - ✅ [27/100] Sent video: 7547644728020339986
+2025-11-12 12:16:19 - __main__ - INFO - ✅ [28/100] Sent video: 7506835430130634006
+2025-11-12 12:16:20 - __main__ - INFO - ✅ [29/100] Sent video: 7547442443524836630
+2025-11-12 12:16:21 - __main__ - INFO - ✅ [30/100] Sent video: 7546148859722861829
+2025-11-12 12:16:22 - __main__ - INFO - ✅ [31/100] Sent video: 7370520570070338859
+2025-11-12 12:16:23 - __main__ - INFO - ✅ [32/100] Sent video: 6937746497207356677
+2025-11-12 12:16:24 - __main__ - INFO - ✅ [33/100] Sent video: 7359664652566973728
+2025-11-12 12:16:25 - __main__ - INFO - ✅ [34/100] Sent video: 7441338213626563886
+2025-11-12 12:16:26 - __main__ - INFO - ✅ [35/100] Sent video: 7294393755585629470
+2025-11-12 12:16:27 - __main__ - INFO - ✅ [36/100] Sent video: 6863571836983184645
+2025-11-12 12:16:28 - __main__ - INFO - ✅ [37/100] Sent video: 7230188119872654619
+2025-11-12 12:16:29 - __main__ - INFO - ✅ [38/100] Sent video: 7278141576805715231
+2025-11-12 12:16:30 - __main__ - INFO - ✅ [39/100] Sent video: 7356340985770626346
+2025-11-12 12:16:31 - __main__ - INFO - ✅ [40/100] Sent video: 7425089921188236575
+2025-11-12 12:16:32 - __main__ - INFO - ✅ [41/100] Sent video: 7448612324140780830
+2025-11-12 12:16:33 - __main__ - INFO - ✅ [42/100] Sent video: 7535526606043876638
+2025-11-12 12:16:34 - __main__ - INFO - ✅ [43/100] Sent video: 7375968672118066475
+2025-11-12 12:16:35 - __main__ - INFO - ✅ [44/100] Sent video: 7411958603906567455
+2025-11-12 12:16:36 - __main__ - INFO - ✅ [45/100] Sent video: 7447569704077610247
+2025-11-12 12:16:37 - __main__ - INFO - ✅ [46/100] Sent video: 7406204719414250782
+2025-11-12 12:16:38 - __main__ - INFO - ✅ [47/100] Sent video: 7470729967454686510
+2025-11-12 12:16:39 - __main__ - INFO - ✅ [48/100] Sent video: 7386563959559638305
+2025-11-12 12:16:40 - __main__ - INFO - ✅ [49/100] Sent video: 7463433839105428743
+2025-11-12 12:16:41 - __main__ - INFO - ✅ [50/100] Sent video: 7191780620438129962
+2025-11-12 12:16:42 - __main__ - INFO - ✅ [51/100] Sent video: 7377044015620918560
+2025-11-12 12:16:43 - __main__ - INFO - ✅ [52/100] Sent video: 7260999211427351854
+2025-11-12 12:16:44 - __main__ - INFO - ✅ [53/100] Sent video: 7394586031577746730
+2025-11-12 12:16:45 - __main__ - INFO - ✅ [54/100] Sent video: 7399106065452879134
+2025-11-12 12:16:46 - __main__ - INFO - ✅ [55/100] Sent video: 7446777084963212575
+2025-11-12 12:16:47 - __main__ - INFO - ✅ [56/100] Sent video: 7554405985045974290
+2025-11-12 12:16:48 - __main__ - INFO - ✅ [57/100] Sent video: 7342506433407208746
+2025-11-12 12:16:49 - __main__ - INFO - ✅ [58/100] Sent video: 7365318749802532128
+2025-11-12 12:16:50 - __main__ - INFO - ✅ [59/100] Sent video: 7554318898552638738
+2025-11-12 12:16:51 - __main__ - INFO - ✅ [60/100] Sent video: 7563099575553101086
+2025-11-12 12:16:52 - __main__ - INFO - ✅ [61/100] Sent video: 7306282450458627374
+2025-11-12 12:16:53 - __main__ - INFO - ✅ [62/100] Sent video: 7417173277363260718
+2025-11-12 12:16:54 - __main__ - INFO - ✅ [63/100] Sent video: 7262348958591241515
+2025-11-12 12:16:55 - __main__ - INFO - ✅ [64/100] Sent video: 7496360083295718674
+2025-11-12 12:16:56 - __main__ - INFO - ✅ [65/100] Sent video: 7435115256948493598
+2025-11-12 12:16:57 - __main__ - INFO - ✅ [66/100] Sent video: 7449437250263321902
+2025-11-12 12:16:58 - __main__ - INFO - ✅ [67/100] Sent video: 7362210801412885802
+2025-11-12 12:16:59 - __main__ - INFO - ✅ [68/100] Sent video: 7292474421837663489
+2025-11-12 12:17:00 - __main__ - INFO - ✅ [69/100] Sent video: 7363129913249090862
+2025-11-12 12:17:01 - __main__ - INFO - ✅ [70/100] Sent video: 7327772135986924842
+2025-11-12 12:17:02 - __main__ - INFO - ✅ [71/100] Sent video: 7202637027550989614
+2025-11-12 12:17:03 - __main__ - INFO - ✅ [72/100] Sent video: 7554405911104687368
+2025-11-12 12:17:04 - __main__ - INFO - ✅ [73/100] Sent video: 7372686646795308295
+2025-11-12 12:17:05 - __main__ - INFO - ✅ [74/100] Sent video: 7405099272946912544
+2025-11-12 12:17:06 - __main__ - INFO - ✅ [75/100] Sent video: 7251641604010691883
+2025-11-12 12:17:07 - __main__ - INFO - ✅ [76/100] Sent video: 7446782264798743850
+2025-11-12 12:17:08 - __main__ - INFO - ✅ [77/100] Sent video: 7372204017771973930
+2025-11-12 12:17:09 - __main__ - INFO - ✅ [78/100] Sent video: 7462320092697742623
+2025-11-12 12:17:10 - __main__ - INFO - ✅ [79/100] Sent video: 7355107926509456683
+2025-11-12 12:17:11 - __main__ - INFO - ✅ [80/100] Sent video: 7075778590062988546
+2025-11-12 12:17:12 - __main__ - INFO - ✅ [81/100] Sent video: 7059420819948195073
+2025-11-12 12:17:13 - __main__ - INFO - ✅ [82/100] Sent video: 7073852463710833922
+2025-11-12 12:17:14 - __main__ - INFO - ✅ [83/100] Sent video: 7067918602845818113
+2025-11-12 12:17:15 - __main__ - INFO - ✅ [84/100] Sent video: 7070529710219906305
+2025-11-12 12:17:16 - __main__ - INFO - ✅ [85/100] Sent video: 7074607140366814466
+2025-11-12 12:17:17 - __main__ - INFO - ✅ [86/100] Sent video: 7071719219359943938
+2025-11-12 12:17:18 - __main__ - INFO - ✅ [87/100] Sent video: 7075325293338103041
+2025-11-12 12:17:19 - __main__ - INFO - ✅ [88/100] Sent video: 7072646976453577986
+2025-11-12 12:17:20 - __main__ - INFO - ✅ [89/100] Sent video: 7545442730462203143
+2025-11-12 12:17:21 - __main__ - INFO - ✅ [90/100] Sent video: 7542939665171500319
+2025-11-12 12:17:22 - __main__ - INFO - ✅ [91/100] Sent video: 7508918784191941934
+2025-11-12 12:17:23 - __main__ - INFO - ✅ [92/100] Sent video: 7481022957234572590
+2025-11-12 12:17:24 - __main__ - INFO - ✅ [93/100] Sent video: 7469012501993393413
+2025-11-12 12:17:25 - __main__ - INFO - ✅ [94/100] Sent video: 7548287772419788054
+2025-11-12 12:17:26 - __main__ - INFO - ✅ [95/100] Sent video: 7561088730862275862
+2025-11-12 12:17:27 - __main__ - INFO - ✅ [96/100] Sent video: 7555011394253491457
+2025-11-12 12:17:28 - __main__ - INFO - ✅ [97/100] Sent video: 7560783880299597064
+2025-11-12 12:17:29 - __main__ - INFO - ✅ [98/100] Sent video: 7502693174154972459
+2025-11-12 12:17:30 - __main__ - INFO - ✅ [99/100] Sent video: 7480748439811132718
+2025-11-12 12:17:31 - __main__ - INFO - ✅ [100/100] Sent video: 7536166590824336695
+2025-11-12 12:17:31 - __main__ - INFO - ============================================================
+2025-11-12 12:17:31 - __main__ - INFO - 🎉 COMPLETED: 100/100 videos sent successfully
+2025-11-12 12:17:31 - __main__ - INFO - ============================================================
+2025-11-12 12:17:31 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
+2025-11-12 12:17:31 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-12 12:17:31 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 12:17:31 - clients.kafka_client - INFO - Kafka producer closed successfully
+2025-11-12 12:17:33 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 12:17:33 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-12 12:17:33 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 12:17:33 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
+2025-11-12 12:17:33 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
+2025-11-12 12:17:33 - __main__ - INFO - ============================================================
+2025-11-12 12:17:33 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
+2025-11-12 12:17:33 - __main__ - INFO - ============================================================
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 5 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 10 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 15 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 20 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 25 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 30 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 35 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 40 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 45 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 50 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 55 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 60 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 65 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 70 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 75 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 80 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 85 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 90 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 95 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Parsed 100 videos...
+2025-11-12 12:17:33 - loaders.csv_loader - INFO - Successfully loaded 100 videos from CSV
+2025-11-12 12:17:33 - __main__ - INFO - 📦 Will send 100 videos to Kafka topic: tiktok-raw-data
+2025-11-12 12:17:34 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 12:17:34 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 12:17:34 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 12:17:34 - __main__ - INFO - ✅ [1/100] Sent video: 7565574004866600214
+2025-11-12 12:17:35 - __main__ - INFO - ✅ [2/100] Sent video: 7563865435964280082
+2025-11-12 12:17:36 - __main__ - INFO - ✅ [3/100] Sent video: 7565757654233140487
+2025-11-12 12:17:37 - __main__ - INFO - ✅ [4/100] Sent video: 7563031642424528136
+2025-11-12 12:17:38 - __main__ - INFO - ✅ [5/100] Sent video: 7563024026134662422
+2025-11-12 12:17:39 - __main__ - INFO - ✅ [6/100] Sent video: 7563192131695824159
+2025-11-12 12:17:40 - __main__ - INFO - ✅ [7/100] Sent video: 7378696691941149995
+2025-11-12 12:17:41 - __main__ - INFO - ✅ [8/100] Sent video: 7562614511706901782
+2025-11-12 12:17:42 - __main__ - INFO - ✅ [9/100] Sent video: 7563996482202848530
+2025-11-12 12:17:43 - __main__ - INFO - ✅ [10/100] Sent video: 7564675440644836630
+2025-11-12 12:17:44 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
+2025-11-12 12:17:44 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-12 12:17:44 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 12:17:44 - clients.kafka_client - INFO - Kafka producer closed successfully
+2025-11-12 12:19:13 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 12:19:13 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-12 12:19:13 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 12:19:13 - clients.kafka_client - INFO - Successfully connected to Kafka brokers at ['localhost:9092']
+2025-11-12 12:19:13 - __main__ - INFO - 🧪 Running in MOCK mode - Loading from CSV
+2025-11-12 12:19:13 - __main__ - INFO - ============================================================
+2025-11-12 12:19:13 - __main__ - INFO - 🚀 STARTING PRODUCER - MOCK MODE
+2025-11-12 12:19:13 - __main__ - INFO - ============================================================
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Reading CSV file: /home/giakiet05/programming/projects/tiktok-trend-detector/data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 5 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 10 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 15 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 20 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 25 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 30 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 35 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 40 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 45 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 50 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 55 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 60 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 65 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 70 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 75 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 80 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 85 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 90 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 95 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Parsed 100 videos...
+2025-11-12 12:19:13 - loaders.csv_loader - INFO - Successfully loaded 100 videos from CSV
+2025-11-12 12:19:13 - __main__ - INFO - 📦 Will send 100 videos to Kafka topic: tiktok-raw-data
+2025-11-12 12:19:14 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-12 12:19:14 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-12 12:19:14 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 12:19:14 - __main__ - INFO - ✅ [1/100] Sent video: 7565574004866600214
+2025-11-12 12:19:15 - __main__ - INFO - ✅ [2/100] Sent video: 7563865435964280082
+2025-11-12 12:19:16 - __main__ - INFO - ✅ [3/100] Sent video: 7565757654233140487
+2025-11-12 12:19:17 - __main__ - INFO - ✅ [4/100] Sent video: 7563031642424528136
+2025-11-12 12:19:18 - __main__ - INFO - ✅ [5/100] Sent video: 7563024026134662422
+2025-11-12 12:19:19 - __main__ - INFO - ✅ [6/100] Sent video: 7563192131695824159
+2025-11-12 12:19:20 - __main__ - INFO - ✅ [7/100] Sent video: 7378696691941149995
+2025-11-12 12:19:21 - __main__ - INFO - ✅ [8/100] Sent video: 7562614511706901782
+2025-11-12 12:19:22 - __main__ - INFO - ✅ [9/100] Sent video: 7563996482202848530
+2025-11-12 12:19:23 - __main__ - INFO - ✅ [10/100] Sent video: 7564675440644836630
+2025-11-12 12:19:24 - __main__ - INFO - ✅ [11/100] Sent video: 7563571467493838100
+2025-11-12 12:19:25 - __main__ - INFO - ✅ [12/100] Sent video: 7392044623545388295
+2025-11-12 12:19:26 - __main__ - INFO - ✅ [13/100] Sent video: 7505844925896903958
+2025-11-12 12:19:27 - __main__ - INFO - ✅ [14/100] Sent video: 7494874887577259310
+2025-11-12 12:19:28 - __main__ - INFO - ✅ [15/100] Sent video: 7558602187127950622
+2025-11-12 12:19:29 - __main__ - INFO - ✅ [16/100] Sent video: 7526311627239591190
+2025-11-12 12:19:30 - __main__ - INFO - ✅ [17/100] Sent video: 7439577602127416622
+2025-11-12 12:19:31 - __main__ - INFO - ✅ [18/100] Sent video: 7516995945951710495
+2025-11-12 12:19:32 - __main__ - INFO - ✅ [19/100] Sent video: 7465885800610270496
+2025-11-12 12:19:33 - __main__ - INFO - ✅ [20/100] Sent video: 7465677958670257430
+2025-11-12 12:19:34 - __main__ - INFO - ✅ [21/100] Sent video: 7455144997331995909
+2025-11-12 12:19:35 - __main__ - INFO - ✅ [22/100] Sent video: 7506361937643670830
+2025-11-12 12:19:36 - __main__ - INFO - ✅ [23/100] Sent video: 7547112625306422550
+2025-11-12 12:19:37 - __main__ - INFO - ✅ [24/100] Sent video: 7535490351818165526
+2025-11-12 12:19:38 - __main__ - INFO - ✅ [25/100] Sent video: 7531050294445149471
+2025-11-12 12:19:39 - __main__ - INFO - ✅ [26/100] Sent video: 7374900254480600325
+2025-11-12 12:19:40 - __main__ - INFO - ✅ [27/100] Sent video: 7547644728020339986
+2025-11-12 12:19:41 - __main__ - INFO - ✅ [28/100] Sent video: 7506835430130634006
+2025-11-12 12:19:42 - __main__ - INFO - ✅ [29/100] Sent video: 7547442443524836630
+2025-11-12 12:19:43 - __main__ - INFO - ✅ [30/100] Sent video: 7546148859722861829
+2025-11-12 12:19:44 - __main__ - INFO - ✅ [31/100] Sent video: 7370520570070338859
+2025-11-12 12:19:45 - __main__ - INFO - ✅ [32/100] Sent video: 6937746497207356677
+2025-11-12 12:19:46 - __main__ - INFO - ✅ [33/100] Sent video: 7359664652566973728
+2025-11-12 12:19:47 - __main__ - INFO - ✅ [34/100] Sent video: 7441338213626563886
+2025-11-12 12:19:48 - __main__ - INFO - ✅ [35/100] Sent video: 7294393755585629470
+2025-11-12 12:19:49 - __main__ - INFO - ✅ [36/100] Sent video: 6863571836983184645
+2025-11-12 12:19:50 - __main__ - INFO - ✅ [37/100] Sent video: 7230188119872654619
+2025-11-12 12:19:51 - __main__ - INFO - ✅ [38/100] Sent video: 7278141576805715231
+2025-11-12 12:19:52 - __main__ - INFO - ✅ [39/100] Sent video: 7356340985770626346
+2025-11-12 12:19:53 - __main__ - INFO - ✅ [40/100] Sent video: 7425089921188236575
+2025-11-12 12:19:54 - __main__ - INFO - ✅ [41/100] Sent video: 7448612324140780830
+2025-11-12 12:19:55 - __main__ - INFO - ✅ [42/100] Sent video: 7535526606043876638
+2025-11-12 12:19:56 - __main__ - INFO - ✅ [43/100] Sent video: 7375968672118066475
+2025-11-12 12:19:57 - __main__ - INFO - ✅ [44/100] Sent video: 7411958603906567455
+2025-11-12 12:19:58 - __main__ - INFO - ✅ [45/100] Sent video: 7447569704077610247
+2025-11-12 12:19:59 - __main__ - INFO - ✅ [46/100] Sent video: 7406204719414250782
+2025-11-12 12:20:00 - __main__ - INFO - ✅ [47/100] Sent video: 7470729967454686510
+2025-11-12 12:20:01 - __main__ - INFO - ✅ [48/100] Sent video: 7386563959559638305
+2025-11-12 12:20:02 - __main__ - INFO - ✅ [49/100] Sent video: 7463433839105428743
+2025-11-12 12:20:03 - __main__ - INFO - ✅ [50/100] Sent video: 7191780620438129962
+2025-11-12 12:20:04 - __main__ - INFO - ✅ [51/100] Sent video: 7377044015620918560
+2025-11-12 12:20:05 - __main__ - INFO - ✅ [52/100] Sent video: 7260999211427351854
+2025-11-12 12:20:06 - __main__ - INFO - ✅ [53/100] Sent video: 7394586031577746730
+2025-11-12 12:20:07 - __main__ - INFO - ✅ [54/100] Sent video: 7399106065452879134
+2025-11-12 12:20:08 - __main__ - INFO - ✅ [55/100] Sent video: 7446777084963212575
+2025-11-12 12:20:09 - __main__ - INFO - ✅ [56/100] Sent video: 7554405985045974290
+2025-11-12 12:20:10 - __main__ - INFO - ✅ [57/100] Sent video: 7342506433407208746
+2025-11-12 12:20:11 - __main__ - INFO - ✅ [58/100] Sent video: 7365318749802532128
+2025-11-12 12:20:12 - __main__ - INFO - ✅ [59/100] Sent video: 7554318898552638738
+2025-11-12 12:20:13 - __main__ - INFO - ✅ [60/100] Sent video: 7563099575553101086
+2025-11-12 12:20:14 - __main__ - INFO - ✅ [61/100] Sent video: 7306282450458627374
+2025-11-12 12:20:15 - __main__ - INFO - ✅ [62/100] Sent video: 7417173277363260718
+2025-11-12 12:20:16 - __main__ - INFO - ✅ [63/100] Sent video: 7262348958591241515
+2025-11-12 12:20:17 - __main__ - INFO - ✅ [64/100] Sent video: 7496360083295718674
+2025-11-12 12:20:18 - __main__ - INFO - ✅ [65/100] Sent video: 7435115256948493598
+2025-11-12 12:20:19 - __main__ - INFO - ✅ [66/100] Sent video: 7449437250263321902
+2025-11-12 12:20:20 - __main__ - INFO - ✅ [67/100] Sent video: 7362210801412885802
+2025-11-12 12:20:21 - __main__ - INFO - ✅ [68/100] Sent video: 7292474421837663489
+2025-11-12 12:20:22 - __main__ - INFO - ✅ [69/100] Sent video: 7363129913249090862
+2025-11-12 12:20:23 - __main__ - INFO - ✅ [70/100] Sent video: 7327772135986924842
+2025-11-12 12:20:24 - __main__ - INFO - ✅ [71/100] Sent video: 7202637027550989614
+2025-11-12 12:20:25 - __main__ - INFO - ✅ [72/100] Sent video: 7554405911104687368
+2025-11-12 12:20:26 - __main__ - INFO - ✅ [73/100] Sent video: 7372686646795308295
+2025-11-12 12:20:27 - __main__ - INFO - ✅ [74/100] Sent video: 7405099272946912544
+2025-11-12 12:20:28 - __main__ - INFO - ✅ [75/100] Sent video: 7251641604010691883
+2025-11-12 12:20:29 - __main__ - INFO - ✅ [76/100] Sent video: 7446782264798743850
+2025-11-12 12:20:30 - __main__ - INFO - ✅ [77/100] Sent video: 7372204017771973930
+2025-11-12 12:20:31 - __main__ - INFO - ✅ [78/100] Sent video: 7462320092697742623
+2025-11-12 12:20:32 - __main__ - INFO - ✅ [79/100] Sent video: 7355107926509456683
+2025-11-12 12:20:33 - __main__ - INFO - ✅ [80/100] Sent video: 7075778590062988546
+2025-11-12 12:20:34 - __main__ - INFO - ✅ [81/100] Sent video: 7059420819948195073
+2025-11-12 12:20:35 - __main__ - INFO - ✅ [82/100] Sent video: 7073852463710833922
+2025-11-12 12:20:36 - __main__ - INFO - ✅ [83/100] Sent video: 7067918602845818113
+2025-11-12 12:20:37 - __main__ - INFO - ✅ [84/100] Sent video: 7070529710219906305
+2025-11-12 12:20:38 - __main__ - INFO - ✅ [85/100] Sent video: 7074607140366814466
+2025-11-12 12:20:39 - __main__ - INFO - ✅ [86/100] Sent video: 7071719219359943938
+2025-11-12 12:20:40 - __main__ - INFO - ✅ [87/100] Sent video: 7075325293338103041
+2025-11-12 12:20:41 - __main__ - INFO - ✅ [88/100] Sent video: 7072646976453577986
+2025-11-12 12:20:42 - __main__ - INFO - ✅ [89/100] Sent video: 7545442730462203143
+2025-11-12 12:20:43 - __main__ - INFO - ✅ [90/100] Sent video: 7542939665171500319
+2025-11-12 12:20:44 - __main__ - INFO - ✅ [91/100] Sent video: 7508918784191941934
+2025-11-12 12:20:45 - __main__ - INFO - ✅ [92/100] Sent video: 7481022957234572590
+2025-11-12 12:20:46 - __main__ - INFO - ✅ [93/100] Sent video: 7469012501993393413
+2025-11-12 12:20:47 - __main__ - INFO - ✅ [94/100] Sent video: 7548287772419788054
+2025-11-12 12:20:48 - __main__ - INFO - ✅ [95/100] Sent video: 7561088730862275862
+2025-11-12 12:20:49 - __main__ - INFO - ✅ [96/100] Sent video: 7555011394253491457
+2025-11-12 12:20:50 - __main__ - INFO - ✅ [97/100] Sent video: 7560783880299597064
+2025-11-12 12:20:51 - __main__ - INFO - ✅ [98/100] Sent video: 7502693174154972459
+2025-11-12 12:20:52 - __main__ - INFO - ✅ [99/100] Sent video: 7480748439811132718
+2025-11-12 12:20:53 - __main__ - INFO - ✅ [100/100] Sent video: 7536166590824336695
+2025-11-12 12:20:53 - __main__ - INFO - ============================================================
+2025-11-12 12:20:53 - __main__ - INFO - 🎉 COMPLETED: 100/100 videos sent successfully
+2025-11-12 12:20:53 - __main__ - INFO - ============================================================
+2025-11-12 12:20:53 - clients.kafka_client - INFO - Flushing remaining messages and closing Kafka producer...
+2025-11-12 12:20:53 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-12 12:20:53 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-12 12:20:53 - clients.kafka_client - INFO - Kafka producer closed successfully

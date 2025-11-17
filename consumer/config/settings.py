@@ -24,7 +24,7 @@ class KafkaSettings:
     """Kafka configuration."""
     BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
     TOPIC = os.getenv("KAFKA_TOPIC", "tiktok-raw-data")
-    STARTING_OFFSETS = "latest"  # Only read new data (avoid reprocessing)
+    STARTING_OFFSETS = "earliest"  # Only read new data (avoid reprocessing)
 
     # Spark Kafka packages
     SPARK_KAFKA_PACKAGE = "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0"

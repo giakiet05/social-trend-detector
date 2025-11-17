@@ -5,7 +5,7 @@ Filtering stage: Remove noise (spam, bots, low quality).
 from typing import List, Dict
 import logging
 from .base_stage import BaseStage
-from config.settings import settings
+from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)
 

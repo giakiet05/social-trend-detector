@@ -6,8 +6,8 @@ import logging
 from typing import List
 from datetime import datetime, timedelta
 from pymongo import MongoClient, errors
-from config.settings import settings
-from models import Trend
+from consumer.config.settings import settings
+from consumer.models.schemas import Trend
 
 logger = logging.getLogger(__name__)
 

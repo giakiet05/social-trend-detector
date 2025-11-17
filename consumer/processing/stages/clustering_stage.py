@@ -6,8 +6,8 @@ from typing import List, Dict, Tuple
 import logging
 import numpy as np
 from .base_stage import BaseStage
-from processing.clusterer import TrendClusterer
-from config.settings import settings
+from consumer.processing.clusterer import TrendClusterer
+from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)
 

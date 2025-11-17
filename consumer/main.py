@@ -6,12 +6,12 @@ import logging
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, from_json
 
-from config.settings import settings
-from models.spark_schemas import TIKTOK_VIDEO_SCHEMA
-from enrichment.openai_client import OpenAIClient
-from processing.clusterer import TrendClusterer
-from processing.pipeline import TrendDetectionPipeline
-from storage.mongo_client import MongoDBClient
+from consumer.config.settings import settings
+from consumer.models.spark_schemas import TIKTOK_VIDEO_SCHEMA
+from consumer.enrichment.openai_client import OpenAIClient
+from consumer.processing.clusterer import TrendClusterer
+from consumer.processing.pipeline import TrendDetectionPipeline
+from consumer.storage.mongo_client import MongoDBClient
 
 # Setup logging
 logging.basicConfig(
@@ -63,6 +63,7 @@ class TikTokConsumer:
             .option("kafka.bootstrap.servers", settings.kafka.BOOTSTRAP_SERVERS) \
             .option("subscribe", settings.kafka.TOPIC) \
             .option("startingOffsets", settings.kafka.STARTING_OFFSETS) \
+            .option("failOnDataLoss", "true") \
             .load()
 
         # Parse JSON from Kafka value using updated schema (14 fields)

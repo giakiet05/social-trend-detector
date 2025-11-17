@@ -13,10 +13,10 @@ from .stages import (
     DeduplicationStage,
     StorageStage
 )
-from enrichment.openai_client import OpenAIClient
-from storage.mongo_client import MongoDBClient
-from processing.clusterer import TrendClusterer
-from models.schemas import Trend
+from consumer.enrichment.openai_client import OpenAIClient
+from consumer.storage.mongo_client import MongoDBClient
+from consumer.processing.clusterer import TrendClusterer
+from consumer.models.schemas import Trend
 
 logger = logging.getLogger(__name__)
 

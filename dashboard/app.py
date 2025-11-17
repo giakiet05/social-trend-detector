@@ -186,7 +186,7 @@ try:
                         st.markdown(f"""
                         **Video {i}:**
                         - Text: {text[:100]}...
-                        - Author: {video.get('author') or 'N/A'}
+                        - Author: {video.get('author_username') or 'N/A'}
                         - Likes: {video.get('likes') or 0:,} | Views: {video.get('views') or 0:,}
                         """)
     else:

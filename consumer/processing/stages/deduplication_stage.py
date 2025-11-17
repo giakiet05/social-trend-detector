@@ -7,10 +7,10 @@ import logging
 import numpy as np
 from datetime import datetime
 from .base_stage import BaseStage
-from enrichment.openai_client import OpenAIClient
-from storage.mongo_client import MongoDBClient
-from models.schemas import Trend
-from config.settings import settings
+from consumer.enrichment.openai_client import OpenAIClient
+from consumer.storage.mongo_client import MongoDBClient
+from consumer.models.schemas import Trend
+from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)
 

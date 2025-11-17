@@ -6,7 +6,7 @@ from typing import List, Dict, Tuple
 import logging
 import numpy as np
 from .base_stage import BaseStage
-from enrichment.openai_client import OpenAIClient
+from consumer.enrichment.openai_client import OpenAIClient
 
 logger = logging.getLogger(__name__)
 

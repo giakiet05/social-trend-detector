@@ -3,25 +3,9 @@ Data models for Consumer.
 """
 
 from dataclasses import dataclass, asdict
-from typing import List, Optional
+from typing import List
 from datetime import datetime
 
-
-@dataclass
-class TikTokVideo:
-    """TikTok video data model."""
-    video_id: str
-    text: str
-    hashtags: List[str]
-    likes: int
-    comments: int
-    shares: int
-    views: int
-    author: str
-    timestamp: Optional[str] = None
-
-    def to_dict(self):
-        return asdict(self)
 
 
 @dataclass

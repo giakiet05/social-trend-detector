@@ -4,6 +4,7 @@ MongoDB client for saving trends.
 
 import logging
 from typing import List
+from datetime import datetime, timedelta
 from pymongo import MongoClient, errors
 from config.settings import settings
 from models import Trend
@@ -79,6 +80,62 @@ class MongoDBClient:
         except Exception as e:
             logger.error(f"❌ Failed to save trends: {e}")
             raise
+
+    def upsert_trend(self, trend: Trend):
+        """
+        Upsert a trend into MongoDB.
+
+        If trend has _id (merged trend), update existing document.
+        Else, insert new document.
+
+        Args:
+            trend: Trend object
+        """
+        if self.collection is None:
+            self.connect()
+
+        try:
+            if hasattr(trend, '_id') and trend._id:
+                # Update existing
+                self.collection.update_one(
+                    {'_id': trend._id},
+                    {'$set': trend.to_dict()}
+                )
+                logger.debug(f"Updated trend: {trend.topic}")
+            else:
+                # Insert new
+                result = self.collection.insert_one(trend.to_dict())
+                logger.debug(f"Inserted new trend: {trend.topic} (ID: {result.inserted_id})")
+
+        except Exception as e:
+            logger.error(f"Failed to upsert trend '{trend.topic}': {e}")
+            raise
+
+    def get_recent_trends(self, hours: int = 24) -> List[dict]:
+        """
+        Get trends from last N hours.
+
+        Args:
+            hours: Number of hours to look back
+
+        Returns:
+            List of trend documents (as dicts)
+        """
+        if self.collection is None:
+            self.connect()
+
+        try:
+            cutoff = datetime.utcnow() - timedelta(hours=hours)
+            trends = list(self.collection.find({
+                'timestamp': {'$gte': cutoff.isoformat()}
+            }))
+
+            logger.debug(f"Retrieved {len(trends)} trends from last {hours}h")
+            return trends
+
+        except Exception as e:
+            logger.error(f"Failed to query recent trends: {e}")
+            return []
 
     def close(self):
         """Close MongoDB connection."""

@@ -4,7 +4,7 @@ Abstract base loader for data sources.
 
 from abc import ABC, abstractmethod
 from typing import List
-from models.video import TikTokVideo
+from common.models import TikTokVideo
 
 
 class BaseLoader(ABC):

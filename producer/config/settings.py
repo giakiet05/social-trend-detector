@@ -28,7 +28,7 @@ class MockMode:
     def __init__(self):
         self.CSV_PATH = os.getenv(
             "MOCK_CSV_PATH",
-            "data/dataset_tiktok-scraper_2025-10-28_02-55-46-512.csv"
+            "data/raw_tiktok_data.csv"
         )
         self.SIMULATE_REALTIME = os.getenv("MOCK_SIMULATE_REALTIME", "true").lower() == "true"
         self.DELAY_SECONDS = float(os.getenv("MOCK_DELAY_SECONDS", "1"))

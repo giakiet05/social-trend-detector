@@ -6,8 +6,8 @@ import csv
 import logging
 from typing import List
 from pathlib import Path
-from loaders.base_loader import BaseLoader
-from models.video import TikTokVideo
+from .base_loader import BaseLoader
+from common.models import TikTokVideo
 
 logger = logging.getLogger(__name__)
 

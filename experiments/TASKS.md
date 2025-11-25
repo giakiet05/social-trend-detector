@@ -238,9 +238,9 @@ embeddings = np.random.rand(len(videos), 1536)
 
 ---
 
-## ✅ TASK 4: Tech Keywords Dictionary
+## ✅ TASK 4: Beauty Keywords Dictionary
 
-**Mục tiêu:** Xây dựng keyword list để filter videos về Tech.
+**Mục tiêu:** Xây dựng keyword list để filter videos về Beauty/Mỹ phẩm.
 
 **File làm việc:** `scripts/keyword_extraction.py`
 
@@ -251,19 +251,19 @@ embeddings = np.random.rand(len(videos), 1536)
 1. **Manual Labeling**
    - Load CSV, sample 30-50 videos
    - Đọc `text` và `hashtags` của từng video
-   - Label: Tech-related (1) hay không (0)?
+   - Label: Beauty-related (1) hay không (0)?
 
 2. **Extract Keywords**
-   - Từ các videos Tech-related, extract:
-     - **Keywords trong text:** AI, tech, coding, programming, ChatGPT, Claude, ...
-     - **Hashtags:** #TechTok, #AI, #Coding, #Programming, ...
+   - Từ các videos Beauty-related, extract:
+     - **Keywords trong text:** skincare, makeup, mỹ phẩm, serum, son môi, cushion, ...
+     - **Hashtags:** #lamdep, #makeup, #skincare, #reviewmypham, #trangdiem, ...
    - Build 2 lists: `keywords` và `hashtags`
 
 3. **Test Accuracy**
-   - Viết function `is_tech_video(text, hashtags, keyword_list)`
+   - Viết function `is_beauty_video(text, hashtags, keyword_list)`
    - Test trên toàn bộ CSV:
-     - Precision: % videos được giữ lại là Tech thật
-     - Recall: % videos Tech bị bỏ sót
+     - Precision: % videos được giữ lại là Beauty thật
+     - Recall: % videos Beauty bị bỏ sót
 
 4. **Tune Keywords**
    - Nếu precision/recall thấp → thêm/bớt keywords
@@ -271,35 +271,35 @@ embeddings = np.random.rand(len(videos), 1536)
 
 ### Output:
 
-**File:** `results/tech_keywords.json`
+**File:** `results/beauty_keywords.json`
 
 ```json
 {
   "keywords": [
-    "AI", "artificial intelligence", "tech", "technology",
-    "coding", "programming", "developer", "software",
-    "ChatGPT", "Claude", "OpenAI", "machine learning",
-    "data science", "algorithm", "app", "startup",
-    "VSCode", "GitHub", "Python", "JavaScript"
+    "skincare", "makeup", "mỹ phẩm", "làm đẹp", "trang điểm",
+    "serum", "son môi", "cushion", "kem dưỡng", "nước hoa hồng",
+    "review mỹ phẩm", "Cocoon", "Innisfree", "Romand", "3CE",
+    "da mụn", "da dầu", "retinol", "vitamin C", "niacinamide",
+    "Hasaki", "Shopee beauty", "phấn nước", "má hồng", "chống nắng"
   ],
   "hashtags": [
-    "#TechTok", "#AI", "#Coding", "#Programming",
-    "#SoftwareEngineering", "#MachineLearning", "#DevLife",
-    "#CodeNewbie", "#WebDev", "#DataScience"
+    "#lamdep", "#makeup", "#skincare", "#reviewmypham", "#trangdiem",
+    "#mypham", "#beautyreview", "#tiktokbeauty", "#duongda",
+    "#sonmoi", "#matna", "#serum", "#beautytips", "#koreanskincare"
   ],
   "accuracy": {
     "precision": 0.92,
     "recall": 0.88,
     "total_videos": 187,
-    "tech_videos": 145,
-    "non_tech_videos": 42
+    "beauty_videos": 145,
+    "non_beauty_videos": 42
   },
-  "methodology": "Manual labeling of 50 videos, extracted keywords from tech videos, tested on full dataset"
+  "methodology": "Manual labeling of 50 videos, extracted keywords from beauty videos, tested on full dataset"
 }
 ```
 
 **Script template:** `scripts/keyword_extraction.py` sẽ có code sẵn, chỉ cần:
-- Fill vào `TECH_KEYWORDS` list
+- Fill vào `BEAUTY_KEYWORDS` list
 - Run script để test accuracy
 
 ---
@@ -317,7 +317,7 @@ embeddings = np.random.rand(len(videos), 1536)
 Hiện tại đang dùng prompt này:
 
 ```
-Analyze these {n} TikTok videos about TECH trends.
+Analyze these {n} TikTok videos about BEAUTY trends.
 
 Sample videos:
 1. Text: ...
@@ -336,7 +336,7 @@ Respond in JSON format
 
 1. **Chuẩn bị test data**
    - Chọn 3-5 clusters của videos (mỗi cluster 5-10 videos)
-   - Clusters nên về các topics khác nhau (AI tools, coding tips, tech news, ...)
+   - Clusters nên về các topics khác nhau (skincare products, makeup tutorials, beauty hauls, ...)
 
 2. **Design prompt variations**
    - Tạo 3-5 prompt versions khác nhau
@@ -353,7 +353,7 @@ Respond in JSON format
 
 4. **Compare quality**
    - Manual evaluation:
-     - Topic có specific không? (Good: "Claude Code AI Assistant", Bad: "AI Tools")
+     - Topic có specific không? (Good: "Cocoon Vitamin C Serum Viral", Bad: "Skincare Products")
      - Summary có đúng không?
      - Keywords có relevant không?
    - Rate mỗi prompt: 1-5 stars
@@ -367,10 +367,10 @@ Respond in JSON format
 **File:** `results/best_llm_prompt.txt`
 
 ```
-You are analyzing a cluster of {n} TECH-related TikTok videos that were grouped by semantic similarity.
+You are analyzing a cluster of {n} BEAUTY-related TikTok videos that were grouped by semantic similarity.
 
 CONTEXT:
-These videos likely discuss the same tech trend, tool, product, or news. Your goal is to identify what trend they represent.
+These videos likely discuss the same beauty trend, product, technique, or skincare routine. Your goal is to identify what trend they represent.
 
 SAMPLE VIDEOS:
 {video_texts}
@@ -379,8 +379,8 @@ TASK:
 Extract the following information about this trend:
 
 1. TOPIC: A specific, concise title (4-8 words)
-   - Good examples: "Claude Code AI Assistant Launch", "Python 3.12 New Features"
-   - Bad examples: "AI Tools", "Tech News"
+   - Good examples: "Cocoon Vitamin C Serum Viral", "Korean Glass Skin Routine"
+   - Bad examples: "Skincare Products", "Beauty Tips"
 
 2. SUMMARY: A 1-2 sentence explanation of what this trend is about
    - Focus on WHAT the trend is, not just describing the videos
@@ -389,8 +389,8 @@ Extract the following information about this trend:
    - Options: positive, negative, neutral
 
 4. KEYWORDS: 5-10 specific, relevant keywords
-   - Include: product names, technologies, companies, concepts
-   - Example: ["Claude", "AI coding", "VSCode", "developer tools"]
+   - Include: product names, brands, ingredients, techniques, skin concerns
+   - Example: ["Cocoon", "vitamin C", "serum", "brightening", "affordable skincare"]
 
 RESPOND ONLY IN VALID JSON FORMAT:
 {
@@ -424,7 +424,7 @@ results/
 ├── data_quality_report.md           # Task 1
 ├── dbscan_recommendations.json      # Task 2
 ├── feature_engineering.json         # Task 3
-├── tech_keywords.json               # Task 4
+├── beauty_keywords.json             # Task 4
 └── best_llm_prompt.txt              # Task 5
 ```
 

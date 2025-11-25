@@ -24,7 +24,7 @@ class KafkaSettings:
     """Kafka configuration."""
     BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
     TOPIC = os.getenv("KAFKA_TOPIC", "tiktok-raw-data")
-    STARTING_OFFSETS = "earliest"  # Read from beginning for testing
+    STARTING_OFFSETS = "earliest"  # Only read new data (avoid reprocessing)
 
     # Spark Kafka packages
     SPARK_KAFKA_PACKAGE = "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0"
@@ -56,15 +56,25 @@ class MongoDBSettings:
     DATABASE = "tiktok_trends"
     COLLECTION = "trends"
 
+    # Deduplication
+    SIMILARITY_THRESHOLD = 0.85  # Cosine similarity threshold for trend matching
+    DEDUP_WINDOW_HOURS = 24  # Check trends in last N hours
+
 
 class ProcessingSettings:
     """Processing configuration."""
-    BATCH_INTERVAL = "10 seconds"  # Trigger interval
+    BATCH_INTERVAL = "5 minutes"  # Trigger interval (larger batches)
     MAX_OFFSETS_PER_TRIGGER = 1000  # Max messages per batch
 
     # Trend analysis
-    MIN_VIDEOS_FOR_TREND = 3  # Same as DBSCAN min_samples
+    MIN_CLUSTER_SIZE = 10  # Minimum videos in a cluster to be a valid trend
     SAMPLE_VIDEOS_COUNT = 5  # Number of sample videos to save
+
+    # Noise filtering thresholds
+    MIN_ENGAGEMENT_RATE = 0.01  # 1% minimum engagement rate
+    MIN_AUTHOR_FANS = 500  # Minimum author followers (spam filter)
+    MIN_QUALITY_RATIO = 0.001  # 0.1% minimum collects/views ratio
+    MIN_VIEWS = 1000  # Minimum views threshold
 
 
 class Settings:

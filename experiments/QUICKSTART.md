@@ -92,9 +92,9 @@ Browser sẽ tự động mở. Navigate vào folder `notebooks/`.
    python keyword_extraction.py
    ```
 2. Đọc sample videos được in ra
-3. Mở file `keyword_extraction.py`, thêm keywords vào `TECH_KEYWORDS`
+3. Mở file `keyword_extraction.py`, thêm keywords vào `BEAUTY_KEYWORDS`
 4. Chạy lại script
-5. Check output: `results/tech_keywords.json`
+5. Check output: `results/beauty_keywords.json`
 
 **Time:** 1-2 giờ
 
@@ -126,7 +126,7 @@ results/
 ├── data_quality_report.md
 ├── dbscan_recommendations.json
 ├── feature_engineering.json
-├── tech_keywords.json
+├── beauty_keywords.json
 └── best_llm_prompt.txt
 ```
 

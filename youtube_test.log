@@ -1,0 +1,45 @@
+2025-11-24 22:17:35,267 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-24 22:17:35,268 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-11-24 22:17:35,268 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-24 22:17:35,269 - producer.kafka_client - INFO - ✅ Kafka producer connected: ['localhost:9092']
+2025-11-24 22:17:35,269 - producer.utils.data_saver - INFO - DataSaver initialized (base_dir: data/raw)
+2025-11-24 22:17:35,269 - YouTubeScraper - INFO - ✅ YouTubeScraper initialized
+2025-11-24 22:17:35,270 - googleapiclient.discovery_cache - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-11-24 22:17:35,272 - YouTubeScraper - INFO - YouTube Data API v3 initialized
+2025-11-24 22:17:35,273 - producer.producers.base_producer - INFO - ✅ YouTubeProducer initialized (topic: youtube-raw)
+2025-11-24 22:17:35,273 - producer.producers.base_producer - INFO - 
+============================================================
+2025-11-24 22:17:35,273 - producer.producers.base_producer - INFO - 🚀 YOUTUBEPRODUCER - STARTING
+2025-11-24 22:17:35,273 - producer.producers.base_producer - INFO - ============================================================
+2025-11-24 22:17:35,273 - producer.producers.base_producer - INFO - 📋 Configuration:
+2025-11-24 22:17:35,273 - producer.producers.base_producer - INFO -    keywords: ['cloudflare sập']
+2025-11-24 22:17:35,273 - producer.producers.base_producer - INFO -    max_videos: 10
+2025-11-24 22:17:35,273 - YouTubeScraper - INFO - 🔍 Starting YouTubeScraper.scrape()...
+2025-11-24 22:17:35,273 - YouTubeScraper - INFO -    keywords: ['cloudflare sập']
+2025-11-24 22:17:35,273 - YouTubeScraper - INFO -    max_videos: 10
+2025-11-24 22:17:35,273 - YouTubeScraper - INFO - 🔍 Searching YouTube for: cloudflare sập
+2025-11-24 22:17:37,039 - YouTubeScraper - INFO - ✅ Scraped 10 items
+2025-11-24 22:17:37,040 - producer.producers.base_producer - INFO - 📦 Scraped 10 items
+2025-11-24 22:17:37,040 - producer.utils.data_saver - INFO - 💾 Saved 10 items to: data/raw/youtube/2025-11-24_22-17-37.json
+2025-11-24 22:17:37,041 - producer.producers.base_producer - INFO - 💾 Raw data saved to: data/raw/youtube/2025-11-24_22-17-37.json
+2025-11-24 22:17:37,042 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-11-24 22:17:37,042 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-11-24 22:17:37,042 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-24 22:17:37,046 - producer.producers.base_producer - INFO - ✅ [1/10] Sent: y6MdTn493eg
+2025-11-24 22:17:37,048 - producer.producers.base_producer - INFO - ✅ [2/10] Sent: WufeovT4HI0
+2025-11-24 22:17:37,050 - producer.producers.base_producer - INFO - ✅ [3/10] Sent: _dH16ZEjaLk
+2025-11-24 22:17:37,052 - producer.producers.base_producer - INFO - ✅ [4/10] Sent: 6AEF4pnrf6E
+2025-11-24 22:17:37,053 - producer.producers.base_producer - INFO - ✅ [5/10] Sent: 0jjISha-TQY
+2025-11-24 22:17:37,055 - producer.producers.base_producer - INFO - ✅ [6/10] Sent: YQzmmjxcmDM
+2025-11-24 22:17:37,056 - producer.producers.base_producer - INFO - ✅ [7/10] Sent: aA2ugRwyIiY
+2025-11-24 22:17:37,057 - producer.producers.base_producer - INFO - ✅ [8/10] Sent: _qipjkApV8Q
+2025-11-24 22:17:37,059 - producer.producers.base_producer - INFO - ✅ [9/10] Sent: nvptXc66P3U
+2025-11-24 22:17:37,060 - producer.producers.base_producer - INFO - ✅ [10/10] Sent: pd36OWbZ6yY
+2025-11-24 22:17:37,060 - producer.producers.base_producer - INFO - ============================================================
+2025-11-24 22:17:37,060 - producer.producers.base_producer - INFO - ✅ YOUTUBEPRODUCER - COMPLETED
+2025-11-24 22:17:37,060 - producer.producers.base_producer - INFO -    Sent: 10/10 items
+2025-11-24 22:17:37,060 - producer.producers.base_producer - INFO - ============================================================
+
+2025-11-24 22:17:37,060 - kafka.producer.kafka - INFO - <KafkaProducer client_id=kafka-python-producer-1 transactional_id=None>: Closing the Kafka producer with 9223372036.0 secs timeout.
+2025-11-24 22:17:37,060 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-producer-1, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-11-24 22:17:37,060 - producer.kafka_client - INFO - 👋 Kafka producer closed

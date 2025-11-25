@@ -18,4 +18,11 @@ dependencies = [
     "pyspark==3.5.3",
     "streamlit>=1.51.0",
     "plotly>=6.4.0",
+    "pyyaml>=6.0.3",
+    "feedparser>=6.0.12",
+    "pytrends>=4.9.2",
+    "google-api-python-client>=2.187.0",
+    "isodate>=0.7.2",
+    "urllib3<2.0",
+    "apscheduler>=3.11.1",
 ]

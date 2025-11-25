@@ -5,7 +5,7 @@ DBSCAN clustering for trend detection.
 import logging
 import numpy as np
 from sklearn.cluster import DBSCAN
-from config.settings import settings
+from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)
 

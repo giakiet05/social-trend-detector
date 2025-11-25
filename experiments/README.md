@@ -7,7 +7,7 @@ Folder này chứa các tasks phân tích data để tối ưu hóa hệ thống
 Thực hiện các experiments để tìm ra:
 1. **DBSCAN parameters tốt nhất** (eps, min_samples)
 2. **Feature engineering strategy** (engagement score, text combination)
-3. **Tech keywords dictionary** để filter videos
+3. **Beauty keywords dictionary** để filter videos
 4. **Data quality issues** cần fix
 5. **LLM prompt tốt nhất** để analyze trends
 
@@ -29,7 +29,7 @@ experiments/
 ├── results/                     # OUTPUT - Lưu kết quả analysis ở đây
 │   ├── dbscan_recommendations.json
 │   ├── feature_engineering.json
-│   ├── tech_keywords.json
+│   ├── beauty_keywords.json
 │   ├── data_quality_report.md
 │   └── best_llm_prompt.txt
 └── requirements.txt             # Dependencies cần install
@@ -153,7 +153,7 @@ Hoàn thành các tasks theo thứ tự:
 - [ ] Task 1: Data Quality Analysis (1-2 giờ)
 - [ ] Task 2: DBSCAN Parameter Tuning (2-3 giờ)
 - [ ] Task 3: Feature Engineering Analysis (2-3 giờ)
-- [ ] Task 4: Tech Keywords Dictionary (1-2 giờ)
+- [ ] Task 4: Beauty Keywords Dictionary (1-2 giờ)
 - [ ] Task 5: LLM Prompt Testing (2 giờ)
 
 **Total time estimate:** 8-12 giờ

@@ -5,7 +5,7 @@ OpenAI client for embeddings and LLM analysis.
 import logging
 from typing import List, Dict
 from openai import OpenAI
-from config.settings import settings
+from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)
 
@@ -98,33 +98,34 @@ class OpenAIClient:
                     f"   Hashtags: {', '.join(hashtags[:5])}"
                 )
 
-            prompt = f"""Analyze these {len(videos)} TikTok videos about TECH trends.
+            prompt = f"""Phân tích {len(videos)} video TikTok về xu hướng LÀM ĐẸP/MỸ PHẨM.
 
-Sample videos:
+Các video mẫu:
 {chr(10).join(video_texts)}
 
-Extract:
-1. Topic (concise title, 3-7 words)
-2. Summary (1-2 sentences describing the trend)
-3. Sentiment (positive/negative/neutral)
-4. Keywords (5-10 relevant keywords)
+Hãy trích xuất thông tin sau (BẰNG TIẾNG VIỆT):
+1. Chủ đề (tiêu đề ngắn gọn, 3-7 từ)
+2. Tóm tắt (1-2 câu mô tả xu hướng này)
+3. Cảm xúc (positive/negative/neutral)
+4. Từ khóa (5-10 từ khóa liên quan)
 
-Respond in JSON format:
+QUAN TRỌNG: Chỉ trả lời bằng JSON object (không phải array), tất cả nội dung TIẾNG VIỆT:
 {{
   "topic": "...",
   "summary": "...",
-  "sentiment": "...",
+  "sentiment": "positive",
   "keywords": ["...", "..."]
 }}"""
 
             response = self.client.chat.completions.create(
                 model=settings.openai.LLM_MODEL,
                 messages=[
-                    {"role": "system", "content": "You are a TikTok trend analyst specializing in tech content."},
+                    {"role": "system", "content": "Bạn là chuyên gia phân tích xu hướng TikTok về làm đẹp và mỹ phẩm. Luôn trả lời bằng tiếng Việt và format JSON hợp lệ."},
                     {"role": "user", "content": prompt}
                 ],
                 max_tokens=settings.openai.MAX_TOKENS,
-                temperature=0.7
+                temperature=0.7,
+                response_format={"type": "json_object"}
             )
 
             result_text = response.choices[0].message.content.strip()
@@ -140,8 +141,8 @@ Respond in JSON format:
             logger.error(f"❌ Cluster analysis failed: {e}")
             # Return fallback
             return {
-                "topic": "Tech Trend (Analysis Failed)",
-                "summary": f"Cluster of {len(videos)} videos about tech",
+                "topic": "Xu hướng làm đẹp (Lỗi phân tích)",
+                "summary": f"Nhóm {len(videos)} video về làm đẹp/mỹ phẩm",
                 "sentiment": "neutral",
                 "keywords": []
             }

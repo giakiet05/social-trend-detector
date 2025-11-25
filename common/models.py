@@ -1,12 +1,14 @@
 """
 Shared data models for Producer and Consumer.
 
-This module defines the canonical schema for TikTok videos
-that is used across the entire pipeline.
+This module defines data models for multi-source social trend detection:
+- Source-specific models: TikTokVideo, NewsArticle, YouTubeVideo, TrendsData
+- Unified model: ContentItem (for Consumer pipeline)
+- Kafka wrapper: KafkaMessage (for Producer → Kafka)
 """
 
 from dataclasses import dataclass, asdict
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 
 
@@ -218,4 +220,226 @@ class TikTokVideo:
             timestamp=timestamp,
             language=row.get("textLanguage"),
             video_url=row.get("webVideoUrl"),
+        )
+
+
+# ============================================
+# NEW MODELS FOR MULTI-SOURCE SUPPORT
+# ============================================
+
+@dataclass
+class NewsArticle:
+    """News article raw data (from RSS feeds)."""
+    article_id: str
+    title: str
+    summary: str
+    url: str
+    category: str
+    published_at: str
+    thumbnail: Optional[str] = None
+    author: str = "VNExpress"
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for Kafka serialization."""
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'NewsArticle':
+        """Create NewsArticle from dictionary."""
+        return cls(
+            article_id=data.get("article_id", ""),
+            title=data.get("title", ""),
+            summary=data.get("summary", ""),
+            url=data.get("url", ""),
+            category=data.get("category", ""),
+            published_at=data.get("published_at", ""),
+            thumbnail=data.get("thumbnail"),
+            author=data.get("author", "VNExpress"),
+        )
+
+
+@dataclass
+class YouTubeVideo:
+    """YouTube video raw data (from YouTube Data API v3)."""
+    video_id: str
+    title: str
+    description: str
+    url: str
+    tags: List[str]
+    views: int
+    likes: int
+    comments: int
+    channel_name: str
+    channel_id: str
+    published_at: str
+    duration_seconds: int
+    thumbnail: str
+    category: Optional[str] = None
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for Kafka serialization."""
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'YouTubeVideo':
+        """Create YouTubeVideo from dictionary."""
+        return cls(
+            video_id=data.get("video_id", ""),
+            title=data.get("title", ""),
+            description=data.get("description", ""),
+            url=data.get("url", ""),
+            tags=data.get("tags", []),
+            views=data.get("views", 0),
+            likes=data.get("likes", 0),
+            comments=data.get("comments", 0),
+            channel_name=data.get("channel_name", ""),
+            channel_id=data.get("channel_id", ""),
+            published_at=data.get("published_at", ""),
+            duration_seconds=data.get("duration_seconds", 0),
+            thumbnail=data.get("thumbnail", ""),
+            category=data.get("category"),
+        )
+
+
+@dataclass
+class TrendsData:
+    """Google Trends data (from pytrends)."""
+    query: str
+    interest_over_time: List[Dict[str, Any]]  # [{"date": "2025-11-23", "interest": 100}]
+    related_queries: List[Dict[str, Any]]     # [{"query": "...", "value": 100}]
+    region: str = "VN"
+    timeframe: str = "now 7-d"
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for Kafka serialization."""
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'TrendsData':
+        """Create TrendsData from dictionary."""
+        return cls(
+            query=data.get("query", ""),
+            interest_over_time=data.get("interest_over_time", []),
+            related_queries=data.get("related_queries", []),
+            region=data.get("region", "VN"),
+            timeframe=data.get("timeframe", "now 7-d"),
+        )
+
+
+@dataclass
+class ContentItem:
+    """
+    Unified content item from any source.
+
+    This is the SINGLE SOURCE OF TRUTH for Consumer pipeline.
+    All source-specific models are normalized to this schema in NormalizationStage.
+    """
+    content_id: str
+    source: str  # "tiktok", "vnexpress", "youtube", "google_trends"
+    collected_at: str
+
+    # Content
+    text: str
+    url: Optional[str]
+    hashtags: List[str]
+    published_at: Optional[str]
+
+    # Engagement (nullable for news/trends)
+    views: Optional[int]
+    likes: Optional[int]
+    comments: Optional[int]
+    shares: Optional[int]
+
+    # Author
+    author_name: Optional[str]
+    author_followers: Optional[int]
+
+    # Source-specific metadata
+    metadata: Dict[str, Any]
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for Spark processing."""
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'ContentItem':
+        """Create ContentItem from dictionary."""
+        return cls(
+            content_id=data.get("content_id", ""),
+            source=data.get("source", ""),
+            collected_at=data.get("collected_at", ""),
+            text=data.get("text", ""),
+            url=data.get("url"),
+            hashtags=data.get("hashtags", []),
+            published_at=data.get("published_at"),
+            views=data.get("views"),
+            likes=data.get("likes"),
+            comments=data.get("comments"),
+            shares=data.get("shares"),
+            author_name=data.get("author_name"),
+            author_followers=data.get("author_followers"),
+            metadata=data.get("metadata", {}),
+        )
+
+
+@dataclass
+class KafkaMessage:
+    """
+    Wrapper for all messages sent to Kafka.
+
+    Standard format:
+    {
+      "source": "tiktok",
+      "collected_at": "2025-11-24T10:00:00Z",
+      "content_id": "123456",
+      "data": {...}  # TikTokVideo/NewsArticle/YouTubeVideo/TrendsData
+    }
+    """
+    source: str
+    collected_at: str
+    content_id: str
+    data: Dict[str, Any]  # Raw data object (varies by source)
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for Kafka serialization."""
+        return asdict(self)
+
+    @classmethod
+    def from_tiktok(cls, video: TikTokVideo) -> 'KafkaMessage':
+        """Create KafkaMessage from TikTokVideo."""
+        return cls(
+            source="tiktok",
+            collected_at=datetime.utcnow().isoformat(),
+            content_id=video.video_id,
+            data=video.to_dict()
+        )
+
+    @classmethod
+    def from_news(cls, article: NewsArticle) -> 'KafkaMessage':
+        """Create KafkaMessage from NewsArticle."""
+        return cls(
+            source="vnexpress",
+            collected_at=datetime.utcnow().isoformat(),
+            content_id=article.article_id,
+            data=article.to_dict()
+        )
+
+    @classmethod
+    def from_youtube(cls, video: YouTubeVideo) -> 'KafkaMessage':
+        """Create KafkaMessage from YouTubeVideo."""
+        return cls(
+            source="youtube",
+            collected_at=datetime.utcnow().isoformat(),
+            content_id=video.video_id,
+            data=video.to_dict()
+        )
+
+    @classmethod
+    def from_trends(cls, trends: TrendsData) -> 'KafkaMessage':
+        """Create KafkaMessage from TrendsData."""
+        return cls(
+            source="google_trends",
+            collected_at=datetime.utcnow().isoformat(),
+            content_id=f"{trends.query}_{datetime.utcnow().strftime('%Y%m%d')}",
+            data=trends.to_dict()
         )

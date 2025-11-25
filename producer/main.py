@@ -1,90 +1,115 @@
 """
-TikTok Producer main entry point.
+Producer main entry point with scheduler.
+
+Runs all producers on a schedule for Docker container.
+Designed to run continuously as a long-lived process.
+
+Schedule:
+    - Initial run on startup
+    - Repeat every 4 hours
+
+Usage:
+    python -m producer.main
 """
 
-import time
+import sys
 import logging
-from config.settings import settings
-from clients.kafka_client import KafkaProducerClient
-from loaders.csv_loader import CSVLoader
-from utils.logger import setup_logger
+import signal
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+from producer.orchestrator import ProducerOrchestrator
 
-# Setup logging
-setup_logger(level=getattr(logging, settings.logging.LEVEL))
+
+def setup_logging():
+    """Setup logging configuration."""
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
+
 logger = logging.getLogger(__name__)
 
 
-class TikTokProducer:
-    """Main Producer class."""
+def run_producers():
+    """
+    Run all producers via orchestrator.
 
-    def __init__(self):
-        # Initialize Kafka client
-        self.kafka_client = KafkaProducerClient(
-            bootstrap_servers=settings.kafka.BOOTSTRAP_SERVERS
-        )
+    This function is called by the scheduler.
+    """
+    logger.info("\n" + "=" * 80)
+    logger.info("⏰ SCHEDULED RUN - Starting producers...")
+    logger.info("=" * 80)
 
-        # Initialize loader based on mode
-        if settings.runtime.MODE == "mock":
-            logger.info("🧪 Running in MOCK mode - Loading from CSV")
-            self.loader = CSVLoader(csv_path=settings.mock.CSV_PATH)
-        else:            # TODO: Implement Apify loader
-            raise NotImplementedError("LIVE mode not yet implemented")
+    try:
+        orchestrator = ProducerOrchestrator()
+        results = orchestrator.run_all()
 
-    def run_mock_mode(self):
-        """Run mock mode - read CSV and send to Kafka."""
-        logger.info("=" * 60)
-        logger.info("🚀 STARTING PRODUCER - MOCK MODE")
-        logger.info("=" * 60)
+        total_items = sum(results.values())
+        if total_items > 0:
+            logger.info(f"✅ Scheduled run completed: {total_items} items sent")
+        else:
+            logger.warning("⚠️  Scheduled run completed but no items were sent")
 
-        # Load videos from CSV
-        videos = self.loader.load()
+    except Exception as e:
+        logger.error(f"❌ Scheduled run failed: {e}", exc_info=True)
 
-        if not videos:
-            logger.warning("❌ No videos to send!")
-            return
 
-        logger.info(f"📦 Will send {len(videos)} videos to Kafka topic: {settings.kafka.TOPIC}")
+def main():
+    """
+    Main entry point with scheduler.
 
-        # Send each video to Kafka
-        success_count = 0
-        for idx, video in enumerate(videos, start=1):
-            try:
-                # Convert to dict
-                message = video.to_dict()
+    Runs producers immediately on startup, then every 4 hours.
+    """
+    setup_logging()
 
-                # Send to Kafka
-                self.kafka_client.send_message(
-                    topic=settings.kafka.TOPIC,
-                    message=message
-                )
+    logger.info("=" * 80)
+    logger.info("🚀 PRODUCER SCHEDULER - STARTING")
+    logger.info("=" * 80)
+    logger.info("Schedule: Initial run + every 4 hours")
+    logger.info("Press Ctrl+C to stop")
+    logger.info("=" * 80 + "\n")
 
-                success_count += 1
-                logger.info(f"✅ [{idx}/{len(videos)}] Sent video: {video.video_id}")
+    # Create scheduler
+    scheduler = BlockingScheduler()
 
-                # Simulate real-time if enabled
-                if settings.mock.SIMULATE_REALTIME and idx < len(videos):
-                    time.sleep(settings.mock.DELAY_SECONDS)
+    # Schedule job: run every 4 hours
+    scheduler.add_job(
+        run_producers,
+        trigger=IntervalTrigger(hours=4),
+        id='producer_job',
+        name='Run all producers',
+        replace_existing=True,
+        max_instances=1  # Prevent overlapping runs
+    )
 
-            except Exception as e:
-                logger.error(f"❌ Failed to send video {video.video_id}: {e}")
+    # Graceful shutdown handler
+    def shutdown_handler(signum, frame):
+        logger.info("\n⚠️  Received shutdown signal, stopping scheduler...")
+        scheduler.shutdown(wait=True)
+        logger.info("✅ Scheduler stopped gracefully")
+        sys.exit(0)
 
-        logger.info("=" * 60)
-        logger.info(f"🎉 COMPLETED: {success_count}/{len(videos)} videos sent successfully")
-        logger.info("=" * 60)
+    signal.signal(signal.SIGINT, shutdown_handler)
+    signal.signal(signal.SIGTERM, shutdown_handler)
 
-    def run(self):
-        """Start producer based on mode."""
-        try:
-            if settings.runtime.MODE == "mock":
-                self.run_mock_mode()
-            else:
-                # TODO: run_live_mode()
-                pass
-        finally:
-            # Cleanup
-            self.kafka_client.close()
+    try:
+        # Run immediately on startup
+        logger.info("🏃 Running initial scrape on startup...")
+        run_producers()
+
+        # Start scheduler for recurring runs
+        logger.info("\n⏰ Starting scheduler for recurring runs...")
+        logger.info("Next run will be in 4 hours\n")
+        scheduler.start()
+
+    except KeyboardInterrupt:
+        logger.info("\n⚠️  Interrupted by user")
+        sys.exit(130)
+    except Exception as e:
+        logger.error(f"❌ Fatal error: {e}", exc_info=True)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-    producer = TikTokProducer()
-    producer.run()
+    main()

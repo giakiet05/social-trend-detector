@@ -1,0 +1,51 @@
+# Scraping Keywords Configuration
+# Edit this file to add/remove keywords for each data source
+
+tiktok:
+  # Search keywords (searchQueries param)
+  keywords:
+    # TODO: Add your TikTok search keywords here
+    - "phở anh hai"
+
+  # Hashtags (hashtags param)
+  hashtags:
+    # TODO: Add your TikTok hashtags here (without #)
+    - "phoanhhai"
+
+  # Max videos per keyword/hashtag
+  max_videos_per_query: 10
+
+vnexpress:
+  # Filter keywords for RSS articles
+  keywords:
+    # TODO: Add your news keywords here
+    - "Việt Nam"
+
+  # RSS feed URLs (do not change unless needed)
+  rss_feeds:
+    - "https://vnexpress.net/rss/tin-moi-nhat.rss"
+    - "https://vnexpress.net/rss/thoi-su.rss"
+    - "https://vnexpress.net/rss/giai-tri.rss"
+    - "https://vnexpress.net/rss/kinh-doanh.rss"
+    - "https://vnexpress.net/rss/the-gioi.rss"
+
+youtube:
+  # Search keywords
+  keywords:
+    # TODO: Add your YouTube search keywords here
+    - "cloudflare sập"
+
+  # Max videos per keyword
+  max_videos_per_keyword: 10
+
+google_trends:
+  # Trend keywords to track
+  keywords:
+    # TODO: Add your Google Trends keywords here
+    - "cloudflare sập"
+
+  # Timeframe (e.g., "now 7-d", "now 1-d", "today 3-m")
+  timeframe: "now 7-d"
+
+  # Region code (VN = Vietnam)
+  region: "VN"

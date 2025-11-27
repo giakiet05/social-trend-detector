@@ -10,7 +10,7 @@ from datetime import datetime
 
 @dataclass
 class Trend:
-    """Trend data model for MongoDB."""
+    """Trend data model for MongoDB (multi-source support)."""
     timestamp: datetime
     topic: str
     summary: str
@@ -20,6 +20,7 @@ class Trend:
     total_views: int
     total_likes: int
     sample_videos: List[dict]
+    source_counts: dict  # {"tiktok": 15, "youtube": 5, "vnexpress": 2}
 
     def to_dict(self):
         data = asdict(self)

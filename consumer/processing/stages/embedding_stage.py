@@ -1,54 +1,55 @@
 """
-Embedding stage: Convert text to vectors using OpenAI.
+Embedding stage: Convert text to vectors using embedding provider.
 """
 
-from typing import List, Dict, Tuple
+from typing import List
 import logging
-import numpy as np
 from .base_stage import BaseStage
-from consumer.enrichment.openai_client import OpenAIClient
+from common.models import ContentItem
+from consumer.enrichment.base_llm_client import BaseEmbeddingClient
 
 logger = logging.getLogger(__name__)
 
 
 class EmbeddingStage(BaseStage):
-    """Embed video texts using OpenAI API."""
+    """Embed content texts using embedding provider (OpenAI or Gemini)."""
 
-    def __init__(self, openai_client: OpenAIClient):
+    def __init__(self, embedding_client: BaseEmbeddingClient):
         super().__init__("EmbeddingStage")
-        self.openai = openai_client
+        self.embedding_client = embedding_client
 
-    def execute(self, videos: List[Dict]) -> Tuple[List[Dict], np.ndarray]:
+    def execute(self, items: List[ContentItem]) -> List[ContentItem]:
         """
-        Embed video texts to vectors.
+        Embed content texts to vectors and store in metadata.
 
         Args:
-            videos: Filtered videos
+            items: Filtered ContentItem objects
 
         Returns:
-            Tuple of (videos, embeddings array)
+            ContentItem objects with embeddings added to metadata
         """
         self.log_start()
 
-        if not videos:
-            self.log_skip("No videos to embed")
-            return videos, np.array([])
+        if not items:
+            self.log_skip("No items to embed")
+            return items
 
         # Extract combined text (text + hashtags)
         texts = []
-        for video in videos:
-            text = video.get('text', '')
-            hashtags = video.get('hashtags', [])
-            combined = text + " " + " ".join(hashtags)
+        for item in items:
+            combined = item.text + " " + " ".join(item.hashtags)
             texts.append(combined)
 
         # Batch embed
         try:
-            embeddings = self.openai.embed_texts(texts)
-            embeddings_array = np.array(embeddings)
+            embeddings = self.embedding_client.embed_texts(texts)
 
-            self.log_complete(f"Embedded {len(videos)} videos → shape {embeddings_array.shape}")
-            return videos, embeddings_array
+            # Add embeddings to metadata
+            for item, embedding in zip(items, embeddings):
+                item.metadata["embedding"] = embedding
+
+            self.log_complete(f"Embedded {len(items)} items (dim={len(embeddings[0])})")
+            return items
 
         except Exception as e:
             logger.error(f"Embedding failed: {e}", exc_info=True)

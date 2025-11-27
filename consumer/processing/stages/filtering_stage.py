@@ -2,16 +2,17 @@
 Filtering stage: Remove noise (spam, bots, low quality).
 """
 
-from typing import List, Dict
+from typing import List
 import logging
 from .base_stage import BaseStage
+from common.models import ContentItem
 from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)
 
 
 class FilteringStage(BaseStage):
-    """Filter out noise: spam accounts, low engagement, low quality."""
+    """Filter out noise: spam accounts, low engagement, low quality (source-specific)."""
 
     def __init__(self):
         super().__init__("FilteringStage")
@@ -20,81 +21,89 @@ class FilteringStage(BaseStage):
         self.min_quality_ratio = settings.processing.MIN_QUALITY_RATIO
         self.min_views = settings.processing.MIN_VIEWS
 
-    def execute(self, videos: List[Dict]) -> List[Dict]:
+    def execute(self, items: List[ContentItem]) -> List[ContentItem]:
         """
-        Filter videos based on quality thresholds.
+        Filter content based on source-specific quality thresholds.
 
         Args:
-            videos: Cleaned videos
+            items: Cleaned ContentItem objects
 
         Returns:
-            High-quality videos
+            High-quality ContentItem objects
         """
         self.log_start()
 
-        if not videos:
-            self.log_skip("No videos to filter")
+        if not items:
+            self.log_skip("No items to filter")
             return []
 
-        initial_count = len(videos)
+        initial_count = len(items)
         filtered = []
 
-        for video in videos:
-            # Filter 1: Minimum views
-            if video.get('views', 0) < self.min_views:
-                logger.debug(f"Filtered {video.get('video_id')}: views too low ({video.get('views')})")
-                continue
+        for item in items:
+            # Source-specific filtering
+            if item.source == "tiktok":
+                if not self._is_quality_tiktok(item):
+                    continue
+            elif item.source == "youtube":
+                if not self._is_quality_youtube(item):
+                    continue
+            elif item.source == "vnexpress":
+                # News: no filtering for now (accept all)
+                pass
 
-            # Filter 2: Engagement rate (avoid clickbait)
-            engagement_rate = self._calculate_engagement_rate(video)
-            if engagement_rate < self.min_engagement_rate:
-                logger.debug(f"Filtered {video.get('video_id')}: low engagement rate ({engagement_rate:.4f})")
-                continue
-
-            # Filter 3: Author credibility (avoid spam/bots)
-            if video.get('author_fans', 0) < self.min_author_fans:
-                logger.debug(f"Filtered {video.get('video_id')}: author has too few fans ({video.get('author_fans')})")
-                continue
-
-            # Filter 4: Quality ratio (collects/views - avoid low value content)
-            quality_ratio = self._calculate_quality_ratio(video)
-            if quality_ratio < self.min_quality_ratio:
-                logger.debug(f"Filtered {video.get('video_id')}: low quality ratio ({quality_ratio:.6f})")
-                continue
-
-            filtered.append(video)
+            filtered.append(item)
 
         removed = initial_count - len(filtered)
-        self.log_complete(f"{len(filtered)}/{initial_count} videos passed, {removed} filtered")
+        self.log_complete(f"{len(filtered)}/{initial_count} items passed, {removed} filtered")
 
         return filtered
 
-    def _calculate_engagement_rate(self, video: Dict) -> float:
-        """
-        Calculate engagement rate.
+    def _is_quality_tiktok(self, item: ContentItem) -> bool:
+        """Check TikTok quality based on engagement & author credibility."""
 
-        Formula: (likes + comments + shares) / views
-        """
-        views = video.get('views', 0)
-        if views == 0:
-            return 0.0
+        # Filter 1: Minimum views
+        if item.views and item.views < self.min_views:
+            logger.debug(f"Filtered {item.content_id}: views too low ({item.views})")
+            return False
 
-        engagement = (
-            video.get('likes', 0) +
-            video.get('comments', 0) +
-            video.get('shares', 0)
-        )
-        return engagement / views
+        # Filter 2: Engagement rate
+        if item.views and item.views > 0:
+            engagement = (item.likes or 0) + (item.comments or 0) + (item.shares or 0)
+            engagement_rate = engagement / item.views
+            if engagement_rate < self.min_engagement_rate:
+                logger.debug(f"Filtered {item.content_id}: low engagement rate ({engagement_rate:.4f})")
+                return False
 
-    def _calculate_quality_ratio(self, video: Dict) -> float:
-        """
-        Calculate quality ratio (collects/views).
+        # Filter 3: Author credibility
+        if item.author_followers and item.author_followers < self.min_author_fans:
+            logger.debug(f"Filtered {item.content_id}: author has too few fans ({item.author_followers})")
+            return False
 
-        Collects (saves) are strong signal of valuable content.
-        """
-        views = video.get('views', 0)
-        if views == 0:
-            return 0.0
+        # Filter 4: Quality ratio (collects/views)
+        collects = item.metadata.get("collects", 0)
+        if item.views and item.views > 0:
+            quality_ratio = collects / item.views
+            if quality_ratio < self.min_quality_ratio:
+                logger.debug(f"Filtered {item.content_id}: low quality ratio ({quality_ratio:.6f})")
+                return False
 
-        collects = video.get('collects', 0)
-        return collects / views
+        return True
+
+    def _is_quality_youtube(self, item: ContentItem) -> bool:
+        """Check YouTube quality based on engagement."""
+
+        # Min views
+        if item.views and item.views < 1000:
+            logger.debug(f"Filtered {item.content_id}: YouTube views too low ({item.views})")
+            return False
+
+        # Min engagement rate
+        if item.views and item.views > 0:
+            engagement = (item.likes or 0) + (item.comments or 0)
+            engagement_rate = engagement / item.views
+            if engagement_rate < 0.01:  # 1% for YouTube
+                logger.debug(f"Filtered {item.content_id}: YouTube low engagement ({engagement_rate:.4f})")
+                return False
+
+        return True

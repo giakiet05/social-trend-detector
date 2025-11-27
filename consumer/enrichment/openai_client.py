@@ -6,11 +6,12 @@ import logging
 from typing import List, Dict
 from openai import OpenAI
 from consumer.config.settings import settings
+from .base_llm_client import BaseEmbeddingClient, BaseLLMClient
 
 logger = logging.getLogger(__name__)
 
 
-class OpenAIClient:
+class OpenAIClient(BaseEmbeddingClient, BaseLLMClient):
     """OpenAI client for embeddings and trend analysis."""
 
     def __init__(self, api_key: str = None):
@@ -65,62 +66,21 @@ class OpenAIClient:
             logger.error(f"❌ Embedding failed: {e}")
             raise
 
-    def analyze_cluster(self, videos: List[Dict]) -> Dict[str, any]:
+    def analyze_cluster(self, prompt: str) -> Dict[str, any]:
         """
-        Analyze a cluster of videos to extract topic, summary, sentiment.
+        Analyze cluster using custom prompt (multi-source support).
 
         Args:
-            videos: List of video dicts (each with 'text', 'hashtags', etc.)
+            prompt: Custom prompt string with multi-source context
 
         Returns:
             Dict with keys: topic, summary, sentiment, keywords
         """
-        if not videos:
-            return {
-                "topic": "Unknown",
-                "summary": "No videos in cluster",
-                "sentiment": "neutral",
-                "keywords": []
-            }
-
         try:
-            # Prepare prompt with sample videos
-            sample_size = min(5, len(videos))
-            sample_videos = videos[:sample_size]
-
-            # Build prompt
-            video_texts = []
-            for i, video in enumerate(sample_videos, 1):
-                text = video.get('text', '')
-                hashtags = video.get('hashtags', [])
-                video_texts.append(
-                    f"{i}. Text: {text[:200]}...\n"
-                    f"   Hashtags: {', '.join(hashtags[:5])}"
-                )
-
-            prompt = f"""Phân tích {len(videos)} video TikTok về xu hướng LÀM ĐẸP/MỸ PHẨM.
-
-Các video mẫu:
-{chr(10).join(video_texts)}
-
-Hãy trích xuất thông tin sau (BẰNG TIẾNG VIỆT):
-1. Chủ đề (tiêu đề ngắn gọn, 3-7 từ)
-2. Tóm tắt (1-2 câu mô tả xu hướng này)
-3. Cảm xúc (positive/negative/neutral)
-4. Từ khóa (5-10 từ khóa liên quan)
-
-QUAN TRỌNG: Chỉ trả lời bằng JSON object (không phải array), tất cả nội dung TIẾNG VIỆT:
-{{
-  "topic": "...",
-  "summary": "...",
-  "sentiment": "positive",
-  "keywords": ["...", "..."]
-}}"""
-
             response = self.client.chat.completions.create(
                 model=settings.openai.LLM_MODEL,
                 messages=[
-                    {"role": "system", "content": "Bạn là chuyên gia phân tích xu hướng TikTok về làm đẹp và mỹ phẩm. Luôn trả lời bằng tiếng Việt và format JSON hợp lệ."},
+                    {"role": "system", "content": "Bạn là chuyên gia phân tích xu hướng xã hội từ nhiều nguồn (TikTok, YouTube, VNExpress). Luôn trả lời bằng tiếng Việt và format JSON hợp lệ."},
                     {"role": "user", "content": prompt}
                 ],
                 max_tokens=settings.openai.MAX_TOKENS,
@@ -134,15 +94,9 @@ QUAN TRỌNG: Chỉ trả lời bằng JSON object (không phải array), tất 
             import json
             result = json.loads(result_text)
 
-            logger.info(f"✅ Analyzed cluster: {result['topic']}")
+            logger.info(f"✅ Analyzed cluster: {result['topic']} (OpenAI)")
             return result
 
         except Exception as e:
             logger.error(f"❌ Cluster analysis failed: {e}")
-            # Return fallback
-            return {
-                "topic": "Xu hướng làm đẹp (Lỗi phân tích)",
-                "summary": f"Nhóm {len(videos)} video về làm đẹp/mỹ phẩm",
-                "sentiment": "neutral",
-                "keywords": []
-            }
+            raise

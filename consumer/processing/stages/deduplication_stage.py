@@ -7,7 +7,7 @@ import logging
 import numpy as np
 from datetime import datetime
 from .base_stage import BaseStage
-from consumer.enrichment.openai_client import OpenAIClient
+from consumer.enrichment.base_llm_client import BaseEmbeddingClient
 from consumer.storage.mongo_client import MongoDBClient
 from consumer.models.schemas import Trend
 from consumer.config.settings import settings
@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 class DeduplicationStage(BaseStage):
     """Deduplicate trends against existing trends in MongoDB."""
 
-    def __init__(self, openai_client: OpenAIClient, mongo_client: MongoDBClient):
+    def __init__(self, embedding_client: BaseEmbeddingClient, mongo_client: MongoDBClient):
         super().__init__("DeduplicationStage")
-        self.openai = openai_client
+        self.embedding_client = embedding_client
         self.mongo = mongo_client
         self.similarity_threshold = settings.mongodb.SIMILARITY_THRESHOLD
         self.window_hours = settings.mongodb.DEDUP_WINDOW_HOURS
@@ -62,8 +62,8 @@ class DeduplicationStage(BaseStage):
         new_topics = [t.topic for t in new_trends]
 
         try:
-            existing_embeddings = self.openai.embed_texts(existing_topics)
-            new_embeddings = self.openai.embed_texts(new_topics)
+            existing_embeddings = self.embedding_client.embed_texts(existing_topics)
+            new_embeddings = self.embedding_client.embed_texts(new_topics)
         except Exception as e:
             logger.error(f"Embedding failed during deduplication: {e}")
             # Fallback: return new trends without deduplication

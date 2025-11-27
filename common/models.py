@@ -405,6 +405,45 @@ class KafkaMessage:
         return asdict(self)
 
     @classmethod
+    def from_dict(cls, data: dict) -> 'KafkaMessage':
+        """
+        Create KafkaMessage from dictionary (deserialize from Kafka).
+
+        Args:
+            data: Dictionary with KafkaMessage structure
+
+        Returns:
+            KafkaMessage instance with nested data dict
+        """
+        return cls(
+            source=data.get("source", ""),
+            collected_at=data.get("collected_at", ""),
+            content_id=data.get("content_id", ""),
+            data=data.get("data", {})
+        )
+
+    def to_source_model(self):
+        """
+        Convert nested data to source-specific model.
+
+        Returns:
+            TikTokVideo | NewsArticle | YouTubeVideo | TrendsData
+
+        Raises:
+            ValueError: If source is unknown
+        """
+        if self.source == "tiktok":
+            return TikTokVideo.from_dict(self.data)
+        elif self.source == "vnexpress":
+            return NewsArticle.from_dict(self.data)
+        elif self.source == "youtube":
+            return YouTubeVideo.from_dict(self.data)
+        elif self.source == "google_trends":
+            return TrendsData.from_dict(self.data)
+        else:
+            raise ValueError(f"Unknown source: {self.source}")
+
+    @classmethod
     def from_tiktok(cls, video: TikTokVideo) -> 'KafkaMessage':
         """Create KafkaMessage from TikTokVideo."""
         return cls(

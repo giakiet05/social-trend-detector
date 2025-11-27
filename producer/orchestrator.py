@@ -27,7 +27,7 @@ class ProducerOrchestrator:
         """Initialize orchestrator with all producers."""
         self.producers = {
             'tiktok': TikTokProducer(),
-            'vnexpress': VNExpressProducer(),
+            #'vnexpress': VNExpressProducer(),
             'youtube': YouTubeProducer()
         }
 
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     # Run all producers
     orchestrator = ProducerOrchestrator()
-    results = orchestrator.run_single("vnexpress")
+    results = orchestrator.run_all()
 
     # Exit with error code if no items were sent
     if sum(results.values()) == 0:

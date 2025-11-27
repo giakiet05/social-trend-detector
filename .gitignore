@@ -13,3 +13,5 @@ __pycache__/
 .idea
 .venv
 .log
+data
+.env.example

@@ -28,19 +28,35 @@ class KafkaSettings:
 
     # Spark Kafka packages
     SPARK_KAFKA_PACKAGE = "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0"
-
+    # Multiple topics for different sources
+    TIKTOK_TOPIC = os.getenv("KAFKA_TIKTOK_TOPIC", "tiktok-raw")
+    NEWS_TOPIC = os.getenv("KAFKA_NEWS_TOPIC", "news-raw")
+    YOUTUBE_TOPIC = os.getenv("KAFKA_YOUTUBE_TOPIC", "youtube-raw")
+    TRENDS_TOPIC = os.getenv("KAFKA_TRENDS_TOPIC", "trends-raw")
 
 class OpenAISettings:
     """OpenAI configuration."""
     API_KEY = os.getenv("OPENAI_API_KEY")
 
-    # Models
-    EMBEDDING_MODEL = "text-embedding-3-small"
-    LLM_MODEL = "gpt-4.1-nano"
+    # Models (customizable via env)
+    EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small")
+    LLM_MODEL = os.getenv("OPENAI_LLM_MODEL", "gpt-4.1-nano")
 
     # Params
     EMBEDDING_BATCH_SIZE = 100  # Max texts per API call
-    MAX_TOKENS = 500  # For LLM response
+    MAX_TOKENS = int(os.getenv("OPENAI_MAX_TOKENS", "500"))
+
+
+class GeminiSettings:
+    """Gemini configuration."""
+    API_KEY = os.getenv("GEMINI_API_KEY")
+
+    # Models (customizable via env)
+    EMBEDDING_MODEL = os.getenv("GEMINI_EMBEDDING_MODEL", "models/embedding-001")
+    LLM_MODEL = os.getenv("GEMINI_LLM_MODEL", "gemini-2.5-flash")
+
+    # Params (increased to handle thinking tokens + response)
+    MAX_TOKENS = int(os.getenv("GEMINI_MAX_TOKENS", "2048"))
 
 
 class DBSCANSettings:
@@ -63,7 +79,9 @@ class MongoDBSettings:
 
 class ProcessingSettings:
     """Processing configuration."""
-    BATCH_INTERVAL = "5 minutes"  # Trigger interval (larger batches)
+    # Batch processing (new)
+    MIN_BATCH_SIZE = 40  # Minimum items required to start processing (multi-source)
+
     MAX_OFFSETS_PER_TRIGGER = 1000  # Max messages per batch
 
     # Trend analysis
@@ -77,11 +95,19 @@ class ProcessingSettings:
     MIN_VIEWS = 1000  # Minimum views threshold
 
 
+class LLMProviderSettings:
+    """LLM provider selection (split into embedding & analysis)."""
+    EMBEDDING_PROVIDER = os.getenv("EMBEDDING_PROVIDER", "openai")  # "openai" or "gemini"
+    LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai")  # "openai" or "gemini"
+
+
 class Settings:
     """Main settings container."""
     spark = SparkSettings()
     kafka = KafkaSettings()
     openai = OpenAISettings()
+    gemini = GeminiSettings()
+    llm_provider = LLMProviderSettings()
     dbscan = DBSCANSettings()
     mongodb = MongoDBSettings()
     processing = ProcessingSettings()

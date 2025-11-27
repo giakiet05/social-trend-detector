@@ -55,8 +55,8 @@ class GeminiSettings:
     EMBEDDING_MODEL = os.getenv("GEMINI_EMBEDDING_MODEL", "models/embedding-001")
     LLM_MODEL = os.getenv("GEMINI_LLM_MODEL", "gemini-2.5-flash")
 
-    # Params
-    MAX_TOKENS = int(os.getenv("GEMINI_MAX_TOKENS", "500"))
+    # Params (increased to handle thinking tokens + response)
+    MAX_TOKENS = int(os.getenv("GEMINI_MAX_TOKENS", "2048"))
 
 
 class DBSCANSettings:
@@ -80,7 +80,7 @@ class MongoDBSettings:
 class ProcessingSettings:
     """Processing configuration."""
     # Batch processing (new)
-    MIN_BATCH_SIZE = 50  # Minimum items required to start processing (multi-source)
+    MIN_BATCH_SIZE = 40  # Minimum items required to start processing (multi-source)
 
     MAX_OFFSETS_PER_TRIGGER = 1000  # Max messages per batch
 

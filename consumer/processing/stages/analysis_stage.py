@@ -114,7 +114,7 @@ Sample content (first {len(items)} items):
 """
 
         for i, item in enumerate(items, 1):
-            prompt += f"\n{i}. [{item.source.upper()}] {item.text[:200]}"
+            prompt += f"\n{i}. [{item.source.upper()}] {item.text[:300]}"  # Reduced from 200 to 150
 
         prompt += """
 

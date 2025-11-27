@@ -1,7 +1,7 @@
 [project]
-name = "tiktok-trend-detector"
+name = "social-trend-detector"
 version = "0.1.0"
-description = "Real-time TikTok trend detection system"
+description = "Real-time social trend detection system"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

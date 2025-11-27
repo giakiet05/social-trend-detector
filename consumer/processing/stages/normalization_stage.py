@@ -7,6 +7,7 @@ from typing import List, Dict
 from datetime import datetime
 from .base_stage import BaseStage
 from common.models import ContentItem
+from common.utils import DataSaver
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class NormalizationStage(BaseStage):
 
     def __init__(self):
         super().__init__("NormalizationStage")
+        self.data_saver = DataSaver(base_dir="data/normalized")
 
     def execute(self, data: List[Dict]) -> List[ContentItem]:
         """
@@ -51,6 +53,15 @@ class NormalizationStage(BaseStage):
 
         # Log source breakdown
         breakdown = ", ".join([f"{k}: {v}" for k, v in source_counts.items() if v > 0])
+
+        # Save normalized items to JSON for debugging
+        if items:
+            try:
+                self.data_saver.save(source="items", data=items)
+                logger.info(f"   💾 Saved {len(items)} normalized items to data/normalized/items/")
+            except Exception as e:
+                logger.warning(f"   ⚠️  Failed to save normalized items: {e}")
+
         self.log_complete(f"{len(items)} items normalized ({breakdown})")
 
         return items

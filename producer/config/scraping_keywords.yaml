@@ -33,7 +33,7 @@ youtube:
   # Search keywords
   keywords:
     # TODO: Add your YouTube search keywords here
-    - "cloudflare sập"
+    - "phở anh hai"
 
   # Max videos per keyword
   max_videos_per_keyword: 10
@@ -42,7 +42,7 @@ google_trends:
   # Trend keywords to track
   keywords:
     # TODO: Add your Google Trends keywords here
-    - "cloudflare sập"
+    - "phở anh hai"
 
   # Timeframe (e.g., "now 7-d", "now 1-d", "today 3-m")
   timeframe: "now 7-d"

@@ -12,7 +12,7 @@ from utils.mongo_client import DashboardMongoClient
 
 # Page config
 st.set_page_config(
-    page_title="TikTok Tech Trends Dashboard",
+    page_title="Social Trends Dashboard",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -45,8 +45,8 @@ def get_mongo_client():
 mongo_client = get_mongo_client()
 
 # Header
-st.markdown('<h1 class="main-header">📊 TikTok Tech Trends Dashboard</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Real-time insights into trending tech topics on TikTok</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Social Trends Dashboard</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Real-time insights into social trends</p>', unsafe_allow_html=True)
 
 # Sidebar filters
 st.sidebar.header("Filters")
@@ -198,8 +198,3 @@ except Exception as e:
 
 # Footer
 st.divider()
-st.markdown("""
-<div style="text-align: center; color: #666; padding: 1rem;">
-    <p>TikTok Tech Trend Detector | Powered by Spark Streaming + OpenAI + MongoDB</p>
-</div>
-""", unsafe_allow_html=True)

@@ -18,6 +18,7 @@ from consumer.enrichment.llm_factory import create_embedding_client, create_llm_
 from consumer.processing.clusterer import TrendClusterer
 from consumer.processing.pipeline import TrendDetectionPipeline
 from consumer.storage.mongo_client import MongoDBClient
+from common.models import KafkaMessage, TikTokVideo, NewsArticle, YouTubeVideo
 
 # Setup logging
 logging.basicConfig(
@@ -178,10 +179,18 @@ class BatchConsumer:
         for row in rows:
             partition = row["partition"]
             offset = row["offset"]
-            data = row["data"].asDict() if row["data"] else None
 
-            if data:
-                items.append(data)
+            # Parse Spark Row to dict
+            kafka_msg_dict = row["data"].asDict(recursive=True) if row["data"] else None
+
+            if kafka_msg_dict:
+                # Deserialize to KafkaMessage object (typed)
+                kafka_msg = KafkaMessage.from_dict(kafka_msg_dict)
+
+                # Extract nested data (source-specific dict)
+                # Keep as dict for NormalizationStage to handle
+                if kafka_msg.data:
+                    items.append(kafka_msg.data)
 
             # Track max offset per partition
             if partition not in partition_offsets or offset > partition_offsets[partition]:

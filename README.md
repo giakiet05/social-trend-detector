@@ -1,3 +1,3 @@
-# TikTok Trend Detector
+# Social Trends Detector
 
-This project is a real-time trend detection system for TikTok.
+This project is a real-time social trends detection system. 

@@ -11,6 +11,8 @@ from .stages import (
     EmbeddingStage,
     ClusteringStage,
     AnalysisStage,
+    BusinessMetricsStage,
+    ActionPlanningStage,
     DeduplicationStage,
     StorageStage
 )
@@ -31,10 +33,12 @@ class TrendDetectionPipeline:
     1. CleaningStage - Remove invalid data
     2. FilteringStage - Remove noise (spam, low quality)
     3. EmbeddingStage - Convert text to vectors
-    4. ClusteringStage - DBSCAN clustering
+    4. ClusteringStage - HDBSCAN clustering
     5. AnalysisStage - LLM analysis of clusters
-    6. DeduplicationStage - Merge with existing trends
-    7. StorageStage - Save to MongoDB
+    6. BusinessMetricsStage - Calculate marketing metrics
+    7. ActionPlanningStage - Generate actionable recommendations
+    8. DeduplicationStage - Merge with existing trends
+    9. StorageStage - Save to MongoDB
     """
 
     def __init__(
@@ -61,6 +65,8 @@ class TrendDetectionPipeline:
             EmbeddingStage(embedding_client),
             ClusteringStage(clusterer),
             AnalysisStage(llm_client),
+            BusinessMetricsStage(),
+            ActionPlanningStage(),
             DeduplicationStage(embedding_client, mongo_client),
             StorageStage(mongo_client)
         ]

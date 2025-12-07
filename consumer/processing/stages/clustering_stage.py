@@ -65,6 +65,27 @@ class ClusteringStage(BaseStage):
             self.log_skip(f"No clusters found ({noise_count} noise items)")
             return {}
 
+        # Two-pass clustering: assign noise items to nearest clusters
+        labels = self._assign_noise_to_clusters(items, labels, embeddings)
+        
+        # Re-group by cluster with updated labels
+        clusters = {}
+        noise_count = 0
+
+        for item, label in zip(items, labels):
+            if label == -1:
+                noise_count += 1
+                continue
+
+            if label not in clusters:
+                clusters[label] = []
+            clusters[label].append(item)
+
+        logger.info(f"   After noise assignment: {len(clusters)} clusters, {noise_count} noise items")
+        if noise_count > 0:
+            new_noise_ratio = noise_count / len(items)
+            logger.info(f"   Improved noise ratio: {new_noise_ratio:.1%}")
+
         # Filter small clusters (use adaptive size)
         valid_clusters = {}
         filtered_count = 0
@@ -78,9 +99,72 @@ class ClusteringStage(BaseStage):
 
         if filtered_count > 0:
             logger.info(f"   Filtered {filtered_count} small clusters (< {adaptive_min_size} items)")
-        if noise_count > 0:
-            logger.info(f"   Noise items: {noise_count}")
 
         self.log_complete(f"{len(valid_clusters)} valid clusters (from {len(clusters)} total)")
 
         return valid_clusters
+
+    def _assign_noise_to_clusters(self, items: List[ContentItem], labels: np.ndarray, 
+                                  embeddings: np.ndarray) -> np.ndarray:
+        """
+        Two-pass clustering: assign noise items to nearest clusters.
+        
+        Args:
+            items: ContentItem objects  
+            labels: Cluster labels from HDBSCAN
+            embeddings: Item embeddings
+            
+        Returns:
+            Updated labels with some noise items assigned to clusters
+        """
+        # Find unique cluster IDs (excluding noise = -1)
+        cluster_ids = [label for label in set(labels) if label != -1]
+        
+        if len(cluster_ids) == 0:
+            logger.warning("No clusters found for noise assignment")
+            return labels
+            
+        # Calculate cluster centroids
+        cluster_centroids = {}
+        for cluster_id in cluster_ids:
+            cluster_mask = labels == cluster_id
+            cluster_embeddings = embeddings[cluster_mask]
+            centroid = np.mean(cluster_embeddings, axis=0)
+            cluster_centroids[cluster_id] = centroid
+            
+        # Distance threshold for assignment (tunable)
+        distance_threshold = 0.5  # Cosine distance threshold
+        
+        # Process noise items
+        updated_labels = labels.copy()
+        assigned_count = 0
+        
+        noise_indices = np.where(labels == -1)[0]
+        logger.info(f"   Attempting to assign {len(noise_indices)} noise items to clusters...")
+        
+        for idx in noise_indices:
+            item_embedding = embeddings[idx]
+            
+            # Find nearest cluster centroid
+            min_distance = float('inf')
+            nearest_cluster = -1
+            
+            for cluster_id, centroid in cluster_centroids.items():
+                # Calculate cosine distance
+                distance = 1.0 - np.dot(item_embedding, centroid) / (
+                    np.linalg.norm(item_embedding) * np.linalg.norm(centroid)
+                )
+                
+                if distance < min_distance:
+                    min_distance = distance
+                    nearest_cluster = cluster_id
+            
+            # Assign to nearest cluster if within threshold
+            if min_distance <= distance_threshold:
+                updated_labels[idx] = nearest_cluster
+                assigned_count += 1
+                
+        logger.info(f"   Assigned {assigned_count}/{len(noise_indices)} noise items to clusters")
+        logger.info(f"   Remaining noise: {len(noise_indices) - assigned_count} items")
+        
+        return updated_labels

@@ -9,6 +9,8 @@ from .filtering_stage import FilteringStage
 from .embedding_stage import EmbeddingStage
 from .clustering_stage import ClusteringStage
 from .analysis_stage import AnalysisStage
+from .business_metrics_stage import BusinessMetricsStage
+from .action_planning_stage import ActionPlanningStage
 from .deduplication_stage import DeduplicationStage
 from .storage_stage import StorageStage
 
@@ -20,6 +22,8 @@ __all__ = [
     'EmbeddingStage',
     'ClusteringStage',
     'AnalysisStage',
+    'BusinessMetricsStage',
+    'ActionPlanningStage',
     'DeduplicationStage',
     'StorageStage',
 ]

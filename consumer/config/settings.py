@@ -60,10 +60,17 @@ class GeminiSettings:
 
 
 class DBSCANSettings:
-    """DBSCAN clustering configuration."""
+    """Legacy DBSCAN clustering configuration (deprecated, use HDBSCAN)."""
     EPS = 0.3  # Distance threshold (tune this)
     MIN_SAMPLES = 3  # Min videos for a trend
     METRIC = "cosine"
+
+
+class HDBSCANSettings:
+    """HDBSCAN clustering configuration."""
+    MIN_CLUSTER_SIZE = 15         # Minimum size of clusters (relaxed for testing)
+    METRIC = "euclidean"          # Distance metric (euclidean works best with embeddings)
+    MIN_SAMPLES = None            # Let HDBSCAN auto-determine (None = min_cluster_size)
 
 
 class MongoDBSettings:
@@ -72,8 +79,8 @@ class MongoDBSettings:
     DATABASE = "tiktok_trends"
     COLLECTION = "trends"
 
-    # Deduplication
-    SIMILARITY_THRESHOLD = 0.85  # Cosine similarity threshold for trend matching
+    # Deduplication  
+    SIMILARITY_THRESHOLD = 0.6   # Multi-factor threshold (increased for precision)
     DEDUP_WINDOW_HOURS = 24  # Check trends in last N hours
 
 
@@ -88,11 +95,11 @@ class ProcessingSettings:
     MIN_CLUSTER_SIZE = 10  # Minimum videos in a cluster to be a valid trend
     SAMPLE_VIDEOS_COUNT = 5  # Number of sample videos to save
 
-    # Noise filtering thresholds
-    MIN_ENGAGEMENT_RATE = 0.01  # 1% minimum engagement rate
-    MIN_AUTHOR_FANS = 500  # Minimum author followers (spam filter)
-    MIN_QUALITY_RATIO = 0.001  # 0.1% minimum collects/views ratio
-    MIN_VIEWS = 1000  # Minimum views threshold
+    # Noise filtering thresholds (relaxed for testing targeted content)
+    MIN_ENGAGEMENT_RATE = 0.001  # 0.1% minimum engagement rate (was 1%) 
+    MIN_AUTHOR_FANS = 100  # Minimum author followers (was 500)
+    MIN_QUALITY_RATIO = 0.0001  # 0.01% minimum collects/views ratio (was 0.1%)
+    MIN_VIEWS = 500  # Minimum views threshold (was 1000)
 
 
 class LLMProviderSettings:
@@ -108,7 +115,10 @@ class Settings:
     openai = OpenAISettings()
     gemini = GeminiSettings()
     llm_provider = LLMProviderSettings()
+    # Legacy (use HDBSCAN instead)
     dbscan = DBSCANSettings()
+    # Current clustering
+    hdbscan = HDBSCANSettings()
     mongodb = MongoDBSettings()
     processing = ProcessingSettings()
 

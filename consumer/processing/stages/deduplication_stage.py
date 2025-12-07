@@ -69,7 +69,7 @@ class DeduplicationStage(BaseStage):
             # Fallback: return new trends without deduplication
             return new_trends
 
-        # Deduplicate
+        # Deduplicate using multi-factor similarity
         deduplicated = []
         merged_count = 0
         new_count = 0
@@ -77,13 +77,15 @@ class DeduplicationStage(BaseStage):
         for i, new_trend in enumerate(new_trends):
             new_emb = new_embeddings[i]
 
-            # Find most similar existing trend
+            # Find most similar existing trend using multi-factor scoring
             max_similarity = 0
             best_match = None
 
             for j, existing_trend in enumerate(existing_trends):
                 existing_emb = existing_embeddings[j]
-                similarity = self._cosine_similarity(new_emb, existing_emb)
+                similarity = self._calculate_similarity_score(
+                    new_trend, existing_trend, new_emb, existing_emb
+                )
 
                 if similarity > max_similarity:
                     max_similarity = similarity
@@ -104,6 +106,72 @@ class DeduplicationStage(BaseStage):
 
         self.log_complete(f"{merged_count} merged, {new_count} new")
         return deduplicated
+
+    def _calculate_similarity_score(self, new_trend: Trend, existing_trend: dict, 
+                                   new_emb: np.ndarray, existing_emb: np.ndarray) -> float:
+        """
+        Calculate multi-factor similarity score between trends.
+        
+        Factors:
+        1. Topic semantic similarity (embeddings)
+        2. Keywords overlap (Jaccard)  
+        3. Time decay factor
+        4. Source distribution similarity
+        
+        Returns:
+            Combined similarity score (0.0 to 1.0)
+        """
+        # Factor 1: Topic semantic similarity (40% weight)
+        topic_sim = self._cosine_similarity(new_emb, existing_emb)
+        
+        # Factor 2: Keywords overlap (30% weight)
+        new_keywords = set(new_trend.keywords)
+        existing_keywords = set(existing_trend.get('keywords', []))
+        if len(new_keywords) == 0 and len(existing_keywords) == 0:
+            keyword_sim = 1.0  # Both empty
+        elif len(new_keywords) == 0 or len(existing_keywords) == 0:
+            keyword_sim = 0.0  # One empty
+        else:
+            intersection = len(new_keywords & existing_keywords)
+            union = len(new_keywords | existing_keywords)
+            keyword_sim = intersection / union if union > 0 else 0.0
+        
+        # Factor 3: Time decay (20% weight)
+        from datetime import datetime, timezone
+        try:
+            new_time = datetime.fromisoformat(new_trend.timestamp.replace('Z', '+00:00'))
+            existing_time = datetime.fromisoformat(existing_trend['timestamp'].replace('Z', '+00:00'))
+            time_diff_hours = abs((new_time - existing_time).total_seconds()) / 3600
+            
+            # Time decay: 1.0 at 0h, 0.5 at 12h, 0.0 at 24h+
+            time_decay = max(0.0, 1.0 - time_diff_hours / 24.0)
+        except:
+            time_decay = 0.5  # Default if time parsing fails
+        
+        # Factor 4: Source distribution similarity (10% weight) 
+        new_sources = set(new_trend.source_counts.keys()) if hasattr(new_trend, 'source_counts') and new_trend.source_counts else set()
+        existing_sources = set(existing_trend.get('source_counts', {}).keys())
+        if len(new_sources) == 0 and len(existing_sources) == 0:
+            source_sim = 1.0
+        elif len(new_sources) == 0 or len(existing_sources) == 0:
+            source_sim = 0.0
+        else:
+            source_intersection = len(new_sources & existing_sources)
+            source_union = len(new_sources | existing_sources)
+            source_sim = source_intersection / source_union if source_union > 0 else 0.0
+        
+        # Weighted combination (adjusted for better precision)
+        final_score = (
+            topic_sim * 0.6 +      # Increased: topic similarity is most reliable
+            keyword_sim * 0.2 +    # Decreased: keywords often inconsistent  
+            time_decay * 0.1 +     # Decreased: less relevant for same batch
+            source_sim * 0.1       # Keep: source distribution
+        )
+        
+        logger.debug(f"   Similarity breakdown: topic={topic_sim:.3f}, keywords={keyword_sim:.3f}, "
+                    f"time={time_decay:.3f}, source={source_sim:.3f} → final={final_score:.3f}")
+        
+        return final_score
 
     def _cosine_similarity(self, emb1, emb2):
         """Calculate cosine similarity between two embeddings."""
@@ -130,7 +198,7 @@ class DeduplicationStage(BaseStage):
         new_samples = new_trend.sample_videos
         merged_samples = self._merge_sample_videos(old_samples, new_samples)
 
-        return Trend(
+        merged_trend = Trend(
             timestamp=datetime.utcnow(),  # Latest update time
             topic=existing_trend['topic'],  # Keep original name
             summary=existing_trend['summary'],  # Keep original summary
@@ -140,8 +208,13 @@ class DeduplicationStage(BaseStage):
             total_views=existing_trend['total_views'] + new_trend.total_views,
             total_likes=existing_trend['total_likes'] + new_trend.total_likes,
             sample_videos=merged_samples,
-            _id=existing_trend['_id']  # Keep MongoDB _id for update
+            source_counts=new_trend.source_counts if hasattr(new_trend, 'source_counts') else {}
         )
+        
+        # Manually add MongoDB _id for update (not in constructor)
+        merged_trend._id = existing_trend['_id']
+        
+        return merged_trend
 
     def _merge_sample_videos(self, old_samples, new_samples, top_k=10):
         """
@@ -157,12 +230,12 @@ class DeduplicationStage(BaseStage):
         """
         all_samples = old_samples + new_samples
 
-        # Deduplicate by video_id
+        # Deduplicate by content_id (not video_id)
         seen = set()
         unique = []
         for v in all_samples:
-            if v['video_id'] not in seen:
-                seen.add(v['video_id'])
+            if v.get('content_id') not in seen:
+                seen.add(v.get('content_id'))
                 unique.append(v)
 
         # Sort by engagement score

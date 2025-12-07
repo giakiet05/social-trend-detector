@@ -358,6 +358,21 @@ wheels = [
 ]
 
 [[package]]
+name = "hdbscan"
+version = "0.8.40"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "joblib" },
+    { name = "numpy" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c1/84/6b010387b795f774e1ec695df3c8660c15abd041783647d5e7e4076bfc6b/hdbscan-0.8.40.tar.gz", hash = "sha256:c9e383ff17beee0591075ff65d524bda5b5a35dfb01d218245a7ba30c8d48a17", size = 6904096, upload-time = "2024-11-18T16:14:05.384Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/80/2d/ca4d81a5aa5b8ccde1d41b892a2f480c2df238c58f113eee4df50473a3b0/hdbscan-0.8.40-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:32ea7bc4ce8854b5549d341edc841a29766feb62f8c399520e6e0940a41c5e39", size = 4336968, upload-time = "2025-10-11T11:53:10.417Z" },
+]
+
+[[package]]
 name = "hf-xet"
 version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1468,6 +1483,7 @@ dependencies = [
     { name = "generativeai" },
     { name = "google-api-python-client" },
     { name = "google-genai" },
+    { name = "hdbscan" },
     { name = "isodate" },
     { name = "kafka-python" },
     { name = "numpy" },
@@ -1492,6 +1508,7 @@ requires-dist = [
     { name = "generativeai", specifier = ">=0.0.1" },
     { name = "google-api-python-client", specifier = ">=2.187.0" },
     { name = "google-genai", specifier = ">=1.52.0" },
+    { name = "hdbscan", specifier = ">=0.8.40" },
     { name = "isodate", specifier = ">=0.7.2" },
     { name = "kafka-python", specifier = ">=2.2.15" },
     { name = "numpy", specifier = ">=2.3.4" },

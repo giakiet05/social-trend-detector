@@ -1,42 +1,43 @@
 """
-DBSCAN clustering for trend detection.
+HDBSCAN clustering for trend detection.
 """
 
 import logging
 import numpy as np
-from sklearn.cluster import DBSCAN
+import hdbscan
 from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)
 
 
 class TrendClusterer:
-    """DBSCAN-based trend clustering."""
+    """HDBSCAN-based trend clustering."""
 
-    def __init__(self, eps: float = None, min_samples: int = None, metric: str = None):
+    def __init__(self, min_cluster_size: int = None, metric: str = None, min_samples: int = None):
         """
-        Initialize DBSCAN clusterer.
+        Initialize HDBSCAN clusterer.
 
         Args:
-            eps: Maximum distance between samples (defaults to settings)
-            min_samples: Minimum samples for a cluster (defaults to settings)
+            min_cluster_size: Minimum size of clusters (defaults to settings)
             metric: Distance metric (defaults to settings)
+            min_samples: Min samples for core points (defaults to settings, None = auto)
         """
-        self.eps = eps or settings.dbscan.EPS
-        self.min_samples = min_samples or settings.dbscan.MIN_SAMPLES
-        self.metric = metric or settings.dbscan.METRIC
+        self.min_cluster_size = min_cluster_size or settings.hdbscan.MIN_CLUSTER_SIZE
+        self.metric = metric or settings.hdbscan.METRIC
+        self.min_samples = min_samples if min_samples is not None else settings.hdbscan.MIN_SAMPLES
 
-        self.dbscan = DBSCAN(
-            eps=self.eps,
+        self.hdbscan = hdbscan.HDBSCAN(
+            min_cluster_size=self.min_cluster_size,
+            metric=self.metric,
             min_samples=self.min_samples,
-            metric=self.metric
+            cluster_selection_method='eom'  # Excess of Mass (better for varying densities)
         )
 
-        logger.info(f"✅ DBSCAN initialized: eps={self.eps}, min_samples={self.min_samples}, metric={self.metric}")
+        logger.info(f"✅ HDBSCAN initialized: min_cluster_size={self.min_cluster_size}, metric={self.metric}, min_samples={self.min_samples}")
 
     def cluster(self, embeddings: np.ndarray) -> np.ndarray:
         """
-        Cluster embeddings using DBSCAN.
+        Cluster embeddings using HDBSCAN.
 
         Args:
             embeddings: Numpy array of shape (n_videos, embedding_dim)
@@ -50,7 +51,7 @@ class TrendClusterer:
             return np.array([])
 
         try:
-            labels = self.dbscan.fit_predict(embeddings)
+            labels = self.hdbscan.fit_predict(embeddings)
 
             # Count clusters (excluding noise)
             unique_labels = set(labels)
@@ -58,7 +59,22 @@ class TrendClusterer:
             n_noise = list(labels).count(-1)
 
             logger.info(f"✅ Clustering complete: {n_clusters} trends, {n_noise} noise videos")
-            logger.debug(f"   Cluster distribution: {dict(zip(*np.unique(labels, return_counts=True)))}")
+            
+            # Debug: cluster size distribution
+            label_counts = {}
+            for label in labels:
+                label_counts[label] = label_counts.get(label, 0) + 1
+            
+            # Sort by size (excluding noise)
+            cluster_sizes = [(k, v) for k, v in label_counts.items() if k != -1]
+            cluster_sizes.sort(key=lambda x: x[1], reverse=True)
+            
+            logger.info(f"   Cluster sizes: {cluster_sizes}")
+            logger.info(f"   Noise ratio: {n_noise/len(embeddings):.1%}")
+
+            # Log cluster strength scores (unique to HDBSCAN)
+            if hasattr(self.hdbscan, 'cluster_persistence_'):
+                logger.debug(f"   Cluster strengths: {self.hdbscan.cluster_persistence_}")
 
             return labels
 
@@ -72,7 +88,7 @@ class TrendClusterer:
 
         Args:
             videos: List of video dicts
-            labels: Cluster labels from DBSCAN
+            labels: Cluster labels from HDBSCAN
 
         Returns:
             Dict mapping cluster_id -> list of videos

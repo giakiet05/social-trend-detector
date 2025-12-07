@@ -102,27 +102,62 @@ class AnalysisStage(BaseStage):
         return trends
 
     def _analyze_cluster(self, items: List[ContentItem], source_counts: Counter) -> Dict:
-        """Analyze cluster with LLM (multi-source prompt)."""
+        """Phân tích cụm nội dung bằng LLM với prompt tiếng Việt."""
 
-        # Build prompt with multi-source context
-        prompt = f"""Analyze this trending topic from multiple sources:
+        # Xây dựng thông tin nguồn
+        source_info = []
+        for source, count in source_counts.items():
+            source_name = {
+                'tiktok': 'TikTok', 
+                'vnexpress': 'VNExpress',
+                'youtube': 'YouTube', 
+                'google_trends': 'Google Trends'
+            }.get(source, source.upper())
+            source_info.append(f"- {source_name}: {count} nội dung")
 
-Sources breakdown:
-{chr(10).join([f"- {source.upper()}: {count} items" for source, count in source_counts.items()])}
+        # Xây dựng prompt tiếng Việt
+        prompt = f"""Phân tích xu hướng từ dữ liệu mạng xã hội:
 
-Sample content (first {len(items)} items):
+NGUỒN DỮ LIỆU:
+{chr(10).join(source_info)}
+
+NỘI DUNG MẪU ({len(items)} nội dung đầu):
 """
 
         for i, item in enumerate(items, 1):
-            prompt += f"\n{i}. [{item.source.upper()}] {item.text[:300]}"  # Reduced from 200 to 150
+            source_name = {
+                'tiktok': 'TikTok', 
+                'vnexpress': 'Tin tức',
+                'youtube': 'YouTube', 
+                'google_trends': 'Tìm kiếm'
+            }.get(item.source, item.source)
+            
+            prompt += f"\n{i}. [{source_name}] {item.text[:200]}"
 
         prompt += """
 
-Task: Provide JSON with:
-1. topic: One-sentence trend name
-2. summary: 2-3 sentence explanation
-3. sentiment: positive/negative/neutral
-4. keywords: 5-10 keywords
+YÊU CẦU: Trả về JSON với cấu trúc sau:
+{
+  "topic": "Tên chủ đề chính",
+  "summary": "Tóm tắt xu hướng (2-3 câu giải thích)", 
+  "sentiment": "positive/negative/neutral",
+  "keywords": ["từ khóa 1", "từ khóa 2", "..."]
+}
+
+QUAN TRỌNG - Quy tắc đặt tên topic:
+- Tên ngắn gọn, cụ thể, dễ hiểu
+- Tập trung vào tên người, sự kiện, sản phẩm chính
+- KHÔNG dùng: "xu hướng", "chuyên đề", "nội dung", "sự nổi bật"
+- KHÔNG mô tả dài dòng, chỉ nêu tên chủ đề
+
+VÍ DỤ TỐT:
+- "Phở anh Hai" (thay vì "Xu hướng game quán phở...")
+- "Zootopia 2" (thay vì "Xu hướng phim hoạt hình...")  
+- "Aura Farming" (thay vì "Xu hướng Aura Farming...")
+- "Cloudflare sập" (thay vì "Sự cố Cloudflare...")
+
+SUMMARY: Giải thích chi tiết xu hướng trong phần này, không phải topic
+KEYWORDS: 5-10 từ khóa quan trọng nhất
 """
 
         # Call LLM

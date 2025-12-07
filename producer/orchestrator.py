@@ -27,7 +27,7 @@ class ProducerOrchestrator:
         """Initialize orchestrator with all producers."""
         self.producers = {
             'tiktok': TikTokProducer(),
-            #'vnexpress': VNExpressProducer(),
+            'vnexpress': VNExpressProducer(),
             'youtube': YouTubeProducer()
         }
 

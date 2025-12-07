@@ -37,6 +37,11 @@ class ClusteringStage(BaseStage):
             self.log_skip("No items to cluster")
             return {}
 
+        # Adaptive min cluster size based on batch size (more sensitive)
+        batch_size = len(items)
+        adaptive_min_size = max(15, batch_size // 60)  # 1.7% or min 15 (was 2.5%)
+        logger.info(f"   Adaptive min_cluster_size: {adaptive_min_size} (batch: {batch_size})")
+
         # Extract embeddings from metadata
         embeddings = np.array([item.metadata["embedding"] for item in items])
 
@@ -60,19 +65,19 @@ class ClusteringStage(BaseStage):
             self.log_skip(f"No clusters found ({noise_count} noise items)")
             return {}
 
-        # Filter small clusters
+        # Filter small clusters (use adaptive size)
         valid_clusters = {}
         filtered_count = 0
 
         for cluster_id, cluster_items in clusters.items():
-            if len(cluster_items) >= self.min_cluster_size:
+            if len(cluster_items) >= adaptive_min_size:
                 valid_clusters[cluster_id] = cluster_items
             else:
                 filtered_count += 1
-                logger.debug(f"Filtered cluster {cluster_id}: only {len(cluster_items)} items (min: {self.min_cluster_size})")
+                logger.debug(f"Filtered cluster {cluster_id}: only {len(cluster_items)} items (min: {adaptive_min_size})")
 
         if filtered_count > 0:
-            logger.info(f"   Filtered {filtered_count} small clusters (< {self.min_cluster_size} items)")
+            logger.info(f"   Filtered {filtered_count} small clusters (< {adaptive_min_size} items)")
         if noise_count > 0:
             logger.info(f"   Noise items: {noise_count}")
 

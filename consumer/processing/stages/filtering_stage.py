@@ -91,18 +91,18 @@ class FilteringStage(BaseStage):
         return True
 
     def _is_quality_youtube(self, item: ContentItem) -> bool:
-        """Check YouTube quality based on engagement."""
+        """Check YouTube quality based on engagement (relaxed)."""
 
-        # Min views
-        if item.views and item.views < 1000:
+        # Min views (relaxed)
+        if item.views and item.views < 500:  # was 1000
             logger.debug(f"Filtered {item.content_id}: YouTube views too low ({item.views})")
             return False
 
-        # Min engagement rate
+        # Min engagement rate (relaxed)
         if item.views and item.views > 0:
             engagement = (item.likes or 0) + (item.comments or 0)
             engagement_rate = engagement / item.views
-            if engagement_rate < 0.01:  # 1% for YouTube
+            if engagement_rate < 0.001:  # 0.1% for YouTube (was 1%)
                 logger.debug(f"Filtered {item.content_id}: YouTube low engagement ({engagement_rate:.4f})")
                 return False
 

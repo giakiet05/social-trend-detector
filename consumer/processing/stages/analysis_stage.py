@@ -49,8 +49,6 @@ class AnalysisStage(BaseStage):
             logger.info(f"   Analyzing cluster {cluster_id}: {len(cluster_items)} items ({source_str})")
 
             try:
-                start_time = time.time()
-
                 # Rank items by engagement score
                 ranked_items = self._rank_by_engagement(cluster_items)
 
@@ -59,13 +57,6 @@ class AnalysisStage(BaseStage):
 
                 # LLM analysis (with multi-source context)
                 analysis = self._analyze_cluster(top_items, source_counts)
-
-                # Rate limiting: ensure minimum 5s between LLM calls
-                elapsed = time.time() - start_time
-                if elapsed < 5:
-                    sleep_time = 5 - elapsed
-                    logger.debug(f"   Rate limiting: sleeping {sleep_time:.1f}s")
-                    time.sleep(sleep_time)
 
                 # Calculate stats from ALL items in cluster
                 total_views = sum(item.views or 0 for item in cluster_items)

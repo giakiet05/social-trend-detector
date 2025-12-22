@@ -209,17 +209,9 @@ class DeduplicationStage(BaseStage):
             total_likes=existing_trend['total_likes'] + new_trend.total_likes,
             sample_videos=merged_samples,
             source_counts=new_trend.source_counts if hasattr(new_trend, 'source_counts') else {},
-            
-            # Preserve business metrics from new trend (better data)
-            viral_score=new_trend.viral_score,
-            growth_rate=new_trend.growth_rate,
-            estimated_reach=max(existing_trend.get('estimated_reach', 0), new_trend.estimated_reach),
-            engagement_rate=new_trend.engagement_rate,
-            peak_hours=new_trend.peak_hours,
-            audience_demographics=new_trend.audience_demographics,
-            content_insights=new_trend.content_insights,
-            hashtag_performance=new_trend.hashtag_performance,
-            action_plan=new_trend.action_plan
+            content_type=new_trend.content_type,
+            risk_level=new_trend.risk_level,
+            guidelines=new_trend.guidelines
         )
         
         # Manually add MongoDB _id for update (not in constructor)

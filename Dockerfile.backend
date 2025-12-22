@@ -1,0 +1,43 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    openjdk-21-jre-headless \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv
+RUN pip install --no-cache-dir uv
+
+# Copy dependency files
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies (backend only)
+RUN uv sync --frozen --no-dev --extra backend
+
+# Pre-download Spark Kafka connector JARs
+RUN mkdir -p /opt/spark/jars && \
+    curl -L https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.0/spark-sql-kafka-0-10_2.12-3.5.0.jar \
+    -o /opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar && \
+    curl -L https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.0/spark-token-provider-kafka-0-10_2.12-3.5.0.jar \
+    -o /opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar && \
+    curl -L https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.4.1/kafka-clients-3.4.1.jar \
+    -o /opt/spark/jars/kafka-clients-3.4.1.jar && \
+    curl -L https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar \
+    -o /opt/spark/jars/commons-pool2-2.11.1.jar
+
+# Copy source code
+COPY . .
+
+# Create checkpoints directory
+RUN mkdir -p /app/consumer/checkpoints
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYSPARK_PYTHON=/app/.venv/bin/python
+ENV PYSPARK_DRIVER_PYTHON=/app/.venv/bin/python
+
+# Run main.py
+CMD ["uv", "run", "python", "main.py"]

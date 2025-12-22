@@ -59,7 +59,46 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=password
 
-# Docker sẽ tự tạo 2 thư mục này
+  #########################################
+  #  BACKEND (PRODUCER + CONSUMER)
+  #########################################
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: trend-backend
+    depends_on:
+      - kafka
+      - mongodb
+    env_file:
+      - .env
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - MONGO_URI=mongodb://admin:password@mongodb:27017
+      - RESET_CHECKPOINTS=true
+    volumes:
+      - ./consumer/checkpoints:/app/consumer/checkpoints
+    restart: unless-stopped
+
+  #########################################
+  #  DASHBOARD (STREAMLIT)
+  #########################################
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: trend-dashboard
+    depends_on:
+      - mongodb
+    ports:
+      - '8501:8501'
+    environment:
+      - MONGO_URI=mongodb://admin:password@mongodb:27017
+    restart: unless-stopped
+
+# Named volumes for data persistence
 volumes:
   kafka_data:
+    name: social-trend-kafka-data
   mongo_data:
+    name: social-trend-mongo-data

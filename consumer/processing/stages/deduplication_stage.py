@@ -200,9 +200,9 @@ class DeduplicationStage(BaseStage):
 
         merged_trend = Trend(
             timestamp=datetime.utcnow(),  # Latest update time
-            topic=existing_trend['topic'],  # Keep original name
-            summary=existing_trend['summary'],  # Keep original summary
-            sentiment=existing_trend['sentiment'],  # Keep original sentiment
+            topic=existing_trend['topic'],  # Keep original name (consistency)
+            summary=new_trend.summary,  # Update with latest summary
+            sentiment=new_trend.sentiment,  # Update with current sentiment
             keywords=merged_keywords,
             video_count=existing_trend['video_count'] + new_trend.video_count,
             total_views=existing_trend['total_views'] + new_trend.total_views,

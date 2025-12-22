@@ -75,7 +75,7 @@ services:
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
       - MONGO_URI=mongodb://admin:password@mongodb:27017
-      - RESET_CHECKPOINTS=true
+      # - RESET_CHECKPOINTS=true  # Uncomment for testing only
     volumes:
       - ./consumer/checkpoints:/app/consumer/checkpoints
     restart: unless-stopped

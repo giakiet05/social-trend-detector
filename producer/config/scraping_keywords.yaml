@@ -20,7 +20,7 @@ tiktok:
   hashtags:
 
   # Max videos per keyword/hashtag
-  max_videos_per_query: 50
+  max_videos_per_query: 100
 
 vnexpress:
   # Filter keywords for RSS articles
@@ -78,7 +78,7 @@ youtube:
 
 
   # Max videos per keyword
-  max_videos_per_keyword: 100
+  max_videos_per_keyword: 200
 
 google_trends:
   # Trend keywords to track

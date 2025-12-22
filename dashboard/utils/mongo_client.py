@@ -2,6 +2,7 @@
 MongoDB client for Dashboard - Read trends data.
 """
 
+import os
 from pymongo import MongoClient
 from typing import List, Dict
 import streamlit as st
@@ -10,8 +11,13 @@ import streamlit as st
 class DashboardMongoClient:
     """MongoDB client for reading trends."""
 
-    def __init__(self, connection_string: str = "mongodb://admin:password@localhost:27017/?authSource=admin"):
+    def __init__(self, connection_string: str = None):
         """Initialize MongoDB client."""
+        if connection_string is None:
+            connection_string = os.getenv(
+                "MONGO_URI",
+                "mongodb://admin:password@localhost:27017/?authSource=admin"
+            )
         self.connection_string = connection_string
         self.client = None
         self.db = None

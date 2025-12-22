@@ -75,11 +75,14 @@ class HDBSCANSettings:
 
 class MongoDBSettings:
     """MongoDB configuration."""
-    CONNECTION_STRING = "mongodb://admin:password@localhost:27017/?authSource=admin"
+    CONNECTION_STRING = os.getenv(
+        "MONGO_URI",
+        "mongodb://admin:password@localhost:27017/?authSource=admin"
+    )
     DATABASE = "tiktok_trends"
     COLLECTION = "trends"
 
-    # Deduplication  
+    # Deduplication
     SIMILARITY_THRESHOLD = 0.6   # Multi-factor threshold (increased for precision)
     DEDUP_WINDOW_HOURS = 24  # Check trends in last N hours
 

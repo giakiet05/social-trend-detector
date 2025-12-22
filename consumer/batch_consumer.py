@@ -32,9 +32,17 @@ class CheckpointManager:
     """Manage Kafka offsets for batch processing."""
 
     def __init__(self, checkpoint_dir: str = "consumer/checkpoints"):
+        import os
+
         self.checkpoint_dir = Path(checkpoint_dir)
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
         self.checkpoint_file = self.checkpoint_dir / "batch_offsets.json"
+
+        # Reset checkpoints if env var is set (for testing)
+        if os.getenv("RESET_CHECKPOINTS", "false").lower() == "true":
+            if self.checkpoint_file.exists():
+                self.checkpoint_file.unlink()
+                logger.info("Checkpoint reset: starting from earliest")
 
     def get_starting_offsets(self, topic: str) -> str:
         """
@@ -122,11 +130,29 @@ class BatchConsumer:
 
     def _create_spark_session(self) -> SparkSession:
         """Create Spark session with Kafka support."""
-        spark = SparkSession.builder \
-            .appName("SocialTrendBatchConsumer") \
-            .master(settings.spark.MASTER) \
-            .config("spark.jars.packages", settings.kafka.SPARK_KAFKA_PACKAGE) \
-            .getOrCreate()
+        import os
+
+        # Use pre-downloaded JARs if available (Docker), otherwise download
+        jars_dir = "/opt/spark/jars"
+        if os.path.exists(jars_dir):
+            jar_files = ",".join([
+                f"{jars_dir}/spark-sql-kafka-0-10_2.12-3.5.0.jar",
+                f"{jars_dir}/spark-token-provider-kafka-0-10_2.12-3.5.0.jar",
+                f"{jars_dir}/kafka-clients-3.4.1.jar",
+                f"{jars_dir}/commons-pool2-2.11.1.jar"
+            ])
+            spark = SparkSession.builder \
+                .appName("SocialTrendBatchConsumer") \
+                .master(settings.spark.MASTER) \
+                .config("spark.jars", jar_files) \
+                .getOrCreate()
+        else:
+            # Fallback to downloading (local development)
+            spark = SparkSession.builder \
+                .appName("SocialTrendBatchConsumer") \
+                .master(settings.spark.MASTER) \
+                .config("spark.jars.packages", settings.kafka.SPARK_KAFKA_PACKAGE) \
+                .getOrCreate()
 
         spark.sparkContext.setLogLevel(settings.spark.LOG_LEVEL)
         logger.info(f"✅ Spark session created")
@@ -213,20 +239,38 @@ class BatchConsumer:
 
         all_items = []
 
-        # Read TikTok
-        tiktok_items = self._read_kafka_batch(settings.kafka.TIKTOK_TOPIC, TIKTOK_VIDEO_SCHEMA)
-        logger.info(f"   ├─ TikTok: {len(tiktok_items)} items")
-        all_items.extend(tiktok_items)
+        # Read TikTok (skip if topic doesn't exist)
+        try:
+            tiktok_items = self._read_kafka_batch(settings.kafka.TIKTOK_TOPIC, TIKTOK_VIDEO_SCHEMA)
+            logger.info(f"   ├─ TikTok: {len(tiktok_items)} items")
+            all_items.extend(tiktok_items)
+        except Exception as e:
+            if "UnknownTopicOrPartitionException" in str(e):
+                logger.warning(f"   ├─ TikTok: topic not found, skipping")
+            else:
+                raise
 
-        # Read VNExpress
-        news_items = self._read_kafka_batch(settings.kafka.NEWS_TOPIC, NEWS_ARTICLE_SCHEMA)
-        logger.info(f"   ├─ News: {len(news_items)} items")
-        all_items.extend(news_items)
+        # Read VNExpress (skip if topic doesn't exist)
+        try:
+            news_items = self._read_kafka_batch(settings.kafka.NEWS_TOPIC, NEWS_ARTICLE_SCHEMA)
+            logger.info(f"   ├─ News: {len(news_items)} items")
+            all_items.extend(news_items)
+        except Exception as e:
+            if "UnknownTopicOrPartitionException" in str(e):
+                logger.warning(f"   ├─ News: topic not found, skipping")
+            else:
+                raise
 
-        # Read YouTube
-        youtube_items = self._read_kafka_batch(settings.kafka.YOUTUBE_TOPIC, YOUTUBE_VIDEO_SCHEMA)
-        logger.info(f"   └─ YouTube: {len(youtube_items)} items")
-        all_items.extend(youtube_items)
+        # Read YouTube (skip if topic doesn't exist)
+        try:
+            youtube_items = self._read_kafka_batch(settings.kafka.YOUTUBE_TOPIC, YOUTUBE_VIDEO_SCHEMA)
+            logger.info(f"   └─ YouTube: {len(youtube_items)} items")
+            all_items.extend(youtube_items)
+        except Exception as e:
+            if "UnknownTopicOrPartitionException" in str(e):
+                logger.warning(f"   └─ YouTube: topic not found, skipping")
+            else:
+                raise
 
         logger.info(f"📦 Total items from all sources: {len(all_items)}")
         return all_items

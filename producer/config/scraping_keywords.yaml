@@ -14,6 +14,14 @@ tiktok:
     - "Phim truy tìm Long diên hương"
     - "Zootopia 2"
     - "Tân binh toàn năng"
+    - "SEA Games 33 2025"
+    - "HDPE thì ngon luôn"
+    - "2 ngày 1 đêm"
+    - "Lễ Giáng Sinh"
+    - "Chó của Tăng Thanh Hà"
+    - "Avatar 3"
+    - "RAM tăng giá"
+
 
 
   # Hashtags (hashtags param)
@@ -36,10 +44,18 @@ vnexpress:
     - "Phim truy tìm Long diên hương"
     - "Zootopia 2"
     - "Tân binh toàn năng"
+    - "SEA Games 33 2025"
+    - "HDPE thì ngon luôn"
+    - "2 ngày 1 đêm"
+    - "Lễ Giáng Sinh"
+    - "Chó của Tăng Thanh Hà"
+    - "Avatar 3"
+    - "RAM tăng giá"
 
 
 
-  # RSS feed URLs (do not change unless needed)
+
+    # RSS feed URLs (do not change unless needed)
   rss_feeds:
     - "https://vnexpress.net/rss/tin-moi-nhat.rss"
     - "https://vnexpress.net/rss/tin-xem-nhieu.rss"
@@ -75,18 +91,16 @@ youtube:
     - "Phim truy tìm Long diên hương"
     - "Zootopia 2"
     - "Tân binh toàn năng"
+    - "SEA Games 33 2025"
+    - "HDPE thì ngon luôn"
+    - "2 ngày 1 đêm"
+    - "Lễ Giáng Sinh"
+    - "Chó của Tăng Thanh Hà"
+    - "Avatar 3"
+    - "RAM tăng giá"
+
+
 
 
   # Max videos per keyword
   max_videos_per_keyword: 200
-
-google_trends:
-  # Trend keywords to track
-  keywords:
-    - "phở anh hai"
-
-  # Timeframe (e.g., "now 7-d", "now 1-d", "today 3-m")
-  timeframe: "now 7-d"
-
-  # Region code (VN = Vietnam)
-  region: "VN"

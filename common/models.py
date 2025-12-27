@@ -505,11 +505,16 @@ class Trend:
     # Guideline fields
     content_type: str = "entertainment"  # entertainment, drama, dangerous, social_issue, commercial
     risk_level: str = "safe"  # safe, cautious, high_risk, dangerous
+    last_updated: datetime = None  # Last merge/update time (for timeout)
 
     def __post_init__(self):
-        """Initialize guidelines dict if not provided."""
+        """Initialize guidelines dict and last_updated if not provided."""
         if not hasattr(self, 'guidelines'):
             self.guidelines = {}
+
+        # Initialize last_updated to timestamp if not set (new trends)
+        if self.last_updated is None:
+            self.last_updated = self.timestamp
 
     guidelines: Dict = None  # Guidelines for marketers & social managers
 
@@ -519,4 +524,5 @@ class Trend:
         data = asdict(self)
         # Convert datetime to ISO string for MongoDB
         data['timestamp'] = self.timestamp.isoformat()
+        data['last_updated'] = self.last_updated.isoformat()
         return data

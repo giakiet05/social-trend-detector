@@ -60,7 +60,7 @@ class TikTokScraper(BaseScraper):
             List of TikTokVideo objects
         """
         if not keywords and not hashtags:
-            self.logger.warning("⚠️  No keywords or hashtags provided, skipping scrape")
+            self.logger.warning("No keywords or hashtags provided, skipping scrape")
             return []
 
         # Use BaseScraper logging helper
@@ -85,11 +85,11 @@ class TikTokScraper(BaseScraper):
             }
 
             # Run Apify actor
-            self.logger.info("🚀 Running Apify actor...")
+            self.logger.info("Running Apify actor...")
             run = self.client.actor(self.actor_id).call(run_input=run_input)
 
             # Fetch results from dataset
-            self.logger.info("📥 Fetching results from dataset...")
+            self.logger.info("Fetching results from dataset...")
             videos = []
 
             for item in self.client.dataset(run["defaultDatasetId"]).iterate_items():
@@ -97,7 +97,7 @@ class TikTokScraper(BaseScraper):
                     video = self._transform_apify_item(item)
                     videos.append(video)
                 except Exception as e:
-                    self.logger.warning(f"⚠️  Failed to transform item: {e}")
+                    self.logger.warning(f"Failed to transform item: {e}")
                     continue
 
             # Use BaseScraper logging helper

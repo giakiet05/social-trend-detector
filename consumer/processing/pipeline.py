@@ -65,7 +65,7 @@ class TrendDetectionPipeline:
             StorageStage(mongo_client)
         ]
 
-        logger.info(f"✅ Pipeline initialized with {len(self.stages)} stages (multi-source)")
+        logger.info(f"Pipeline initialized with {len(self.stages)} stages (multi-source)")
 
     def process(self, videos: List[dict]) -> List[Trend]:
         """
@@ -78,7 +78,7 @@ class TrendDetectionPipeline:
             List of detected trends (saved to MongoDB)
         """
         logger.info("\n" + "=" * 60)
-        logger.info("🔄 PIPELINE STARTED")
+        logger.info("PIPELINE STARTED")
         logger.info("=" * 60)
 
         data = videos
@@ -90,11 +90,11 @@ class TrendDetectionPipeline:
 
                 # Early exit if no data
                 if data is None or (isinstance(data, (list, dict)) and len(data) == 0):
-                    logger.warning(f"⚠️  Pipeline stopped early: no data after {stage.stage_name}")
+                    logger.warning(f"Pipeline stopped early: no data after {stage.stage_name}")
                     return []
 
             logger.info("=" * 60)
-            logger.info("✅ PIPELINE COMPLETED SUCCESSFULLY")
+            logger.info("PIPELINE COMPLETED SUCCESSFULLY")
             logger.info("=" * 60 + "\n")
 
             # StorageStage returns None, so return empty list
@@ -102,5 +102,5 @@ class TrendDetectionPipeline:
             return []
 
         except Exception as e:
-            logger.error(f"❌ Pipeline failed: {e}", exc_info=True)
+            logger.error(f"Pipeline failed: {e}", exc_info=True)
             raise

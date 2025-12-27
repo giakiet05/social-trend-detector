@@ -33,7 +33,7 @@ class TrendClusterer:
             cluster_selection_method='eom'  # Excess of Mass (better for varying densities)
         )
 
-        logger.info(f"✅ HDBSCAN initialized: min_cluster_size={self.min_cluster_size}, metric={self.metric}, min_samples={self.min_samples}")
+        logger.info(f"HDBSCAN initialized: min_cluster_size={self.min_cluster_size}, metric={self.metric}, min_samples={self.min_samples}")
 
     def cluster(self, embeddings: np.ndarray) -> np.ndarray:
         """
@@ -58,7 +58,7 @@ class TrendClusterer:
             n_clusters = len(unique_labels - {-1})
             n_noise = list(labels).count(-1)
 
-            logger.info(f"✅ Clustering complete: {n_clusters} trends, {n_noise} noise videos")
+            logger.info(f"Clustering complete: {n_clusters} trends, {n_noise} noise videos")
             
             # Debug: cluster size distribution
             label_counts = {}
@@ -79,7 +79,7 @@ class TrendClusterer:
             return labels
 
         except Exception as e:
-            logger.error(f"❌ Clustering failed: {e}")
+            logger.error(f"Clustering failed: {e}")
             raise
 
     def group_by_cluster(self, videos: list, labels: np.ndarray) -> dict:
@@ -107,5 +107,5 @@ class TrendClusterer:
 
             clusters[label].append(video)
 
-        logger.info(f"✅ Grouped {len(videos)} videos into {len(clusters)} clusters")
+        logger.info(f"Grouped {len(videos)} videos into {len(clusters)} clusters")
         return clusters

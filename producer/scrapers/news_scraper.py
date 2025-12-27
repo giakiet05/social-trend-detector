@@ -48,7 +48,7 @@ class NewsScraper(BaseScraper):
             List of NewsArticle objects
         """
         if not rss_feeds:
-            self.logger.warning("⚠️  No RSS feeds provided, skipping scrape")
+            self.logger.warning("No RSS feeds provided, skipping scrape")
             return []
 
         self._log_scrape_start(
@@ -67,7 +67,7 @@ class NewsScraper(BaseScraper):
                     feed = feedparser.parse(feed_url)
 
                     if feed.bozo:
-                        self.logger.warning(f"⚠️  Feed parse error: {feed_url}")
+                        self.logger.warning(f"Feed parse error: {feed_url}")
                         continue
 
                     # Infer category from RSS URL
@@ -84,11 +84,11 @@ class NewsScraper(BaseScraper):
                             article = self._transform_rss_entry(entry, category, feed_url)
                             articles.append(article)
                         except Exception as e:
-                            self.logger.warning(f"⚠️  Failed to transform entry: {e}")
+                            self.logger.warning(f"Failed to transform entry: {e}")
                             continue
 
                 except Exception as e:
-                    self.logger.warning(f"⚠️  Failed to fetch feed {feed_url}: {e}")
+                    self.logger.warning(f"Failed to fetch feed {feed_url}: {e}")
                     continue
 
             self._log_scrape_complete(len(articles))

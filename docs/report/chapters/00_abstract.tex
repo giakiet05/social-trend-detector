@@ -1,0 +1,28 @@
+% Tóm tắt đồ án (1-2 trang)
+% Trình bày tóm tắt vấn đề nghiên cứu, các hướng tiếp cận, cách giải quyết vấn đề và một số kết quả đạt được
+
+\section*{Vấn đề nghiên cứu}
+
+Trong bối cảnh mạng xã hội phát triển mạnh mẽ với hơn 5 tỷ người dùng toàn cầu, việc theo dõi và phát hiện các xu hướng đang nổi lên trở nên vô cùng quan trọng đối với các nhà tiếp thị, quản lý mạng xã hội và doanh nghiệp. Mỗi ngày, hàng triệu nội dung mới được tạo ra trên các nền tảng như TikTok, YouTube và các trang tin tức, tạo nên một khối lượng dữ liệu khổng lồ. Trong đó ẩn chứa các xu hướng - những chủ đề, sự kiện hoặc hiện tượng đang thu hút sự quan tâm đặc biệt của cộng đồng. Việc phát hiện và phân tích các xu hướng này sớm giúp doanh nghiệp điều chỉnh chiến lược marketing kịp thời, nhà báo nắm bắt các vấn đề xã hội nổi cộm, và quản lý mạng xã hội kiểm soát nội dung tiêu cực.
+
+Tuy nhiên, việc theo dõi xu hướng từ nhiều nền tảng khác nhau hiện nay vẫn là một thách thức lớn. Hầu hết các công cụ hiện có chỉ tập trung vào một nền tảng duy nhất hoặc cung cấp dữ liệu thống kê đơn thuần mà không có phân tích chuyên sâu. Các phương pháp thủ công yêu cầu người dùng phải liên tục kiểm tra từng nền tảng, tốn thời gian và dễ bỏ sót thông tin quan trọng. Đặc biệt, việc tổng hợp và phân tích xu hướng đa nền tảng - khi một chủ đề xuất hiện đồng thời trên nhiều kênh - đòi hỏi kỹ năng và công sức vượt quá khả năng của hầu hết người dùng và tổ chức.
+
+\section*{Cách giải quyết vấn đề}
+
+Để giải quyết vấn đề trên, đồ án xây dựng một hệ thống phát hiện xu hướng xã hội theo thời gian thực sử dụng kiến trúc kết hợp ba tầng chính: thu thập dữ liệu, xử lý phân tích, và giao diện người dùng.
+
+Tầng thu thập dữ liệu sử dụng các API và công cụ scraping để tự động lấy nội dung từ ba nguồn chính: TikTok (qua Apify API), YouTube (qua YouTube Data API v3), và các trang tin tức trực tuyến Việt Nam (qua RSS feeds). Dữ liệu được gửi vào Apache Kafka - một hàng đợi tin nhắn phân tán đảm bảo tính ổn định và khả năng mở rộng.
+
+Tầng xử lý phân tích sử dụng PySpark để xử lý batch dữ liệu qua pipeline tám giai đoạn: (1) chuẩn hóa dữ liệu từ các nguồn khác nhau về schema thống nhất; (2) làm sạch và kiểm tra tính hợp lệ; (3) lọc chất lượng để loại bỏ spam, bot dựa trên các chỉ số như tỷ lệ tương tác tối thiểu 1\%, số người theo dõi tối thiểu 1000; (4) chuyển đổi văn bản thành vector embedding 1536 chiều bằng OpenAI hoặc Gemini; (5) phân cụm nội dung tương đồng bằng thuật toán HDBSCAN với kích thước cụm tối thiểu 15 items; (6) phân tích từng cụm bằng mô hình ngôn ngữ lớn (LLM) để trích xuất chủ đề, tóm tắt, phân tích cảm xúc, đánh giá rủi ro và tạo hướng dẫn sử dụng; (7) khử trùng với các xu hướng đã có sử dụng chiến lược đa yếu tố (embedding similarity, keyword overlap, source distribution) với ngưỡng 0.75; (8) lưu trữ vào MongoDB và tự động xóa xu hướng cũ hơn 3 ngày.
+
+Tầng giao diện người dùng được xây dựng bằng Streamlit, cung cấp hai dashboard: dashboard người dùng để xem xu hướng với đầy đủ thông tin phân tích, và dashboard quản trị để quản lý xu hướng, duyệt đề xuất từ khóa từ người dùng. Toàn bộ hệ thống được đóng gói bằng Docker để dễ dàng triển khai và vận hành.
+
+\section*{Kết quả đạt được}
+
+Đồ án đã xây dựng thành công một hệ thống phát hiện xu hướng xã hội hoàn chỉnh có khả năng tự động vận hành mỗi bốn giờ mà không cần can thiệp thủ công. Hệ thống có thể xử lý khoảng 1500-2000 nội dung mỗi lần chạy từ ba nguồn TikTok, YouTube và News, phát hiện các cụm xu hướng, và cung cấp phân tích chuyên sâu cho từng xu hướng.
+
+Dashboard người dùng hiển thị các xu hướng được sắp xếp theo mức độ tương tác (lượt xem và lượt thích), với đầy đủ thông tin như chủ đề, tóm tắt, cảm xúc (tích cực/tiêu cực/trung lập), mức độ rủi ro (an toàn/thận trọng/rủi ro cao/nguy hiểm), loại nội dung (giải trí/drama/nguy hiểm/vấn đề xã hội/thương mại), và phân bố nguồn. Đặc biệt, hệ thống tự động tạo ra các hướng dẫn cụ thể cho marketer và quản lý mạng xã hội về cơ hội và rủi ro khi tham gia vào từng xu hướng. Dashboard quản trị cho phép quản lý xu hướng, duyệt và phê duyệt từ khóa đề xuất từ người dùng, và theo dõi lịch sử thay đổi từ khóa.
+
+Hệ thống đã được triển khai thành công với Docker, đảm bảo tính nhất quán giữa các môi trường phát triển và production. Cơ chế checkpoint của consumer đảm bảo không bị mất dữ liệu khi xử lý thất bại, và cơ chế timeout tự động dọn dẹp xu hướng cũ giúp database luôn chứa thông tin mới nhất. Tuy nhiên, hệ thống còn một số hạn chế như chưa hỗ trợ xử lý streaming thời gian thực hoàn toàn, chỉ tập trung vào ba nền tảng chính, và cần tối ưu hóa thêm về chi phí API LLM.
+
+Bất chấp những hạn chế này, kết quả đạt được chứng minh rằng kiến trúc tích hợp Kafka, PySpark, HDBSCAN và LLM có khả năng hoạt động hiệu quả trong việc xây dựng hệ thống phát hiện xu hướng đa nền tảng. Đồ án mở ra các cơ hội để mở rộng sang các nền tảng khác như Facebook, Twitter/X, tích hợp xử lý streaming thời gian thực, và áp dụng các kỹ thuật học sâu tiên tiến hơn cho dự đoán xu hướng trong tương lai.

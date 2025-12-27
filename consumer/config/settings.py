@@ -83,7 +83,7 @@ class MongoDBSettings:
     COLLECTION = "trends"
 
     # Deduplication
-    SIMILARITY_THRESHOLD = 0.6   # Multi-factor threshold (increased for precision)
+    SIMILARITY_THRESHOLD = 0.5   # Multi-factor threshold (increased for precision)
     DEDUP_WINDOW_HOURS = 24  # Check trends in last N hours
 
 

@@ -1,6 +1,6 @@
 """
-Admin Dashboard for Social Trends Detection System
-Manage trends, user submissions, and active keywords
+Socitrend - Bảng điều khiển quản trị
+Quản lý xu hướng, đề xuất từ người dùng và từ khóa
 """
 
 import sys
@@ -15,7 +15,7 @@ from utils.mongo_client import DashboardMongoClient
 from common.keyword_manager import MongoKeywordManager
 
 st.set_page_config(
-    page_title="Admin Dashboard - Social Trends",
+    page_title="Socitrend - Quản trị",
     page_icon="🔧",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -61,27 +61,27 @@ def get_keyword_manager():
 mongo_client = get_mongo_client()
 keyword_manager = get_keyword_manager()
 
-st.markdown('<h1 class="main-header">Admin Dashboard</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Manage trends, submissions, and keywords</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Socitrend - Quản trị</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Quản lý xu hướng, đề xuất và từ khóa</p>', unsafe_allow_html=True)
 
-tab1, tab2, tab3 = st.tabs(["Trends Management", "User Submissions", "Active Keywords"])
+tab1, tab2, tab3 = st.tabs(["Quản lý xu hướng", "Đề xuất từ người dùng", "Từ khóa hoạt động"])
 
 # ==================== TAB 1: TRENDS MANAGEMENT ====================
 with tab1:
-    st.header("Trends Management")
+    st.header("Quản lý xu hướng")
 
     col1, col2 = st.columns([3, 1])
     with col1:
-        search_query = st.text_input("Search by topic or keyword", placeholder="Enter keyword...")
+        search_query = st.text_input("Tìm kiếm theo chủ đề hoặc từ khóa", placeholder="Nhập từ khóa...")
     with col2:
-        refresh_trends = st.button("Refresh Trends", use_container_width=True)
+        refresh_trends = st.button("Làm mới", key="refresh_trends", use_container_width=True)
 
     trends = mongo_client.get_all_trends(limit=200)
 
     if not trends:
-        st.info("No trends found in database")
+        st.info("Không tìm thấy xu hướng trong database")
     else:
-        st.write(f"**Total trends:** {len(trends)}")
+        st.write(f"**Tổng số xu hướng:** {len(trends)}")
 
         if search_query:
             trends = [
@@ -89,50 +89,57 @@ with tab1:
                 if search_query.lower() in t.get('topic', '').lower()
                 or any(search_query.lower() in k.lower() for k in t.get('keywords', []))
             ]
-            st.write(f"**Filtered:** {len(trends)} trends")
+            st.write(f"**Đã lọc:** {len(trends)} xu hướng")
 
-        for idx, trend in enumerate(trends):
-            with st.expander(f"**{trend.get('topic', 'Unknown')}** - {trend.get('timestamp', '')}"):
+        # Sort by engagement: total_views (primary), total_likes (secondary)
+        trends = sorted(
+            trends,
+            key=lambda t: (t.get('total_views', 0), t.get('total_likes', 0)),
+            reverse=True
+        )
+
+        for idx, trend in enumerate(trends, 1):
+            with st.expander(f"#{idx} - **{trend.get('topic', 'Không rõ')}** ({trend.get('total_views', 0):,} views)"):
                 col1, col2, col3 = st.columns([2, 2, 1])
 
                 with col1:
-                    st.write(f"**Summary:** {trend.get('summary', 'N/A')}")
-                    st.write(f"**Keywords:** {', '.join(trend.get('keywords', []))}")
-                    st.write(f"**Sentiment:** {trend.get('sentiment', 'N/A')}")
+                    st.write(f"**Tóm tắt:** {trend.get('summary', 'N/A')}")
+                    st.write(f"**Từ khóa:** {', '.join(trend.get('keywords', []))}")
+                    st.write(f"**Cảm xúc:** {trend.get('sentiment', 'N/A')}")
 
                 with col2:
-                    st.write(f"**Videos:** {trend.get('video_count', 0)}")
-                    st.write(f"**Views:** {trend.get('total_views', 0):,}")
-                    st.write(f"**Likes:** {trend.get('total_likes', 0):,}")
+                    st.write(f"**Số video:** {trend.get('video_count', 0)}")
+                    st.write(f"**Lượt xem:** {trend.get('total_views', 0):,}")
+                    st.write(f"**Lượt thích:** {trend.get('total_likes', 0):,}")
 
                     source_counts = trend.get('source_counts', {})
                     if source_counts:
-                        st.write(f"**Sources:** {source_counts}")
+                        st.write(f"**Nguồn:** {source_counts}")
 
                 with col3:
-                    st.write(f"**Content Type:** {trend.get('content_type', 'N/A')}")
-                    st.write(f"**Risk Level:** {trend.get('risk_level', 'N/A')}")
+                    st.write(f"**Loại nội dung:** {trend.get('content_type', 'N/A')}")
+                    st.write(f"**Mức độ rủi ro:** {trend.get('risk_level', 'N/A')}")
 
-                    if st.button(f"Delete", key=f"delete_trend_{idx}", type="primary", use_container_width=True):
+                    if st.button(f"Xóa", key=f"delete_trend_{idx}", type="primary", use_container_width=True):
                         if mongo_client.delete_trend(trend['_id']):
-                            st.success(f"Deleted trend: {trend.get('topic')}")
+                            st.success(f"Đã xóa xu hướng: {trend.get('topic')}")
                             st.rerun()
                         else:
-                            st.error("Failed to delete trend")
+                            st.error("Xóa xu hướng thất bại")
 
 # ==================== TAB 2: USER SUBMISSIONS ====================
 with tab2:
-    st.header("User Submissions Review")
+    st.header("Đề xuất từ người dùng")
 
     col1, col2 = st.columns([3, 1])
     with col1:
         filter_status = st.selectbox(
-            "Filter by status",
+            "Lọc theo trạng thái",
             ["pending", "approved", "rejected", "all"],
             index=0
         )
     with col2:
-        refresh_submissions = st.button("Refresh Submissions", use_container_width=True)
+        refresh_submissions = st.button("Làm mới", key="refresh_submissions", use_container_width=True)
 
     if filter_status == "all":
         submissions = list(keyword_manager.user_submissions.find().sort("created_at", -1).limit(100))
@@ -141,39 +148,39 @@ with tab2:
                      list(keyword_manager.user_submissions.find({"status": filter_status}).sort("created_at", -1).limit(100))
 
     if not submissions:
-        st.info(f"No {filter_status} submissions found")
+        st.info(f"Không tìm thấy đề xuất {filter_status}")
     else:
-        st.write(f"**Total {filter_status} submissions:** {len(submissions)}")
+        st.write(f"**Tổng số đề xuất {filter_status}:** {len(submissions)}")
 
         for idx, sub in enumerate(submissions):
             status = sub.get('status', 'pending')
             status_class = f"status-{status}"
 
-            with st.expander(f"**{sub.get('keyword', 'Unknown')}** - {status.upper()}"):
+            with st.expander(f"**{sub.get('keyword', 'Không rõ')}** - {status.upper()}"):
                 st.markdown(f"<span class='badge {status_class}'>{status.upper()}</span>", unsafe_allow_html=True)
 
                 col1, col2 = st.columns([3, 1])
 
                 with col1:
-                    st.write(f"**Keyword:** {sub.get('keyword', 'N/A')}")
-                    st.write(f"**Reason:** {sub.get('reason', 'N/A')}")
-                    st.write(f"**Submitted by:** {sub.get('submitted_by', 'Anonymous')}")
-                    st.write(f"**Created at:** {sub.get('created_at', 'N/A')}")
+                    st.write(f"**Từ khóa:** {sub.get('keyword', 'N/A')}")
+                    st.write(f"**Lý do:** {sub.get('reason', 'N/A')}")
+                    st.write(f"**Người gửi:** {sub.get('submitted_by', 'Ẩn danh')}")
+                    st.write(f"**Ngày tạo:** {sub.get('created_at', 'N/A')}")
 
                     if sub.get('reviewed_at'):
-                        st.write(f"**Reviewed at:** {sub.get('reviewed_at', 'N/A')}")
-                        st.write(f"**Reviewed by:** {sub.get('reviewed_by', 'N/A')}")
+                        st.write(f"**Ngày duyệt:** {sub.get('reviewed_at', 'N/A')}")
+                        st.write(f"**Người duyệt:** {sub.get('reviewed_by', 'N/A')}")
                         if sub.get('notes'):
-                            st.write(f"**Notes:** {sub.get('notes', '')}")
+                            st.write(f"**Ghi chú:** {sub.get('notes', '')}")
 
                 with col2:
                     if status == "pending":
-                        st.write("**Actions:**")
+                        st.write("**Hành động:**")
 
                         col_approve, col_reject = st.columns(2)
 
                         with col_approve:
-                            if st.button("Approve", key=f"approve_{idx}", use_container_width=True):
+                            if st.button("Duyệt", key=f"approve_{idx}", use_container_width=True):
                                 result = keyword_manager.approve_submission(
                                     submission_id=str(sub['_id']),
                                     sources=["tiktok", "news", "youtube"],
@@ -186,10 +193,10 @@ with tab2:
                                     st.error(result['message'])
 
                         with col_reject:
-                            if st.button("Reject", key=f"reject_{idx}", type="secondary", use_container_width=True):
+                            if st.button("Từ chối", key=f"reject_{idx}", type="secondary", use_container_width=True):
                                 result = keyword_manager.reject_submission(
                                     submission_id=str(sub['_id']),
-                                    reason="Rejected by admin",
+                                    reason="Từ chối bởi admin",
                                     reviewed_by="admin"
                                 )
                                 if result['success']:
@@ -200,20 +207,20 @@ with tab2:
 
 # ==================== TAB 3: ACTIVE KEYWORDS ====================
 with tab3:
-    st.header("Active Keywords Management")
+    st.header("Quản lý từ khóa")
 
     active_keywords = keyword_manager.get_active_keywords()
 
     col_list, col_add = st.columns([2, 1])
 
     with col_list:
-        st.subheader("Current Keywords")
+        st.subheader("Từ khóa hiện tại")
 
         if not active_keywords:
-            st.info("No active keywords found")
+            st.info("Chưa có từ khóa nào")
         else:
-            st.write(f"**Total:** {len(active_keywords)} keywords")
-            st.caption("All keywords apply to: TikTok, News, YouTube")
+            st.write(f"**Tổng:** {len(active_keywords)} từ khóa")
+            st.caption("Tất cả từ khóa áp dụng cho: TikTok, News, YouTube")
 
             st.markdown("---")
 
@@ -222,7 +229,7 @@ with tab3:
                 with col_text:
                     st.write(f"{idx + 1}. **{kw['keyword']}**")
                 with col_btn:
-                    if st.button("Delete", key=f"del_{kw['_id']}", type="secondary", use_container_width=True):
+                    if st.button("Xóa", key=f"del_{kw['_id']}", type="secondary", use_container_width=True):
                         result = keyword_manager.remove_keyword(kw['keyword'], removed_by="admin")
                         if result['success']:
                             st.success(result['message'])
@@ -231,21 +238,21 @@ with tab3:
                             st.error(result['message'])
 
     with col_add:
-        st.subheader("Add New Keyword")
+        st.subheader("Thêm từ khóa mới")
 
-        with st.form("add_keyword_form"):
+        with st.form("add_keyword_form", clear_on_submit=True):
             new_keyword = st.text_input(
-                "Keyword",
-                placeholder="e.g., Avatar 3",
+                "Từ khóa",
+                placeholder="VD: Avatar 3",
                 label_visibility="collapsed"
             )
-            st.caption("Will apply to all sources")
+            st.caption("Sẽ áp dụng cho tất cả nguồn")
 
-            submit_keyword = st.form_submit_button("Add Keyword", use_container_width=True, type="primary")
+            submit_keyword = st.form_submit_button("Thêm từ khóa", use_container_width=True, type="primary")
 
             if submit_keyword:
                 if not new_keyword:
-                    st.error("Please enter a keyword")
+                    st.error("Vui lòng nhập từ khóa")
                 else:
                     result = keyword_manager.add_keyword(
                         keyword=new_keyword,
@@ -259,4 +266,4 @@ with tab3:
                         st.error(result['message'])
 
 st.markdown("---")
-st.caption("Admin Dashboard - Social Trends Detection System")
+st.caption("Socitrend - Bảng điều khiển quản trị")

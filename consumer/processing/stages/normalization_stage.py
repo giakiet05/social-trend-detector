@@ -60,7 +60,7 @@ class NormalizationStage(BaseStage):
                 self.data_saver.save(source="items", data=items)
                 logger.info(f"   💾 Saved {len(items)} normalized items to data/normalized/items/")
             except Exception as e:
-                logger.warning(f"   ⚠️  Failed to save normalized items: {e}")
+                logger.warning(f"   Failed to save normalized items: {e}")
 
         self.log_complete(f"{len(items)} items normalized ({breakdown})")
 

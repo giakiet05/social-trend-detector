@@ -53,7 +53,7 @@ class YouTubeScraper(BaseScraper):
             List of YouTubeVideo objects
         """
         if not keywords:
-            self.logger.warning("⚠️  No keywords provided, skipping scrape")
+            self.logger.warning("No keywords provided, skipping scrape")
             return []
 
         self._log_scrape_start(
@@ -65,7 +65,7 @@ class YouTubeScraper(BaseScraper):
             videos = []
 
             for keyword in keywords:
-                self.logger.info(f"🔍 Searching YouTube for: {keyword}")
+                self.logger.info(f"Searching YouTube for: {keyword}")
 
                 try:
                     video_ids = []
@@ -98,7 +98,7 @@ class YouTubeScraper(BaseScraper):
                             break
 
                     if not video_ids:
-                        self.logger.warning(f"⚠️  No videos found for: {keyword}")
+                        self.logger.warning(f"No videos found for: {keyword}")
                         continue
 
                     self.logger.info(f"   Found {len(video_ids)} videos across {pages_fetched} pages")
@@ -117,11 +117,11 @@ class YouTubeScraper(BaseScraper):
                                 video = self._transform_youtube_item(item)
                                 videos.append(video)
                             except Exception as e:
-                                self.logger.warning(f"⚠️  Failed to transform item: {e}")
+                                self.logger.warning(f"Failed to transform item: {e}")
                                 continue
 
                 except Exception as e:
-                    self.logger.warning(f"⚠️  Failed to search for '{keyword}': {e}")
+                    self.logger.warning(f"Failed to search for '{keyword}': {e}")
                     continue
 
             self._log_scrape_complete(len(videos))

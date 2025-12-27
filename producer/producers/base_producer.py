@@ -50,7 +50,7 @@ class BaseProducer(ABC):
         self.scraper = self._get_scraper()
         self.topic = self._get_topic()
 
-        logger.info(f"✅ {self.__class__.__name__} initialized (topic: {self.topic})")
+        logger.info(f"{self.__class__.__name__} initialized (topic: {self.topic})")
 
     @abstractmethod
     def _get_scraper(self):
@@ -133,7 +133,7 @@ class BaseProducer(ABC):
             Number of successfully sent items
         """
         logger.info("\n" + "=" * 60)
-        logger.info(f"🚀 {self.__class__.__name__.upper()} - STARTING")
+        logger.info(f"{self.__class__.__name__.upper()} - STARTING")
         logger.info("=" * 60)
 
         try:
@@ -141,11 +141,11 @@ class BaseProducer(ABC):
             config = self._get_keywords()
 
             if not config or not any(config.values()):
-                logger.error(f"❌ No configuration found in scraping_keywords.yaml")
+                logger.error(f"No configuration found in scraping_keywords.yaml")
                 logger.info(f"   Please edit: producer/config/scraping_keywords.yaml")
                 return 0
 
-            logger.info(f"📋 Configuration:")
+            logger.info(f"Configuration:")
             for key, value in config.items():
                 logger.info(f"   {key}: {value}")
 
@@ -153,10 +153,10 @@ class BaseProducer(ABC):
             scraped_data = self._scrape_with_config(config)
 
             if not scraped_data:
-                logger.warning("⚠️  No data scraped, nothing to send")
+                logger.warning("No data scraped, nothing to send")
                 return 0
 
-            logger.info(f"📦 Scraped {len(scraped_data)} items")
+            logger.info(f"Scraped {len(scraped_data)} items")
 
             # Step 3: Save raw data (backup)
             try:
@@ -165,31 +165,31 @@ class BaseProducer(ABC):
                     source=self._get_source_name(),
                     data=scraped_data
                 )
-                logger.info(f"💾 Raw data saved to: {saved_path}")
+                logger.info(f"Raw data saved to: {saved_path}")
 
                 # Append to aggregate file
                 aggregate_path = self.data_saver.append_to_aggregate(
                     source=self._get_source_name(),
                     data=scraped_data
                 )
-                logger.info(f"📝 Appended to aggregate: {aggregate_path}")
+                logger.info(f"Appended to aggregate: {aggregate_path}")
 
             except Exception as e:
-                logger.warning(f"⚠️  Failed to save raw data: {e}")
+                logger.warning(f"Failed to save raw data: {e}")
                 # Continue even if save fails
 
             # Step 4: Send to Kafka
             success_count = self._send_to_kafka(scraped_data)
 
             logger.info("=" * 60)
-            logger.info(f"✅ {self.__class__.__name__.upper()} - COMPLETED")
+            logger.info(f"{self.__class__.__name__.upper()} - COMPLETED")
             logger.info(f"   Sent: {success_count}/{len(scraped_data)} items")
             logger.info("=" * 60 + "\n")
 
             return success_count
 
         except Exception as e:
-            logger.error(f"❌ {self.__class__.__name__} failed: {e}", exc_info=True)
+            logger.error(f"{self.__class__.__name__} failed: {e}", exc_info=True)
             return 0
 
         finally:
@@ -220,6 +220,7 @@ class BaseProducer(ABC):
             Number of successfully sent items
         """
         success_count = 0
+        failed_items = []
 
         for idx, item in enumerate(items, 1):
             try:
@@ -234,11 +235,17 @@ class BaseProducer(ABC):
                     key=item_id
                 ):
                     success_count += 1
-                    logger.info(f"✅ [{idx}/{len(items)}] Sent: {item_id}")
                 else:
-                    logger.error(f"❌ [{idx}/{len(items)}] Failed: {item_id}")
+                    failed_items.append(item_id)
 
             except Exception as e:
-                logger.error(f"❌ [{idx}/{len(items)}] Error: {e}")
+                failed_items.append(f"{self._get_item_id(item)} (error: {e})")
+
+        # Log summary only
+        if failed_items:
+            logger.warning(f"Failed to send {len(failed_items)} items")
+            if len(failed_items) <= 5:
+                for item_id in failed_items:
+                    logger.warning(f"   - {item_id}")
 
         return success_count

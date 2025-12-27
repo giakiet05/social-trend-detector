@@ -55,4 +55,7 @@ class StorageStage(BaseStage):
                 logger.error(f"Failed to save trend '{trend.topic}': {e}", exc_info=True)
                 continue
 
-        self.log_complete(f"{new_count} new, {updated_count} updated")
+        # Cleanup old trends (>3 days without update)
+        deleted_count = self.mongo.cleanup_old_trends(days=3)
+
+        self.log_complete(f"{new_count} new, {updated_count} updated, {deleted_count} cleaned up")

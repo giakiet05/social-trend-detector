@@ -97,12 +97,12 @@ class DeduplicationStage(BaseStage):
                 merged_trend = self._merge_trends(best_match, new_trend)
                 deduplicated.append(merged_trend)
                 merged_count += 1
-                logger.info(f"   🔗 Merged: '{new_trend.topic}' → '{best_match['topic']}' (similarity: {max_similarity:.3f})")
+                logger.info(f"   Merged: '{new_trend.topic}' → '{best_match['topic']}' (similarity: {max_similarity:.3f})")
             else:
                 # NEW TREND
                 deduplicated.append(new_trend)
                 new_count += 1
-                logger.info(f"   ✨ New trend: '{new_trend.topic}' (max similarity: {max_similarity:.3f})")
+                logger.info(f"   New trend: '{new_trend.topic}' (max similarity: {max_similarity:.3f})")
 
         self.log_complete(f"{merged_count} merged, {new_count} new")
         return deduplicated
@@ -211,7 +211,8 @@ class DeduplicationStage(BaseStage):
             source_counts=new_trend.source_counts if hasattr(new_trend, 'source_counts') else {},
             content_type=new_trend.content_type,
             risk_level=new_trend.risk_level,
-            guidelines=new_trend.guidelines
+            guidelines=new_trend.guidelines,
+            last_updated=datetime.utcnow()  # Reset timeout when merged
         )
         
         # Manually add MongoDB _id for update (not in constructor)

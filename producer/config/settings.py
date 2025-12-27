@@ -109,10 +109,10 @@ class KeywordsConfig:
             with open(Paths.KEYWORDS_CONFIG, 'r', encoding='utf-8') as f:
                 return yaml.safe_load(f)
         except FileNotFoundError:
-            print(f"⚠️  Keywords config not found: {Paths.KEYWORDS_CONFIG}")
+            print(f"Keywords config not found: {Paths.KEYWORDS_CONFIG}")
             return {}
         except yaml.YAMLError as e:
-            print(f"⚠️  Failed to parse YAML: {e}")
+            print(f"Failed to parse YAML: {e}")
             return {}
 
     def _load_rss_feeds(self) -> Dict:
@@ -121,10 +121,10 @@ class KeywordsConfig:
             with open(Paths.RSS_FEEDS_CONFIG, 'r', encoding='utf-8') as f:
                 return yaml.safe_load(f)
         except FileNotFoundError:
-            print(f"⚠️  RSS feeds config not found: {Paths.RSS_FEEDS_CONFIG}")
+            print(f"RSS feeds config not found: {Paths.RSS_FEEDS_CONFIG}")
             return {}
         except yaml.YAMLError as e:
-            print(f"⚠️  Failed to parse RSS feeds YAML: {e}")
+            print(f"Failed to parse RSS feeds YAML: {e}")
             return {}
 
     def _get_mongo_client(self):
@@ -148,7 +148,7 @@ class KeywordsConfig:
             })
             return [k["keyword"] for k in keywords]
         except Exception as e:
-            print(f"⚠️  Failed to load keywords from MongoDB: {e}")
+            print(f"Failed to load keywords from MongoDB: {e}")
             return []
 
     # --- TikTok ---

@@ -56,7 +56,7 @@ class GoogleTrendsScraper(BaseScraper):
             List of TrendsData objects
         """
         if not keywords:
-            self.logger.warning("⚠️  No keywords provided, skipping scrape")
+            self.logger.warning("No keywords provided, skipping scrape")
             return []
 
         self._log_scrape_start(
@@ -71,7 +71,7 @@ class GoogleTrendsScraper(BaseScraper):
             # Process keywords in batches of 5 (Google Trends API limit)
             for i in range(0, len(keywords), 5):
                 batch = keywords[i:i+5]
-                self.logger.info(f"📊 Fetching trends for: {batch}")
+                self.logger.info(f"Fetching trends for: {batch}")
 
                 # Add delay to avoid rate limiting (especially after first batch)
                 if i > 0:
@@ -139,11 +139,11 @@ class GoogleTrendsScraper(BaseScraper):
                             trends_data.append(trends_obj)
 
                         except Exception as e:
-                            self.logger.warning(f"⚠️  Failed to process keyword '{keyword}': {e}")
+                            self.logger.warning(f"Failed to process keyword '{keyword}': {e}")
                             continue
 
                 except Exception as e:
-                    self.logger.warning(f"⚠️  Failed to fetch trends for batch {batch}: {e}")
+                    self.logger.warning(f"Failed to fetch trends for batch {batch}: {e}")
                     continue
 
             self._log_scrape_complete(len(trends_data))

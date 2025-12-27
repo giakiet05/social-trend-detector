@@ -34,7 +34,7 @@ class GeminiClient(BaseEmbeddingClient, BaseLLMClient):
         self.embedding_model = settings.gemini.EMBEDDING_MODEL
         self.llm_model = settings.gemini.LLM_MODEL
 
-        logger.info("✅ Gemini client initialized")
+        logger.info("Gemini client initialized")
 
     def embed_texts(self, texts: List[str]) -> List[List[float]]:
         """
@@ -64,11 +64,11 @@ class GeminiClient(BaseEmbeddingClient, BaseLLMClient):
                 # Extract embedding from response
                 all_embeddings.append(result.embeddings[0].values)
 
-            logger.info(f"✅ Embedded {len(texts)} texts → {len(all_embeddings)} vectors (Gemini)")
+            logger.info(f"Embedded {len(texts)} texts → {len(all_embeddings)} vectors (Gemini)")
             return all_embeddings
 
         except Exception as e:
-            logger.error(f"❌ Gemini embedding failed: {e}")
+            logger.error(f"Gemini embedding failed: {e}")
             raise
 
     def analyze_cluster(self, prompt: str) -> Dict[str, any]:
@@ -197,14 +197,14 @@ class GeminiClient(BaseEmbeddingClient, BaseLLMClient):
 
                     try:
                         result = json.loads(fixed_text)
-                        logger.info("✅ Successfully fixed truncated JSON")
+                        logger.info("Successfully fixed truncated JSON")
                     except:
                         logger.error("Failed to fix truncated JSON")
                         raise e
 
-            logger.info(f"✅ Analyzed cluster: {result['topic']} (Gemini)")
+            logger.info(f"Analyzed cluster: {result['topic']} (Gemini)")
             return result
 
         except Exception as e:
-            logger.error(f"❌ Cluster analysis failed: {e}")
+            logger.error(f"Cluster analysis failed: {e}")
             raise

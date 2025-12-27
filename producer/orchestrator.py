@@ -31,7 +31,7 @@ class ProducerOrchestrator:
             'youtube': YouTubeProducer()
         }
 
-        logger.info("✅ ProducerOrchestrator initialized")
+        logger.info("ProducerOrchestrator initialized")
         logger.info(f"   Producers: {list(self.producers.keys())}")
 
     def run_all(self) -> Dict[str, int]:
@@ -46,7 +46,7 @@ class ProducerOrchestrator:
             Example: {'tiktok': 20, 'vnexpress': 21, 'youtube': 10}
         """
         logger.info("\n" + "=" * 70)
-        logger.info("🚀 PRODUCER ORCHESTRATOR - STARTING ALL PRODUCERS")
+        logger.info("PRODUCER ORCHESTRATOR - STARTING ALL PRODUCERS")
         logger.info("=" * 70)
 
         results = {}
@@ -66,19 +66,19 @@ class ProducerOrchestrator:
                 try:
                     count = future.result()
                     results[producer_name] = count
-                    logger.info(f"✅ {producer_name.upper()} completed: {count} items sent")
+                    logger.info(f"{producer_name.upper()} completed: {count} items sent")
 
                 except Exception as e:
-                    logger.error(f"❌ {producer_name.upper()} failed: {e}", exc_info=True)
+                    logger.error(f"{producer_name.upper()} failed: {e}", exc_info=True)
                     results[producer_name] = 0
 
         # Summary
         logger.info("\n" + "=" * 70)
-        logger.info("✅ PRODUCER ORCHESTRATOR - ALL PRODUCERS COMPLETED")
+        logger.info("PRODUCER ORCHESTRATOR - ALL PRODUCERS COMPLETED")
         logger.info("=" * 70)
 
         total_items = sum(results.values())
-        logger.info(f"📊 Results Summary:")
+        logger.info(f"Results Summary:")
         for name, count in results.items():
             logger.info(f"   {name.upper()}: {count} items")
         logger.info(f"   TOTAL: {total_items} items")
@@ -105,7 +105,7 @@ class ProducerOrchestrator:
                 f"Available: {list(self.producers.keys())}"
             )
 
-        logger.info(f"🚀 Running single producer: {producer_name.upper()}")
+        logger.info(f"Running single producer: {producer_name.upper()}")
         producer = self.producers[producer_name]
         return producer.run()
 

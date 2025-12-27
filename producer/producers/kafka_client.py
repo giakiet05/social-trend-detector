@@ -41,9 +41,9 @@ class KafkaClient:
                 max_in_flight_requests_per_connection=5,
                 compression_type='gzip'  # Compress messages
             )
-            logger.info(f"✅ Kafka producer connected: {bootstrap_servers}")
+            logger.info(f"Kafka producer connected: {bootstrap_servers}")
         except KafkaError as e:
-            logger.error(f"❌ Failed to connect to Kafka: {e}")
+            logger.error(f"Failed to connect to Kafka: {e}")
             raise
 
     def send(self, topic: str, message: Dict[str, Any], key: str = None) -> bool:
@@ -70,16 +70,16 @@ class KafkaClient:
             record_metadata = future.get(timeout=10)
 
             logger.debug(
-                f"✅ Message sent to {topic} "
+                f"Message sent to {topic} "
                 f"(partition={record_metadata.partition}, offset={record_metadata.offset})"
             )
             return True
 
         except KafkaError as e:
-            logger.error(f"❌ Failed to send message to {topic}: {e}")
+            logger.error(f"Failed to send message to {topic}: {e}")
             return False
         except Exception as e:
-            logger.error(f"❌ Unexpected error sending message: {e}")
+            logger.error(f"Unexpected error sending message: {e}")
             return False
 
     def send_batch(self, topic: str, messages: list) -> int:
@@ -102,7 +102,7 @@ class KafkaClient:
         # Flush to ensure all messages are sent
         self.producer.flush()
 
-        logger.info(f"✅ Sent {success_count}/{len(messages)} messages to {topic}")
+        logger.info(f"Sent {success_count}/{len(messages)} messages to {topic}")
         return success_count
 
     def close(self):
@@ -110,4 +110,4 @@ class KafkaClient:
         if hasattr(self, 'producer'):
             self.producer.flush()
             self.producer.close()
-            logger.info("👋 Kafka producer closed")
+            logger.info("Kafka producer closed")

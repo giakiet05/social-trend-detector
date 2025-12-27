@@ -40,7 +40,7 @@ class BaseStage(ABC):
 
     def log_complete(self, message: str = ""):
         """Log stage completion."""
-        msg = f"✅ {self.stage_name} completed"
+        msg = f"{self.stage_name} completed"
         if message:
             msg += f": {message}"
         logger.info(msg)

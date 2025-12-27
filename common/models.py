@@ -482,3 +482,47 @@ class KafkaMessage:
             content_id=f"{trends.query}_{datetime.utcnow().strftime('%Y%m%d')}",
             data=trends.to_dict()
         )
+
+
+@dataclass
+class Trend:
+    """
+    Detected trend data model for MongoDB (multi-source support).
+
+    Used by Consumer to store detected trends and Dashboard to display them.
+    """
+    timestamp: datetime
+    topic: str
+    summary: str
+    sentiment: str
+    keywords: List[str]
+    video_count: int
+    total_views: int
+    total_likes: int
+    sample_videos: List[dict]
+    source_counts: dict  # {"tiktok": 15, "youtube": 5, "news": 2}
+
+    # Guideline fields
+    content_type: str = "entertainment"  # entertainment, drama, dangerous, social_issue, commercial
+    risk_level: str = "safe"  # safe, cautious, high_risk, dangerous
+    last_updated: datetime = None  # Last merge/update time (for timeout)
+
+    def __post_init__(self):
+        """Initialize guidelines dict and last_updated if not provided."""
+        if not hasattr(self, 'guidelines'):
+            self.guidelines = {}
+
+        # Initialize last_updated to timestamp if not set (new trends)
+        if self.last_updated is None:
+            self.last_updated = self.timestamp
+
+    guidelines: Dict = None  # Guidelines for marketers & social managers
+
+    def to_dict(self):
+        """Convert to dictionary for MongoDB."""
+        from dataclasses import asdict
+        data = asdict(self)
+        # Convert datetime to ISO string for MongoDB
+        data['timestamp'] = self.timestamp.isoformat()
+        data['last_updated'] = self.last_updated.isoformat()
+        return data

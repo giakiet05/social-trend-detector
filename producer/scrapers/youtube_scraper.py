@@ -27,7 +27,7 @@ class YouTubeScraper(BaseScraper):
         """Initialize YouTube scraper with API client."""
         super().__init__()
 
-        api_key = settings.youtube.API_KEY
+        api_key = settings.youtube_config.API_KEY
         if not api_key:
             raise ValueError(
                 "YouTube API key is required. "
@@ -53,7 +53,7 @@ class YouTubeScraper(BaseScraper):
             List of YouTubeVideo objects
         """
         if not keywords:
-            self.logger.warning("⚠️  No keywords provided, skipping scrape")
+            self.logger.warning("No keywords provided, skipping scrape")
             return []
 
         self._log_scrape_start(
@@ -65,42 +65,63 @@ class YouTubeScraper(BaseScraper):
             videos = []
 
             for keyword in keywords:
-                self.logger.info(f"🔍 Searching YouTube for: {keyword}")
+                self.logger.info(f"Searching YouTube for: {keyword}")
 
                 try:
-                    # Search for videos
-                    search_response = self.youtube.search().list(
-                        q=keyword,
-                        type='video',
-                        part='id,snippet',
-                        maxResults=min(max_videos, 50),  # API limit per request
-                        order='relevance',
-                        regionCode='VN',
-                        relevanceLanguage='vi'
-                    ).execute()
+                    video_ids = []
+                    page_token = None
+                    pages_fetched = 0
 
-                    video_ids = [item['id']['videoId'] for item in search_response.get('items', [])]
+                    # Pagination loop to get max_videos
+                    while len(video_ids) < max_videos:
+                        search_response = self.youtube.search().list(
+                            q=keyword,
+                            type='video',
+                            part='id,snippet',
+                            maxResults=min(50, max_videos - len(video_ids)),  # API limit: 50 per request
+                            pageToken=page_token,
+                            order='relevance',
+                            regionCode='VN',
+                            relevanceLanguage='vi'
+                        ).execute()
+
+                        page_video_ids = [item['id']['videoId'] for item in search_response.get('items', [])]
+                        video_ids.extend(page_video_ids)
+                        pages_fetched += 1
+
+                        self.logger.debug(f"   Page {pages_fetched}: {len(page_video_ids)} videos (total: {len(video_ids)})")
+
+                        # Check if there's a next page
+                        page_token = search_response.get('nextPageToken')
+                        if not page_token:
+                            self.logger.debug(f"   No more pages available")
+                            break
 
                     if not video_ids:
-                        self.logger.warning(f"⚠️  No videos found for: {keyword}")
+                        self.logger.warning(f"No videos found for: {keyword}")
                         continue
 
-                    # Get video details (views, likes, etc.)
-                    videos_response = self.youtube.videos().list(
-                        id=','.join(video_ids),
-                        part='snippet,statistics,contentDetails'
-                    ).execute()
+                    self.logger.info(f"   Found {len(video_ids)} videos across {pages_fetched} pages")
 
-                    for item in videos_response.get('items', []):
-                        try:
-                            video = self._transform_youtube_item(item)
-                            videos.append(video)
-                        except Exception as e:
-                            self.logger.warning(f"⚠️  Failed to transform item: {e}")
-                            continue
+                    # Get video details (views, likes, etc.) - batch by 50 (API limit)
+                    for i in range(0, len(video_ids), 50):
+                        batch_ids = video_ids[i:i+50]
+
+                        videos_response = self.youtube.videos().list(
+                            id=','.join(batch_ids),
+                            part='snippet,statistics,contentDetails'
+                        ).execute()
+
+                        for item in videos_response.get('items', []):
+                            try:
+                                video = self._transform_youtube_item(item)
+                                videos.append(video)
+                            except Exception as e:
+                                self.logger.warning(f"Failed to transform item: {e}")
+                                continue
 
                 except Exception as e:
-                    self.logger.warning(f"⚠️  Failed to search for '{keyword}': {e}")
+                    self.logger.warning(f"Failed to search for '{keyword}': {e}")
                     continue
 
             self._log_scrape_complete(len(videos))

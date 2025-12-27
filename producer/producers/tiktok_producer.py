@@ -41,7 +41,7 @@ class TikTokProducer(BaseProducer):
         return {
             "keywords": settings.keywords.tiktok_keywords,
             "hashtags": settings.keywords.tiktok_hashtags,
-            "max_videos": settings.keywords.tiktok_max_videos
+            "max_videos": settings.tiktok_config.MAX_VIDEOS_PER_QUERY
         }
 
     def _scrape_with_config(self, config: dict) -> List[TikTokVideo]:

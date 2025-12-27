@@ -40,7 +40,7 @@ class YouTubeProducer(BaseProducer):
         """
         return {
             "keywords": settings.keywords.youtube_keywords,
-            "max_videos": settings.keywords.youtube_max_videos
+            "max_videos": settings.youtube_config.MAX_VIDEOS_PER_KEYWORD
         }
 
     def _scrape_with_config(self, config: dict) -> List[YouTubeVideo]:

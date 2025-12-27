@@ -1,6 +1,6 @@
 services:
   #########################################
-  #  KAFKA (DÙNG IMAGE CONFLUENT)
+  #  KAFKA
   #########################################
   kafka:
     image: 'confluentinc/cp-kafka:latest'
@@ -12,35 +12,25 @@ services:
       retries: 5
       start_period: 40s
     ports:
-      # Port 9092: Thằng Producer/Consumer bên ngoài (máy mày) nói chuyện
       - '9092:9092'
-      # Port 29092: Thằng Producer/Consumer bên trong Docker (ví dụ Spark) nói chuyện
       - '29092:29092'
-      # Port 9093: Port nội bộ của KRaft (thay Zookeeper)
       - '9093:9093'
     volumes:
-      # Lưu data của Kafka
       - 'kafka_data:/var/lib/kafka/data'
     environment:
-
-      # 2. Cấu hình KRaft (thay Zookeeper)
+      # KRaft config
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: 'broker,controller'
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
-      # Nó tự bầu nó làm "quản lý" (controller)
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
 
-      # 3. Cấu hình "tai nghe" (Listeners)
-      # Nó sẽ "nghe" từ 3 nguồn:
-      # - PLAINTEXT: Nội bộ Docker (port 29092)
-      # - CONTROLLER: Nội bộ KRaft (port 9093)
-      # - EXTERNAL: Bên ngoài máy mày (port 9092)
+      # Listeners
       KAFKA_LISTENERS: 'PLAINTEXT://:29092,CONTROLLER://:9093,EXTERNAL://:9092'
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,EXTERNAL://localhost:9092'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT'
       KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
 
-      # 4. Cấu hình cơ bản (bắt buộc cho KRaft)
+      # Basic config
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
@@ -48,7 +38,7 @@ services:
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
 
   #########################################
-  #  MONGODB (KHO CHỨA VÀNG)
+  #  MONGODB
   #########################################
   mongodb:
     image: 'mongo:latest'
@@ -62,47 +52,23 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=password
 
   #########################################
-  #  BACKEND (PRODUCER + CONSUMER)
+  #  KAFKA UI (Web interface)
   #########################################
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: trend-backend
+  kafka-ui:
+    image: 'provectuslabs/kafka-ui:latest'
+    container_name: kafka-ui
     depends_on:
       kafka:
         condition: service_healthy
-      mongodb:
-        condition: service_started
-    env_file:
-      - .env
-    environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
-      - MONGO_URI=mongodb://admin:password@mongodb:27017
-      # - RESET_CHECKPOINTS=true  # Uncomment for testing only
-    volumes:
-      - ./consumer/checkpoints:/app/consumer/checkpoints
-    restart: unless-stopped
-
-  #########################################
-  #  DASHBOARD (STREAMLIT)
-  #########################################
-  dashboard:
-    build:
-      context: .
-      dockerfile: Dockerfile.dashboard
-    container_name: trend-dashboard
-    depends_on:
-      - mongodb
     ports:
-      - '8501:8501'
+      - '8080:8080'
     environment:
-      - MONGO_URI=mongodb://admin:password@mongodb:27017
-    restart: unless-stopped
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
 
-# Named volumes for data persistence
+# Named volumes
 volumes:
   kafka_data:
-    name: social-trend-kafka-data
+    name: social-trend-kafka-data-dev
   mongo_data:
-    name: social-trend-mongo-data
+    name: social-trend-mongo-data-dev

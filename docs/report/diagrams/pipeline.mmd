@@ -1,0 +1,70 @@
+%%{init: {'theme':'base', 'themeVariables': {'fontSize':'20px'}}}%%
+flowchart TB
+    start["Data from Kafka<br/>~1500-2000 items"]
+
+    stage1["Stage 1:<br/>Normalization"]
+    check1{"Valid?"}
+
+    stage2["Stage 2:<br/>Cleaning"]
+    check2{"Valid?"}
+
+    stage3["Stage 3:<br/>Quality Filtering"]
+    check3{"Pass?"}
+
+    stage4["Stage 4:<br/>Embedding<br/>Generation"]
+
+    stage5["Stage 5:<br/>Clustering<br/>HDBSCAN"]
+
+    stage6["Stage 6:<br/>Trend Analysis<br/>LLM"]
+
+    stage7["Stage 7:<br/>Deduplication"]
+    check7{"Match?"}
+    merge["Merge"]
+    create["Create"]
+
+    stage8["Stage 8:<br/>Storage"]
+
+    final["Updated<br/>Database"]
+
+    discard1["Discard<br/>~5%"]
+    discard2["Discard<br/>~20-30%"]
+
+    start --> stage1
+    stage1 --> check1
+    check1 -->|Yes| stage2
+    check1 -->|No| discard1
+
+    stage2 --> check2
+    check2 -->|Yes| stage3
+    check2 -->|No| discard1
+
+    stage3 --> check3
+    check3 -->|Yes| stage4
+    check3 -->|No| discard2
+
+    stage4 --> stage5
+    stage5 --> stage6
+    stage6 --> stage7
+
+    stage7 --> check7
+    check7 -->|Yes| merge
+    check7 -->|No| create
+
+    merge --> stage8
+    create --> stage8
+
+    stage8 --> final
+
+    classDef inputStyle fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,font-size:26px
+    classDef stageStyle fill:#fff9c4,stroke:#f57f17,stroke-width:3px,font-size:26px
+    classDef checkStyle fill:#ffebee,stroke:#c62828,stroke-width:2px,font-size:26px
+    classDef resultStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,font-size:26px
+    classDef discardStyle fill:#fafafa,stroke:#616161,stroke-width:2px,font-size:26px
+    classDef finalStyle fill:#e1f5fe,stroke:#01579b,stroke-width:3px,font-size:26px
+
+    class start inputStyle
+    class stage1,stage2,stage3,stage4,stage5,stage6,stage7,stage8 stageStyle
+    class check1,check2,check3,check7 checkStyle
+    class merge,create resultStyle
+    class discard1,discard2 discardStyle
+    class final finalStyle

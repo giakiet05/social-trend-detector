@@ -7,7 +7,7 @@ from typing import List
 from datetime import datetime, timedelta
 from pymongo import MongoClient, errors
 from consumer.config.settings import settings
-from consumer.models.schemas import Trend
+from common.models import Trend
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +37,9 @@ class MongoDBClient:
             self.db = self.client[settings.mongodb.DATABASE]
             self.collection = self.db[settings.mongodb.COLLECTION]
 
-            logger.info(f"✅ Connected to MongoDB: {settings.mongodb.DATABASE}.{settings.mongodb.COLLECTION}")
+            logger.info(f"Connected to MongoDB: {settings.mongodb.DATABASE}.{settings.mongodb.COLLECTION}")
         except errors.ConnectionError as e:
-            logger.error(f"❌ MongoDB connection failed: {e}")
+            logger.error(f"MongoDB connection failed: {e}")
             raise
 
     def save_trend(self, trend: Trend):
@@ -54,9 +54,9 @@ class MongoDBClient:
 
         try:
             result = self.collection.insert_one(trend.to_dict())
-            logger.info(f"✅ Saved trend: {trend.topic} (ID: {result.inserted_id})")
+            logger.info(f"Saved trend: {trend.topic} (ID: {result.inserted_id})")
         except Exception as e:
-            logger.error(f"❌ Failed to save trend: {e}")
+            logger.error(f"Failed to save trend: {e}")
             raise
 
     def save_trends(self, trends: List[Trend]):
@@ -76,9 +76,9 @@ class MongoDBClient:
         try:
             docs = [trend.to_dict() for trend in trends]
             result = self.collection.insert_many(docs)
-            logger.info(f"✅ Saved {len(result.inserted_ids)} trends to MongoDB")
+            logger.info(f"Saved {len(result.inserted_ids)} trends to MongoDB")
         except Exception as e:
-            logger.error(f"❌ Failed to save trends: {e}")
+            logger.error(f"Failed to save trends: {e}")
             raise
 
     def upsert_trend(self, trend: Trend):
@@ -136,6 +136,40 @@ class MongoDBClient:
         except Exception as e:
             logger.error(f"Failed to query recent trends: {e}")
             return []
+
+    def cleanup_old_trends(self, days: int = 3) -> int:
+        """
+        Delete trends that haven't been updated in N days.
+
+        Args:
+            days: Number of days after which trends expire (default: 3)
+
+        Returns:
+            Number of trends deleted
+        """
+        if self.collection is None:
+            self.connect()
+
+        try:
+            cutoff = datetime.utcnow() - timedelta(days=days)
+
+            # Find and delete trends older than cutoff
+            result = self.collection.delete_many({
+                'last_updated': {'$lt': cutoff.isoformat()}
+            })
+
+            deleted_count = result.deleted_count
+
+            if deleted_count > 0:
+                logger.info(f"Cleaned up {deleted_count} old trends (>{days} days without update)")
+            else:
+                logger.debug(f"No old trends to clean up")
+
+            return deleted_count
+
+        except Exception as e:
+            logger.error(f"Failed to cleanup old trends: {e}")
+            return 0
 
     def close(self):
         """Close MongoDB connection."""

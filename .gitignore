@@ -16,3 +16,22 @@ __pycache__/
 data
 .env.example
 checkpoints
+tmp
+
+# LaTeX
+*.aux
+*.log
+*.toc
+*.out
+*.bbl
+*.blg
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.bcf
+*.run.xml

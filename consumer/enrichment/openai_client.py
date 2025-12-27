@@ -26,7 +26,7 @@ class OpenAIClient(BaseEmbeddingClient, BaseLLMClient):
             raise ValueError("OpenAI API key is required. Set OPENAI_API_KEY in .env")
 
         self.client = OpenAI(api_key=self.api_key)
-        logger.info("✅ OpenAI client initialized")
+        logger.info("OpenAI client initialized")
 
     def embed_texts(self, texts: List[str]) -> List[List[float]]:
         """
@@ -59,11 +59,11 @@ class OpenAIClient(BaseEmbeddingClient, BaseLLMClient):
 
                 logger.debug(f"Embedded {len(batch)} texts (batch {i // batch_size + 1})")
 
-            logger.info(f"✅ Embedded {len(texts)} texts → {len(all_embeddings)} vectors")
+            logger.info(f"Embedded {len(texts)} texts → {len(all_embeddings)} vectors")
             return all_embeddings
 
         except Exception as e:
-            logger.error(f"❌ Embedding failed: {e}")
+            logger.error(f"Embedding failed: {e}")
             raise
 
     def analyze_cluster(self, prompt: str) -> Dict[str, any]:
@@ -83,7 +83,6 @@ class OpenAIClient(BaseEmbeddingClient, BaseLLMClient):
                     {"role": "system", "content": "Bạn là chuyên gia phân tích xu hướng xã hội từ nhiều nguồn (TikTok, YouTube, VNExpress). Luôn trả lời bằng tiếng Việt và format JSON hợp lệ."},
                     {"role": "user", "content": prompt}
                 ],
-                max_tokens=settings.openai.MAX_TOKENS,
                 temperature=0.7,
                 response_format={"type": "json_object"}
             )
@@ -94,9 +93,9 @@ class OpenAIClient(BaseEmbeddingClient, BaseLLMClient):
             import json
             result = json.loads(result_text)
 
-            logger.info(f"✅ Analyzed cluster: {result['topic']} (OpenAI)")
+            logger.info(f"Analyzed cluster: {result['topic']} (OpenAI)")
             return result
 
         except Exception as e:
-            logger.error(f"❌ Cluster analysis failed: {e}")
+            logger.error(f"Cluster analysis failed: {e}")
             raise

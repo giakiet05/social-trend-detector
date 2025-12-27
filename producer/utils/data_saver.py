@@ -58,7 +58,7 @@ class DataSaver:
             IOError: If file write fails
         """
         if not data:
-            logger.warning(f"⚠️  No data to save for source: {source}")
+            logger.warning(f"No data to save for source: {source}")
             raise ValueError(f"Cannot save empty data for source: {source}")
 
         # Create source directory
@@ -75,11 +75,11 @@ class DataSaver:
             else:
                 raise ValueError(f"Unsupported format: {format}")
 
-            logger.info(f"💾 Saved {len(data)} items to: {filename}")
+            logger.info(f"Saved {len(data)} items to: {filename}")
             return filename
 
         except Exception as e:
-            logger.error(f"❌ Failed to save data: {e}", exc_info=True)
+            logger.error(f"Failed to save data: {e}", exc_info=True)
             raise IOError(f"Failed to save data to {filename}: {e}")
 
     def _save_json(self, filepath: Path, data: List[Any]) -> None:
@@ -134,7 +134,7 @@ class DataSaver:
             IOError: If file operation fails
         """
         if not data:
-            logger.warning(f"⚠️  No data to append for source: {source}")
+            logger.warning(f"No data to append for source: {source}")
             raise ValueError(f"Cannot append empty data for source: {source}")
 
         # Aggregate file path
@@ -147,11 +147,11 @@ class DataSaver:
             else:
                 raise ValueError(f"Unsupported format: {format}")
 
-            logger.info(f"📝 Appended {len(data)} items to aggregate: {filepath}")
+            logger.info(f"Appended {len(data)} items to aggregate: {filepath}")
             return filepath
 
         except Exception as e:
-            logger.error(f"❌ Failed to append to aggregate: {e}", exc_info=True)
+            logger.error(f"Failed to append to aggregate: {e}", exc_info=True)
             raise IOError(f"Failed to append data to {filepath}: {e}")
 
     def _append_json(self, filepath: Path, new_data: List[Any]) -> None:
@@ -180,10 +180,10 @@ class DataSaver:
                 with open(filepath, 'r', encoding='utf-8') as f:
                     existing_data = json.load(f)
                     if not isinstance(existing_data, list):
-                        logger.warning(f"⚠️  Existing file is not a list, overwriting")
+                        logger.warning(f"Existing file is not a list, overwriting")
                         existing_data = []
             except json.JSONDecodeError:
-                logger.warning(f"⚠️  Failed to parse existing file, overwriting")
+                logger.warning(f"Failed to parse existing file, overwriting")
                 existing_data = []
         else:
             existing_data = []

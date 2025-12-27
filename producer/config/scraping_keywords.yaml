@@ -1,8 +1,10 @@
 # Scraping Keywords Configuration
-# Edit this file to add/remove keywords for each data source
+# Keywords only (Dev/Test mode)
+# In production (KEYWORDS_SOURCE=mongodb), this file is NOT used
+#
+# Note: max_videos, RSS feeds moved to settings.py and rss_feeds.yaml
 
 tiktok:
-  # Search keywords (searchQueries param)
   keywords:
     - "phở anh hai"
     - "cloudflare sập"
@@ -14,17 +16,18 @@ tiktok:
     - "Phim truy tìm Long diên hương"
     - "Zootopia 2"
     - "Tân binh toàn năng"
+    - "SEA Games 33 2025"
+    - "HDPE thì ngon luôn"
+    - "2 ngày 1 đêm"
+    - "Giáng sinh 2025"
+    - "Chó của Tăng Thanh Hà"
+    - "Avatar 3"
+    - "RAM tăng giá"
 
+  # Optional: Static hashtags (rarely change)
+  hashtags: []
 
-  # Hashtags (hashtags param)
-  hashtags:
-
-  # Max videos per keyword/hashtag
-  max_videos_per_query: 100
-
-vnexpress:
-  # Filter keywords for RSS articles
-
+news:
   keywords:
     - "phở anh hai"
     - "cloudflare sập"
@@ -36,34 +39,15 @@ vnexpress:
     - "Phim truy tìm Long diên hương"
     - "Zootopia 2"
     - "Tân binh toàn năng"
-
-
-
-  # RSS feed URLs (do not change unless needed)
-  rss_feeds:
-    - "https://vnexpress.net/rss/tin-moi-nhat.rss"
-    - "https://vnexpress.net/rss/tin-xem-nhieu.rss"
-    - "https://vnexpress.net/rss/tin-noi-bat.rss"
-    - "https://vnexpress.net/rss/thoi-su.rss"
-    - "https://vnexpress.net/rss/the-gioi.rss"
-    - "https://vnexpress.net/rss/kinh-doanh.rss"
-    - "https://vnexpress.net/rss/startup.rss"
-    - "https://vnexpress.net/rss/giai-tri.rss"
-    - "https://vnexpress.net/rss/the-thao.rss"
-    - "https://vnexpress.net/rss/phap-luat.rss"
-    - "https://vnexpress.net/rss/giao-duc.rss"
-    - "https://vnexpress.net/rss/suc-khoe.rss"
-    - "https://vnexpress.net/rss/doi-song.rss"
-    - "https://vnexpress.net/rss/du-lich.rss"
-    - "https://vnexpress.net/rss/khoa-hoc.rss"
-    - "https://vnexpress.net/rss/so-hoa.rss"
-    - "https://vnexpress.net/rss/oto-xe-may.rss"
-    - "https://vnexpress.net/rss/y-kien.rss"
-    - "https://vnexpress.net/rss/tam-su.rss"
-    - "https://vnexpress.net/rss/cuoi.rss"
+    - "SEA Games 33 2025"
+    - "HDPE thì ngon luôn"
+    - "2 ngày 1 đêm"
+    - "Giáng sinh 2025"
+    - "Chó của Tăng Thanh Hà"
+    - "Avatar 3"
+    - "RAM tăng giá"
 
 youtube:
-  # Search keywords
   keywords:
     - "phở anh hai"
     - "cloudflare sập"
@@ -75,18 +59,10 @@ youtube:
     - "Phim truy tìm Long diên hương"
     - "Zootopia 2"
     - "Tân binh toàn năng"
-
-
-  # Max videos per keyword
-  max_videos_per_keyword: 200
-
-google_trends:
-  # Trend keywords to track
-  keywords:
-    - "phở anh hai"
-
-  # Timeframe (e.g., "now 7-d", "now 1-d", "today 3-m")
-  timeframe: "now 7-d"
-
-  # Region code (VN = Vietnam)
-  region: "VN"
+    - "SEA Games 33 2025"
+    - "HDPE thì ngon luôn"
+    - "2 ngày 1 đêm"
+    - "Giáng sinh 2025"
+    - "Chó của Tăng Thanh Hà"
+    - "Avatar 3"
+    - "RAM tăng giá"

@@ -102,7 +102,7 @@ docker-compose restart kafka
 1. Kiểm tra MongoDB có data chưa:
 ```bash
 docker exec -it mongodb mongosh -u admin -p password
-> use tiktok_trends
+> use social_trends
 > db.trends.countDocuments()
 ```
 

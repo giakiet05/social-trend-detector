@@ -1,0 +1,77 @@
+%%{init: {'theme':'base', 'themeVariables': {'fontSize':'20px'}}}%%
+flowchart TB
+    subgraph sources["Data Sources"]
+        tiktok["TikTok API"]
+        youtube["YouTube API"]
+        news["News RSS"]
+    end
+
+    subgraph producers["Producer Layer"]
+        p1["TikTok Producer"]
+        p2["YouTube Producer"]
+        p3["News Producer"]
+    end
+
+    subgraph kafka["Apache Kafka Message Queue"]
+        t1["Topic: tiktok-raw"]
+        t2["Topic: youtube-raw"]
+        t3["Topic: news-raw"]
+    end
+
+    cons["Kafka Consumer"]
+
+    subgraph pipeline["PySpark Processing Pipeline"]
+        direction TB
+        stage1["1. Normalization"]
+        stage2["2. Cleaning"]
+        stage3["3. Quality Filtering"]
+        stage4["4. Embedding Generation"]
+        stage5["5. Clustering"]
+        stage6["6. Trend Analysis"]
+        stage7["7. Deduplication"]
+        stage8["8. Storage & Timeout"]
+
+        stage1 --> stage2 --> stage3 --> stage4 --> stage5 --> stage6 --> stage7 --> stage8
+    end
+
+    mongo["MongoDB"]
+
+    subgraph dashboard["Dashboard Layer"]
+        user["User Dashboard"]
+        admin["Admin Dashboard"]
+    end
+
+    tiktok --> p1
+    youtube --> p2
+    news --> p3
+
+    p1 --> t1
+    p2 --> t2
+    p3 --> t3
+
+    t1 --> cons
+    t2 --> cons
+    t3 --> cons
+
+    cons --> stage1
+
+    stage8 --> mongo
+
+    mongo --> user
+    mongo --> admin
+
+    classDef sourceStyle fill:#e1f5ff,stroke:#01579b,stroke-width:2px,font-size:26px
+    classDef producerStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,font-size:26px
+    classDef kafkaStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,font-size:26px
+    classDef consumerStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,font-size:26px
+    classDef pipelineStyle fill:#fff9c4,stroke:#f57f17,stroke-width:2px,font-size:26px
+    classDef storageStyle fill:#fce4ec,stroke:#880e4f,stroke-width:2px,font-size:26px
+    classDef dashboardStyle fill:#e0f2f1,stroke:#004d40,stroke-width:2px,font-size:26px
+
+    class tiktok,youtube,news sourceStyle
+    class p1,p2,p3 producerStyle
+    class t1,t2,t3 kafkaStyle
+    class cons consumerStyle
+    class stage1,stage2,stage3,stage4,stage5,stage6,stage7,stage8 pipelineStyle
+    class mongo storageStyle
+    class user,admin dashboardStyle

@@ -1,0 +1,181 @@
+% !TeX program = lualatex
+
+\documentclass[a4paper]{report}
+
+% ===== PACKAGES FOR VIETNAMESE & FONTS =====
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+% ===== PAGE SETUP =====
+\usepackage[
+    top=3cm,
+    bottom=3.5cm,
+    left=3.5cm,
+    right=2cm
+]{geometry}
+
+% ===== LINE SPACING =====
+\usepackage{setspace}
+\onehalfspacing
+
+% ===== FORMATTING =====
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% ===== CHAPTER FORMATTING =====
+\usepackage{titlesec}
+\titleformat{\chapter}
+  {\normalfont\huge\bfseries} % font giữ nguyên
+  {Chương \thechapter}       % phần label
+  {0.5em}                     % khoảng cách
+  {}                          % trước title
+\titlespacing*{\chapter}{0pt}{-0.2in}{0.3in}
+
+
+
+% ===== VIETNAMESE LABELS =====
+\renewcommand{\figurename}{Hình}
+\renewcommand{\contentsname}{Mục lục}
+
+% ===== TABLE OF CONTENTS FORMATTING =====
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecnumwidth}{3em}
+\renewcommand{\cftsubsecnumwidth}{3em}
+
+% ===== HEADER & FOOTER =====
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ===== CUSTOM COMMANDS =====
+\newcommand{\toc}{\tableofcontents\newpage}
+
+% ===== DOCUMENT =====
+\begin{document}
+
+% ===== FONT SIZE 13pt =====
+\fontsize{13pt}{15.6pt}\selectfont
+
+% ===== NO PAGE NUMBERING FOR FRONT MATTER =====
+\pagenumbering{gobble}
+
+% ===== TITLE PAGE =====
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+
+    {\Large \bfseries ĐẠI HỌC QUỐC GIA TP. HỒ CHÍ MINH}
+
+    {\Large \bfseries TRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN}
+
+    {\Large \bfseries KHOA CÔNG NGHỆ PHẦN MỀM}
+
+    \vspace{3cm}
+
+
+    {\Large \bfseries PHÁT HIỆN XU HƯỚNG XÃ HỘI THEO THỜI GIAN THỰC}
+
+    \vspace{3cm}
+
+    {\large \bfseries LỚP: SE363.Q11}
+
+    \vspace{1cm}
+
+    {\large \bfseries GV HƯỚNG DẪN:}
+
+    {\large Ts. Đỗ Trọng Hợp}
+
+    \vspace{1cm}
+
+    {\large \bfseries NHÓM 7:}
+
+    {\large Quách Gia Kiệt - 23520819} \\
+    {\large Phạm Thành Long - 23520887} \\
+    {\large Huỳnh Trần Anh Thư - 23520887} \\
+
+    \vspace{4cm}
+
+    {\large TP. HỒ CHÍ MINH, 2025}
+\end{titlepage}
+
+% ===== ACKNOWLEDGMENTS =====
+\chapter*{}
+\begin{center}
+    \Large\bfseries LỜI CẢM ƠN
+\end{center}
+\addcontentsline{toc}{chapter}{Lời cảm ơn}
+
+Nhóm chúng em xin gửi lời cảm ơn và lòng biết ơn sâu sắc nhất tới thầy
+Đỗ Trọng Hợp, giảng viên hướng dẫn cho nhóm. Thầy đã luôn nhiệt tình, đồng
+hành, hỗ trợ và giúp đỡ chúng em trong suốt quá trình thực hiện đồ án môn học
+
+Trong thời gian một học kỳ thực hiện đề tài, nhóm chúng em đã vận dụng
+những kiến thức nền tảng đã tích lũy đồng thời kết hợp với việc học hỏi và nghiên
+cứu những kiến thức mới, và đặc biệt là những kiến thức từ lý thuyết đến thực hành
+mà thầy đã nhiệt huyết giảng dạy cho chúng em. Từ đó, nhóm chúng em vận dụng tối
+đa những gì đã thu thập được để hoàn thành một báo cáo đồ án tốt nhất.
+
+Trong quá trình thực hiện đồ án này, với kinh nghiệm và thời gian có
+hạn, nhóm không tránh khỏi được sai sót, chúng em kính mong nhận được sự góp ý,
+hướng dẫn của thầy để có thể hoàn thiện đồ án hơn nữa, cũng như là hành trang để
+nhóm chúng em thực hiện tiếp các đề tài khác trong tương lai.
+
+Nhóm em xin chân thành cảm ơn thầy!
+
+\vspace{1cm}
+
+\begin{flushright}
+    Nhóm sinh viên thực hiện\\
+    Quách Gia Kiệt \\
+    Phạm Thành Long \\
+    Huỳnh Trần Anh Thư \\
+\end{flushright}
+
+\newpage
+
+% ===== TABLE OF CONTENTS =====
+\tableofcontents
+\newpage
+
+% ===== ABSTRACT =====
+\chapter*{}
+\begin{center}
+    \Large\bfseries TÓM TẮT ĐỒ ÁN
+\end{center}
+\addcontentsline{toc}{chapter}{Tóm tắt đồ án}
+
+% ===== START PAGE NUMBERING FROM HERE =====
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+\input{chapters/00_abstract}
+
+\newpage
+
+% ===== MAIN CHAPTERS =====
+\include{chapters/01_intro}
+\include{chapters/02_theory}
+\include{chapters/03_results}
+\include{chapters/04_conclusion}
+\include{chapters/05_future}
+
+% ===== REFERENCES =====
+\renewcommand{\bibname}{Tài liệu tham khảo}
+\addcontentsline{toc}{chapter}{Tài liệu tham khảo}
+
+\nocite{*}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+% ===== APPENDICES (if needed) =====
+% \appendix
+% \include{chapters/appendix-a}
+
+\end{document}

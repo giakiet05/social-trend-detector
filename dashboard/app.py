@@ -1,6 +1,6 @@
 """
-TikTok Tech Trends Dashboard
-Real-time visualization of trending tech topics on TikTok
+Socitrend - Bảng điều khiển xu hướng mạng xã hội
+Theo dõi và phân tích xu hướng trên các nền tảng mạng xã hội
 """
 
 import streamlit as st
@@ -12,7 +12,7 @@ from utils.mongo_client import DashboardMongoClient
 
 # Page config
 st.set_page_config(
-    page_title="Social Trends Dashboard",
+    page_title="Socitrend - Xu hướng mạng xã hội",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -65,34 +65,86 @@ def get_mongo_client():
 mongo_client = get_mongo_client()
 
 # Header
-st.markdown('<h1 class="main-header">Social Trends Dashboard</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Real-time insights into social trends</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Socitrend</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Phân tích xu hướng mạng xã hội theo thời gian thực</p>', unsafe_allow_html=True)
 
-# Sidebar filters
-st.sidebar.header("Filters")
+refresh_button = st.sidebar.button("Làm mới dữ liệu", use_container_width=True)
 
-refresh_button = st.sidebar.button("Refresh Data", use_container_width=True)
+# Keyword Submission Form
+st.sidebar.markdown("---")
+st.sidebar.header("Đề xuất xu hướng")
+
+with st.sidebar.form("keyword_submission_form", clear_on_submit=True):
+    keyword_input = st.text_input(
+        "Từ khóa",
+        placeholder="VD: Avatar 3",
+        help="Nhập từ khóa bạn nghĩ đang trending"
+    )
+    reason_input = st.text_area(
+        "Tại sao nó đang trending?",
+        placeholder="Tôi thấy nó nhiều trên TikTok/YouTube...",
+        height=80
+    )
+    name_input = st.text_input(
+        "Tên/Email của bạn (không bắt buộc)",
+        placeholder="Ẩn danh"
+    )
+
+    submit_button = st.form_submit_button("Gửi đề xuất", use_container_width=True)
+
+    if submit_button:
+        if not keyword_input or keyword_input.strip() == "":
+            st.error("Vui lòng nhập từ khóa")
+        elif not reason_input or reason_input.strip() == "":
+            st.error("Vui lòng nhập lý do")
+        else:
+            # Import keyword manager
+            import sys
+            from pathlib import Path
+            ROOT_DIR = Path(__file__).resolve().parents[1]
+            sys.path.insert(0, str(ROOT_DIR))
+
+            from common.keyword_manager import MongoKeywordManager
+
+            try:
+                manager = MongoKeywordManager()
+                result = manager.submit_keyword(
+                    keyword=keyword_input,
+                    reason=reason_input if reason_input else None,
+                    submitted_by=name_input if name_input else None
+                )
+                manager.close()
+
+                if result["success"]:
+                    st.success(result["message"])
+                else:
+                    st.warning(result["message"])
+            except Exception as e:
+                st.error(f"Lỗi khi gửi từ khóa: {e}")
+
+st.sidebar.markdown("---")
+st.sidebar.header("Bộ lọc")
 
 sentiment_filter = st.sidebar.multiselect(
-    "Sentiment",
+    "Cảm xúc",
     options=["positive", "negative", "neutral"],
     default=["positive", "negative", "neutral"]
 )
 
 risk_filter = st.sidebar.multiselect(
-    "Risk Level",
+    "Mức độ rủi ro",
     options=["safe", "cautious", "high_risk", "dangerous"],
     default=["safe", "cautious", "high_risk", "dangerous"]
 )
 
 content_type_filter = st.sidebar.multiselect(
-    "Content Type",
+    "Loại nội dung",
     options=["entertainment", "drama", "dangerous", "social_issue", "commercial"],
     default=["entertainment", "drama", "dangerous", "social_issue", "commercial"]
 )
 
 limit = st.sidebar.selectbox(
-    "Number of trends to display",
+    "Số lượng xu hướng hiển thị",
     options=[10, 20, 30, 50, 100],
     index=1
 )
@@ -107,21 +159,28 @@ try:
     trends = [t for t in trends if t.get('risk_level', 'safe') in risk_filter]
     trends = [t for t in trends if t.get('content_type', 'entertainment') in content_type_filter]
 
+    # Sort by engagement: total_views (primary), total_likes (secondary)
+    trends = sorted(
+        trends,
+        key=lambda t: (t.get('total_views', 0), t.get('total_likes', 0)),
+        reverse=True
+    )
+
     # Top Trends Chart (full width)
-    st.subheader("Top Trends by Views")
+    st.subheader("Top xu hướng theo lượt xem")
 
     if trends:
         top_trends_df = pd.DataFrame([
-            {'Topic': t['topic'][:25] + '...' if len(t['topic']) > 25 else t['topic'],
-             'Views': t.get('total_views', 0)}
+            {'Chủ đề': t['topic'][:25] + '...' if len(t['topic']) > 25 else t['topic'],
+             'Lượt xem': t.get('total_views', 0)}
             for t in trends[:10]
         ])
 
         fig_bar = px.bar(
             top_trends_df,
-            x='Topic',
-            y='Views',
-            color='Views',
+            x='Chủ đề',
+            y='Lượt xem',
+            color='Lượt xem',
             color_continuous_scale='Viridis'
         )
         fig_bar.update_layout(
@@ -131,12 +190,12 @@ try:
         )
         st.plotly_chart(fig_bar, use_container_width=True)
     else:
-        st.info("No trends data available")
+        st.info("Chưa có dữ liệu xu hướng")
 
     st.divider()
 
     # Modal dialog function
-    @st.dialog("Trend Details", width="large")
+    @st.dialog("Chi tiết xu hướng", width="large")
     def show_trend_details(trend):
         """Show full trend details in a modal dialog."""
         # Badges
@@ -175,9 +234,9 @@ try:
         col_info, col_stats = st.columns([2, 1])
 
         with col_info:
-            st.write(f"**Summary:** {trend.get('summary', 'N/A')}")
-            st.write(f"**Keywords:** {', '.join(trend.get('keywords', []))}")
-            st.write(f"**Timestamp:** {trend.get('timestamp', 'N/A')}")
+            st.write(f"**Tóm tắt:** {trend.get('summary', 'N/A')}")
+            st.write(f"**Từ khóa:** {', '.join(trend.get('keywords', []))}")
+            st.write(f"**Thời gian:** {trend.get('timestamp', 'N/A')}")
 
             source_counts = trend.get('source_counts', {})
             if source_counts:
@@ -185,9 +244,9 @@ try:
                 st.write(f"**Nguồn:** {source_str}")
 
         with col_stats:
-            st.metric("Videos", trend.get('video_count') or 0)
-            st.metric("Views", f"{trend.get('total_views') or 0:,}")
-            st.metric("Likes", f"{trend.get('total_likes') or 0:,}")
+            st.metric("Số video", trend.get('video_count') or 0)
+            st.metric("Lượt xem", f"{trend.get('total_views') or 0:,}")
+            st.metric("Lượt thích", f"{trend.get('total_likes') or 0:,}")
 
         st.divider()
 
@@ -285,7 +344,7 @@ try:
                     """)
 
     # Trends Table (compact cards)
-    st.subheader(f"Latest Trends ({len(trends)} total)")
+    st.subheader(f"Xu hướng mới nhất (Tổng: {len(trends)})")
 
     if trends:
         for idx, trend in enumerate(trends):
@@ -315,6 +374,9 @@ try:
                 st.markdown(f"""
                 <div style="border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1rem 1.25rem; background-color: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
                     <div style="display: flex; align-items: center; gap: 2rem;">
+                        <div style="flex-shrink: 0; width: 4.5rem; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: #64748b;">#{idx + 1}</div>
+                        </div>
                         <div style="flex: 2; min-width: 0;">
                             <div style="margin-bottom: 0.5rem;">
                                 <span class="badge sentiment-{sentiment}">{sentiment.upper()}</span>
@@ -330,11 +392,11 @@ try:
                             </div>
                             <div style="text-align: center;">
                                 <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b;">{trend.get('total_views', 0):,}</div>
-                                <div style="font-size: 0.8rem; color: #94a3b8;">views</div>
+                                <div style="font-size: 0.8rem; color: #94a3b8;">lượt xem</div>
                             </div>
                             <div style="text-align: center;">
                                 <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b;">{trend.get('total_likes', 0):,}</div>
-                                <div style="font-size: 0.8rem; color: #94a3b8;">likes</div>
+                                <div style="font-size: 0.8rem; color: #94a3b8;">lượt thích</div>
                             </div>
                         </div>
                     </div>
@@ -348,11 +410,11 @@ try:
 
             st.markdown("<br>", unsafe_allow_html=True)
     else:
-        st.info("No trends found. Make sure the Consumer has processed some data.")
+        st.info("Không tìm thấy xu hướng. Đảm bảo Consumer đã xử lý dữ liệu.")
 
 except Exception as e:
-    st.error(f"Error loading data: {e}")
-    st.info("Make sure MongoDB is running and has data from the Consumer.")
+    st.error(f"Lỗi khi tải dữ liệu: {e}")
+    st.info("Đảm bảo MongoDB đang chạy và có dữ liệu từ Consumer.")
 
 # Footer
 st.divider()

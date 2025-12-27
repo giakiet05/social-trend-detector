@@ -44,28 +44,28 @@ def main():
     try:
         if args.source == 'all':
             # Run all producers
-            logger.info("🚀 Running all producers...")
+            logger.info("Running all producers...")
             results = orchestrator.run_all()
         else:
             # Run single producer
-            logger.info(f"🚀 Running {args.source} producer...")
+            logger.info(f"Running {args.source} producer...")
             count = orchestrator.run_single(args.source)
             results = {args.source: count}
 
         # Check if any items were sent
         total_items = sum(results.values())
         if total_items == 0:
-            logger.error("❌ No items were sent to Kafka")
+            logger.error("No items were sent to Kafka")
             sys.exit(1)
         else:
-            logger.info(f"✅ Successfully sent {total_items} items to Kafka")
+            logger.info(f"Successfully sent {total_items} items to Kafka")
             sys.exit(0)
 
     except KeyboardInterrupt:
-        logger.info("\n⚠️  Interrupted by user")
+        logger.info("\nInterrupted by user")
         sys.exit(130)
     except Exception as e:
-        logger.error(f"❌ Fatal error: {e}", exc_info=True)
+        logger.error(f"Fatal error: {e}", exc_info=True)
         sys.exit(1)
 
 

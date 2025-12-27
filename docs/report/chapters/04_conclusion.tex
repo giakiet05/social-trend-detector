@@ -1,0 +1,35 @@
+% Chương 4: Kết luận
+
+\chapter{Kết luận}
+
+Đồ án đã xây dựng thành công một hệ thống phát hiện xu hướng xã hội hoàn chỉnh, có khả năng tự động thu thập, xử lý và phân tích dữ liệu từ nhiều nền tảng mạng xã hội. Hệ thống kết hợp kiến trúc ba tầng (Producer - Consumer - Dashboard) với các công nghệ hiện đại như Apache Kafka, PySpark, HDBSCAN, và Large Language Models để tạo ra một giải pháp tích hợp và tự động hóa cao.
+
+\section{Kết quả đạt được}
+
+Về mặt kỹ thuật, hệ thống đã triển khai thành công pipeline xử lý tám giai đoạn với khả năng xử lý 1500-2000 nội dung mỗi lần chạy trong khoảng 10-15 phút. Tầng thu thập dữ liệu hoạt động ổn định với ba nguồn TikTok, YouTube và News, sử dụng các API và RSS feeds để lấy dữ liệu mới nhất. Apache Kafka đóng vai trò message queue trung gian, đảm bảo tính ổn định và khả năng mở rộng của hệ thống.
+
+Pipeline xử lý sử dụng PySpark đã tích hợp thành công các kỹ thuật học máy và xử lý ngôn ngữ tự nhiên. Giai đoạn embedding chuyển đổi văn bản thành vector 1536 chiều, cho phép so sánh ngữ nghĩa chính xác. Thuật toán HDBSCAN với cấu hình min\_cluster\_size=15 tự động phát hiện 5-15 cụm xu hướng mỗi batch mà không cần chỉ định trước số lượng cụm. Đặc biệt, việc tích hợp Large Language Models (GPT-4, Gemini) cho phép phân tích tự động và trích xuất thông tin chuyên sâu cho từng xu hướng, bao gồm chủ đề, tóm tắt, cảm xúc, từ khóa, loại nội dung, mức độ rủi ro và hướng dẫn sử dụng.
+
+Cơ chế khử trùng đa yếu tố (embedding similarity, keyword overlap, source distribution) với ngưỡng 0.75 hoạt động hiệu quả, đảm bảo database không bị duplicate và các xu hướng được cập nhật liên tục. Timeout mechanism tự động xóa xu hướng cũ hơn 3 ngày giúp duy trì độ tươi mới của dữ liệu. Checkpoint mechanism ở Consumer đảm bảo exactly-once processing, không bị mất dữ liệu khi xảy ra lỗi.
+
+Về giao diện người dùng, hai dashboard Streamlit cung cấp trải nghiệm tốt cho cả người dùng cuối và quản trị viên. User dashboard hiển thị xu hướng với đầy đủ thông tin, chức năng tìm kiếm và lọc linh hoạt, cùng form đề xuất từ khóa. Admin dashboard cho phép quản lý xu hướng, duyệt đề xuất từ khóa, và theo dõi lịch sử thay đổi. Giao diện trực quan, dễ sử dụng, không yêu cầu kiến thức kỹ thuật.
+
+\section{Hạn chế và thách thức}
+
+Bất chấp những kết quả đạt được, hệ thống còn một số hạn chế cần khắc phục trong tương lai. Hạn chế lớn nhất là chưa hỗ trợ xử lý streaming thời gian thực hoàn toàn. Hệ thống hiện hoạt động theo chế độ batch với chu kỳ bốn giờ, dẫn đến độ trễ trong việc phát hiện xu hướng mới nổi. Mặc dù độ trễ này chấp nhận được cho hầu hết use cases, nhưng với các xu hướng viral nhanh, hệ thống có thể bỏ lỡ giai đoạn bùng nổ ban đầu.
+
+Về phạm vi dữ liệu, hệ thống chỉ tập trung vào ba nền tảng TikTok, YouTube và News, chưa bao gồm các nền tảng lớn khác như Facebook, Instagram, Twitter/X. Điều này hạn chế khả năng phát hiện xu hướng đa nền tảng toàn diện. Nguyên nhân chính là hạn chế về thời gian và khả năng truy cập API của các nền tảng này (Facebook và Instagram có API rất hạn chế, Twitter/X tính phí cao).
+
+Chi phí vận hành là một thách thức đáng kể. Hệ thống phụ thuộc vào các API trả phí như OpenAI (embedding và analysis), Apify (TikTok), và YouTube Data API. Với mỗi batch 1500 items, chi phí embedding khoảng \$0.10-0.15 và chi phí LLM analysis khoảng \$0.50-1.00 (tùy số lượng cụm). Chạy mỗi 4 giờ (6 lần/ngày) dẫn đến chi phí hàng tháng khoảng \$100-150, chưa tính chi phí Apify. Điều này có thể là rào cản cho việc triển khai rộng rãi hoặc sử dụng cá nhân.
+
+Về mặt kỹ thuật, quality filtering hiện chỉ dựa trên các chỉ số đơn giản như engagement rate và số followers, chưa phát hiện tốt các loại spam phức tạp hoặc bot tinh vi. HDBSCAN đôi khi tạo ra các cụm quá lớn hoặc quá nhỏ, đặc biệt khi dữ liệu có mật độ không đồng đều. Two-pass clustering đã cải thiện phần nào nhưng vẫn còn khoảng 10-15\% items bị gán nhãn noise không chính xác.
+
+LLM analysis đôi khi không nhất quán, đặc biệt với các xu hướng mơ hồ hoặc có nhiều khía cạnh. Hệ thống phụ thuộc hoàn toàn vào chất lượng response từ LLM, và việc validate JSON output không đảm bảo semantic correctness. Ngoài ra, prompt engineering cần điều chỉnh liên tục để cải thiện chất lượng analysis.
+
+\section{Đánh giá chung}
+
+Nhìn chung, đồ án đã đạt được mục tiêu ban đầu: xây dựng một hệ thống tự động phát hiện và phân tích xu hướng xã hội từ nhiều nguồn. Kiến trúc ba tầng với Kafka làm message queue và PySpark làm processing engine tạo ra một nền tảng vững chắc, có khả năng mở rộng. Việc kết hợp HDBSCAN cho clustering và LLM cho analysis là một approach hiệu quả, tận dụng được ưu điểm của cả machine learning truyền thống và mô hình ngôn ngữ lớn hiện đại.
+
+Hệ thống đã chứng minh khả năng hoạt động trong thực tế, có thể phát hiện các xu hướng thực tế từ dữ liệu mạng xã hội Việt Nam. Dashboard cung cấp giá trị thực tiễn cho các nhà tiếp thị và quản lý mạng xã hội. Những hạn chế hiện tại chủ yếu liên quan đến quy mô và chi phí, có thể được khắc phục trong các phiên bản tiếp theo.
+
+Đồ án không chỉ là một sản phẩm phần mềm hoàn chỉnh mà còn là minh chứng cho khả năng tích hợp nhiều công nghệ tiên tiến vào một hệ thống thống nhất. Kiến thức và kinh nghiệm thu được từ đồ án về xử lý dữ liệu lớn, phân cụm mật độ, embedding vectors, và prompt engineering sẽ là nền tảng vững chắc cho các dự án tương lai.

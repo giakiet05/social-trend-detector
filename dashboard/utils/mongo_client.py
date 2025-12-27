@@ -27,7 +27,7 @@ class DashboardMongoClient:
     def connect(_self):
         """Establish MongoDB connection (cached)."""
         _self.client = MongoClient(_self.connection_string)
-        _self.db = _self.client['tiktok_trends']
+        _self.db = _self.client['social_trends']
         _self.collection = _self.db['trends']
         return _self
 
@@ -116,3 +116,24 @@ class DashboardMongoClient:
             'total_likes': totals.get('total_likes', 0),
             'sentiments': sentiments
         }
+
+    def delete_trend(self, trend_id: str) -> bool:
+        """
+        Delete a trend by ID (admin only).
+
+        Args:
+            trend_id: MongoDB ObjectId string
+
+        Returns:
+            True if deleted successfully, False otherwise
+        """
+        if self.collection is None:
+            self.connect()
+
+        try:
+            from bson import ObjectId
+            result = self.collection.delete_one({'_id': ObjectId(trend_id)})
+            return result.deleted_count > 0
+        except Exception as e:
+            print(f"Error deleting trend: {e}")
+            return False

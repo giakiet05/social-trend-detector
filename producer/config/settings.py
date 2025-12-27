@@ -15,6 +15,7 @@ class Paths:
     DATA_DIR = ROOT_DIR / "data"
     CONFIG_DIR = Path(__file__).resolve().parent
     KEYWORDS_CONFIG = CONFIG_DIR / "scraping_keywords.yaml"
+    RSS_FEEDS_CONFIG = CONFIG_DIR / "rss_feeds.yaml"
 
 
 # Load .env from project root (only once)
@@ -60,65 +61,134 @@ class Apify:
         self.ACTOR_ID = os.getenv("APIFY_ACTOR_ID", "GdWCkxBtKWOsKjdch")  # clockworks/tiktok-scraper
 
 
-class YouTube:
-    """YouTube Data API v3 configuration."""
+class TikTokConfig:
+    """Static TikTok scraper configuration."""
+    def __init__(self):
+        self.MAX_VIDEOS_PER_QUERY = int(os.getenv("TIKTOK_MAX_VIDEOS", "100"))
+
+
+class YouTubeConfig:
+    """Static YouTube scraper configuration."""
     def __init__(self):
         self.API_KEY = os.getenv("YOUTUBE_API_KEY")
+        self.MAX_VIDEOS_PER_KEYWORD = int(os.getenv("YOUTUBE_MAX_VIDEOS", "200"))
+
+
+class NewsConfig:
+    """Static News scraper configuration."""
+    pass  # No static config needed currently
 
 
 class KeywordsConfig:
     """
-    Scraping keywords configuration loaded from YAML file.
+    Scraping keywords configuration with dual-mode support.
 
-    Edit keywords in: producer/config/scraping_keywords.yaml
+    Modes (controlled by KEYWORDS_SOURCE env var):
+    - yaml: Read keywords from scraping_keywords.yaml (dev/test)
+    - mongodb: Read keywords from MongoDB (production)
+
+    Usage:
+        # Development/Testing
+        KEYWORDS_SOURCE=yaml
+
+        # Production
+        KEYWORDS_SOURCE=mongodb
     """
+
     def __init__(self):
-        self._config = self._load_yaml()
+        self.source = os.getenv("KEYWORDS_SOURCE", "yaml")  # Default: yaml
+        self._config = self._load_yaml() if self.source == "yaml" else {}
+        self._mongo_client = None
+
+        # Load RSS feeds from separate file (used in both modes)
+        self._rss_feeds = self._load_rss_feeds()
 
     def _load_yaml(self) -> Dict:
-        """Load keywords from YAML file."""
+        """Load keywords from YAML file (dev/test mode)."""
         try:
             with open(Paths.KEYWORDS_CONFIG, 'r', encoding='utf-8') as f:
                 return yaml.safe_load(f)
         except FileNotFoundError:
-            print(f"⚠️  Keywords config not found: {Paths.KEYWORDS_CONFIG}")
+            print(f"Keywords config not found: {Paths.KEYWORDS_CONFIG}")
             return {}
         except yaml.YAMLError as e:
-            print(f"⚠️  Failed to parse YAML: {e}")
+            print(f"Failed to parse YAML: {e}")
             return {}
 
-    # TikTok
+    def _load_rss_feeds(self) -> Dict:
+        """Load RSS feeds from separate YAML file."""
+        try:
+            with open(Paths.RSS_FEEDS_CONFIG, 'r', encoding='utf-8') as f:
+                return yaml.safe_load(f)
+        except FileNotFoundError:
+            print(f"RSS feeds config not found: {Paths.RSS_FEEDS_CONFIG}")
+            return {}
+        except yaml.YAMLError as e:
+            print(f"Failed to parse RSS feeds YAML: {e}")
+            return {}
+
+    def _get_mongo_client(self):
+        """Lazy load MongoDB client (production mode)."""
+        if self._mongo_client is None:
+            from pymongo import MongoClient
+            mongo_uri = os.getenv(
+                "MONGO_URI",
+                "mongodb://admin:password@localhost:27017/?authSource=admin"
+            )
+            self._mongo_client = MongoClient(mongo_uri)
+        return self._mongo_client
+
+    def _load_from_mongodb(self, source: str) -> List[str]:
+        """Load keywords from MongoDB (production mode)."""
+        try:
+            db = self._get_mongo_client()["social_trends"]
+            keywords = db.active_keywords.find({
+                "status": "active",
+                "sources": source
+            })
+            return [k["keyword"] for k in keywords]
+        except Exception as e:
+            print(f"Failed to load keywords from MongoDB: {e}")
+            return []
+
+    # --- TikTok ---
     @property
     def tiktok_keywords(self) -> List[str]:
-        return self._config.get('tiktok', {}).get('keywords', [])
+        """Get TikTok keywords (from YAML or MongoDB)."""
+        if self.source == "yaml":
+            return self._config.get('tiktok', {}).get('keywords', [])
+        else:  # mongodb
+            return self._load_from_mongodb('tiktok')
 
     @property
     def tiktok_hashtags(self) -> List[str]:
+        """Get TikTok hashtags (static, from YAML)."""
         return self._config.get('tiktok', {}).get('hashtags', [])
 
+    # --- News ---
     @property
-    def tiktok_max_videos(self) -> int:
-        return self._config.get('tiktok', {}).get('max_videos_per_query', 100)
+    def news_keywords(self) -> List[str]:
+        """Get News keywords (from YAML or MongoDB)."""
+        if self.source == "yaml":
+            return self._config.get('news', {}).get('keywords', [])
+        else:  # mongodb
+            return self._load_from_mongodb('news')
 
-    # VNExpress
     @property
-    def vnexpress_keywords(self) -> List[str]:
-        return self._config.get('vnexpress', {}).get('keywords', [])
+    def news_rss_feeds(self) -> List[str]:
+        """Get News RSS feeds (from rss_feeds.yaml)."""
+        return self._rss_feeds.get('news', {}).get('feeds', [])
 
-    @property
-    def vnexpress_rss_feeds(self) -> List[str]:
-        return self._config.get('vnexpress', {}).get('rss_feeds', [])
-
-    # YouTube
+    # --- YouTube ---
     @property
     def youtube_keywords(self) -> List[str]:
-        return self._config.get('youtube', {}).get('keywords', [])
+        """Get YouTube keywords (from YAML or MongoDB)."""
+        if self.source == "yaml":
+            return self._config.get('youtube', {}).get('keywords', [])
+        else:  # mongodb
+            return self._load_from_mongodb('youtube')
 
-    @property
-    def youtube_max_videos(self) -> int:
-        return self._config.get('youtube', {}).get('max_videos_per_keyword', 50)
-
-    # Google Trends
+    # --- Google Trends (legacy, still from YAML) ---
     @property
     def trends_keywords(self) -> List[str]:
         return self._config.get('google_trends', {}).get('keywords', [])
@@ -145,14 +215,22 @@ class Settings:
     def __init__(self):
         # Static configs
         self.paths = Paths()
+
+        # Scraper-specific static configs
+        self.tiktok_config = TikTokConfig()
+        self.youtube_config = YouTubeConfig()
+        self.news_config = NewsConfig()
+
+        # Keywords (dynamic, dual-mode)
         self.keywords = KeywordsConfig()
 
-        # Dynamic configs (load from environment)
+        # API configs
+        self.apify = Apify()
+
+        # Runtime configs
         self.runtime = Runtime()
         self.mock = MockMode()
         self.kafka = Kafka()
-        self.apify = Apify()
-        self.youtube = YouTube()
         self.logging = Logging()
 
 

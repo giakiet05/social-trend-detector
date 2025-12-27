@@ -47,12 +47,12 @@ def run_producers():
 
         total_items = sum(results.values())
         if total_items > 0:
-            logger.info(f"✅ Scheduled run completed: {total_items} items sent")
+            logger.info(f"Scheduled run completed: {total_items} items sent")
         else:
-            logger.warning("⚠️  Scheduled run completed but no items were sent")
+            logger.warning("Scheduled run completed but no items were sent")
 
     except Exception as e:
-        logger.error(f"❌ Scheduled run failed: {e}", exc_info=True)
+        logger.error(f"Scheduled run failed: {e}", exc_info=True)
 
 
 def main():
@@ -64,7 +64,7 @@ def main():
     setup_logging()
 
     logger.info("=" * 80)
-    logger.info("🚀 PRODUCER SCHEDULER - STARTING")
+    logger.info("PRODUCER SCHEDULER - STARTING")
     logger.info("=" * 80)
     logger.info("Schedule: Initial run + every 4 hours")
     logger.info("Press Ctrl+C to stop")
@@ -85,9 +85,9 @@ def main():
 
     # Graceful shutdown handler
     def shutdown_handler(signum, frame):
-        logger.info("\n⚠️  Received shutdown signal, stopping scheduler...")
+        logger.info("\nReceived shutdown signal, stopping scheduler...")
         scheduler.shutdown(wait=True)
-        logger.info("✅ Scheduler stopped gracefully")
+        logger.info("Scheduler stopped gracefully")
         sys.exit(0)
 
     signal.signal(signal.SIGINT, shutdown_handler)
@@ -104,10 +104,10 @@ def main():
         scheduler.start()
 
     except KeyboardInterrupt:
-        logger.info("\n⚠️  Interrupted by user")
+        logger.info("\nInterrupted by user")
         sys.exit(130)
     except Exception as e:
-        logger.error(f"❌ Fatal error: {e}", exc_info=True)
+        logger.error(f"Fatal error: {e}", exc_info=True)
         sys.exit(1)
 
 

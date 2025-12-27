@@ -1,0 +1,39 @@
+% Chương 1: Mở đầu
+
+\chapter{Mở đầu}
+
+% Trình bày lí do chọn đề tài, mục đích, đối tượng và phạm vi nghiên cứu
+
+\section{Lý do chọn đề tài}
+
+Trong kỷ nguyên số hiện nay, mạng xã hội đã trở thành một phần không thể thiếu trong cuộc sống của hàng tỷ người trên toàn thế giới. Theo thống kê của DataReportal năm 2024, có hơn 5 tỷ người dùng mạng xã hội toàn cầu, chiếm khoảng 62\% dân số thế giới. Tại Việt Nam, con số này còn cao hơn với hơn 77 triệu người dùng, chiếm 76.9\% dân số. Mỗi ngày, hàng triệu nội dung mới được tạo ra trên các nền tảng như TikTok, YouTube và các trang tin tức, tạo nên một khối lượng dữ liệu khổng lồ.
+
+Trong khối lượng dữ liệu này ẩn chứa các xu hướng - những chủ đề, sự kiện hoặc hiện tượng đang thu hút sự quan tâm đặc biệt của cộng đồng trong một khoảng thời gian nhất định. Việc phát hiện và phân tích các xu hướng sớm mang lại nhiều lợi ích: doanh nghiệp có thể điều chỉnh chiến lược marketing kịp thời, nhà báo có thể nắm bắt các vấn đề xã hội đang nổi cộm, và các nhà quản lý mạng xã hội có thể kiểm soát nội dung tiêu cực trước khi lan rộng.
+
+Tuy nhiên, việc theo dõi xu hướng từ nhiều nền tảng khác nhau hiện nay vẫn là một thách thức lớn. Hầu hết các công cụ hiện có như Google Trends, TikTok Creative Center chỉ tập trung vào một nền tảng duy nhất hoặc cung cấp dữ liệu thống kê đơn thuần mà không có phân tích chuyên sâu. Các phương pháp thủ công yêu cầu người dùng phải liên tục kiểm tra từng nền tảng, tốn thời gian và dễ bỏ sót thông tin quan trọng. Đặc biệt, việc tổng hợp và phân tích xu hướng đa nền tảng - khi một chủ đề xuất hiện đồng thời trên nhiều kênh - đòi hỏi kỹ năng và công sức vượt quá khả năng của hầu hết người dùng và tổ chức.
+
+Nhận thấy vấn đề này, nhóm thực hiện quyết định xây dựng một hệ thống phát hiện xu hướng xã hội theo thời gian thực có khả năng tự động thu thập, xử lý và phân tích dữ liệu từ nhiều nguồn mạng xã hội, từ đó phát hiện các xu hướng đang nổi lên và cung cấp phân tích chuyên sâu một cách kịp thời và chính xác.
+
+\section{Mục đích}
+
+Đồ án có mục đích xây dựng một hệ thống hoàn chỉnh có khả năng tự động phát hiện và phân tích xu hướng trên các nền tảng mạng xã hội phổ biến tại Việt Nam. Cụ thể, hệ thống sẽ thu thập dữ liệu từ ba nguồn chính (TikTok, YouTube, và các trang tin tức trực tuyến), xử lý và phân cụm nội dung tương đồng bằng các thuật toán học máy, sau đó phân tích chuyên sâu về chủ đề, cảm xúc, mức độ rủi ro và cung cấp khuyến nghị cụ thể cho người dùng.
+
+Bên cạnh đó, đồ án cũng nhằm chứng minh khả năng tích hợp và ứng dụng thực tế các công nghệ hiện đại trong xử lý dữ liệu lớn và phân tích thông minh. Hệ thống kết hợp Apache Kafka cho message queue, PySpark cho xử lý batch, thuật toán HDBSCAN cho phân cụm mật độ, và các mô hình ngôn ngữ lớn (GPT-4, Gemini) cho phân tích ngữ nghĩa. Đồ án hướng đến việc tạo ra một công cụ thực tế có thể triển khai và sử dụng, không chỉ dừng lại ở nghiên cứu lý thuyết.
+
+\section{Đối tượng nghiên cứu}
+
+Đối tượng nghiên cứu của đồ án bao gồm các nhà tiếp thị, quản lý mạng xã hội, nhà nghiên cứu thị trường, và các doanh nghiệp cần nắm bắt xu hướng để đưa ra quyết định chiến lược. Đặc biệt, hệ thống tập trung vào thị trường Việt Nam với nội dung chủ yếu bằng tiếng Việt, phù hợp với nhu cầu của các tổ chức và doanh nghiệp trong nước.
+
+Ngoài ra, đồ án cũng hướng đến cộng đồng nghiên cứu và phát triển phần mềm quan tâm đến các lĩnh vực xử lý dữ liệu lớn, phân tích mạng xã hội, và ứng dụng học máy. Kiến trúc và mã nguồn của hệ thống có thể được sử dụng làm tài liệu tham khảo cho các dự án tương tự hoặc mở rộng cho các nền tảng mạng xã hội khác.
+
+\section{Phạm vi nghiên cứu}
+
+Phạm vi nghiên cứu của đồ án được giới hạn trong các khía cạnh sau:
+
+\textbf{Về nguồn dữ liệu:} Hệ thống tập trung vào ba nền tảng chính là TikTok (video ngắn), YouTube (video dài), và các trang tin tức trực tuyến Việt Nam (VNExpress, Tuổi Trẻ, VTC News, Thanh Niên). Đồ án không bao gồm các nền tảng khác như Facebook, Instagram, Twitter/X do hạn chế về thời gian và khả năng truy cập API. Ngôn ngữ chủ yếu là tiếng Việt, hỗ trợ một phần tiếng Anh.
+
+\textbf{Về phương pháp xử lý:} Hệ thống sử dụng xử lý batch (theo lô) với chu kỳ bốn giờ một lần, chưa triển khai xử lý streaming thời gian thực hoàn toàn. Pipeline xử lý bao gồm tám giai đoạn: chuẩn hóa, làm sạch, lọc chất lượng, embedding, phân cụm, phân tích, khử trùng và lưu trữ. Thuật toán phân cụm sử dụng HDBSCAN với kích thước cụm tối thiểu 15 nội dung.
+
+\textbf{Về quy mô:} Hệ thống được thiết kế để xử lý khoảng 1500-2000 nội dung mỗi lần chạy, tương đương với khoảng 100 video TikTok, 200 video YouTube và 100+ bài báo mỗi nguồn. Thời gian xử lý một batch từ 10-15 phút tùy thuộc vào số lượng cụm được phát hiện và tốc độ phản hồi của API mô hình ngôn ngữ.
+
+\textbf{Về triển khai:} Hệ thống được phát triển dưới dạng ứng dụng web với giao diện Streamlit, có thể chạy trên môi trường local hoặc triển khai trên cloud. Toàn bộ hệ thống được đóng gói bằng Docker để đảm bảo tính nhất quán giữa các môi trường. Phạm vi không bao gồm việc huấn luyện mô hình ngôn ngữ từ đầu, mà sử dụng các mô hình có sẵn thông qua API (OpenAI, Gemini).

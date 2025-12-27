@@ -126,7 +126,7 @@ class BatchConsumer:
             clusterer=self.clusterer
         )
 
-        logger.info("✅ BatchConsumer initialized")
+        logger.info("BatchConsumer initialized")
 
     def _create_spark_session(self) -> SparkSession:
         """Create Spark session with Kafka support."""
@@ -155,10 +155,10 @@ class BatchConsumer:
                 .getOrCreate()
 
         spark.sparkContext.setLogLevel(settings.spark.LOG_LEVEL)
-        logger.info(f"✅ Spark session created")
+        logger.info(f"Spark session created")
         return spark
 
-    def _read_kafka_batch(self, topic: str, schema) -> List[Dict]:
+    def _read_kafka_batch(self, topic: str, schema) -> tuple[List[Dict], Dict[int, int]]:
         """
         Read batch of messages from Kafka topic.
 
@@ -167,7 +167,9 @@ class BatchConsumer:
             schema: Spark schema for parsing JSON
 
         Returns:
-            List of message dictionaries
+            Tuple of (items, partition_offsets)
+            - items: List of message dictionaries
+            - partition_offsets: Dict mapping partition -> next offset to read
         """
         # Get starting offset from checkpoint
         starting_offsets = self.checkpoint_manager.get_starting_offsets(topic)
@@ -183,10 +185,10 @@ class BatchConsumer:
             .load()
 
         count = kafka_df.count()
-        logger.info(f"📊 Found {count} messages in topic '{topic}'")
+        logger.info(f"Found {count} messages in topic '{topic}'")
 
         if count == 0:
-            return []
+            return [], {}
 
         # Parse JSON with provided schema
         parsed_df = kafka_df.select(
@@ -198,13 +200,13 @@ class BatchConsumer:
         # Collect to Python
         rows = parsed_df.collect()
 
-        # Extract data and save checkpoint
+        # Extract data and track offsets
         items = []
         partition_offsets = {}
 
         for row in rows:
-            partition = row["partition"]
-            offset = row["offset"]
+            partition = int(row["partition"])  # Ensure int type
+            offset = int(row["offset"])  # Ensure int type
 
             # Parse Spark Row to dict
             kafka_msg_dict = row["data"].asDict(recursive=True) if row["data"] else None
@@ -222,58 +224,63 @@ class BatchConsumer:
             if partition not in partition_offsets or offset > partition_offsets[partition]:
                 partition_offsets[partition] = offset + 1  # Next offset to read
 
-        # Save checkpoint (ending offsets)
-        if partition_offsets:
-            self.checkpoint_manager.save_ending_offsets(topic, partition_offsets)
+        return items, partition_offsets
 
-        return items
-
-    def _read_all_topics(self) -> List[Dict]:
+    def _read_all_topics(self) -> tuple[List[Dict], Dict[str, Dict[int, int]]]:
         """
         Read from all 3 Kafka topics (multi-source).
 
         Returns:
-            List of mixed items (TikTok + News + YouTube)
+            Tuple of (all_items, all_offsets)
+            - all_items: List of mixed items (TikTok + News + YouTube)
+            - all_offsets: Dict mapping topic -> partition_offsets
         """
-        logger.info("📥 Reading from all Kafka topics...")
+        logger.info("Reading from all Kafka topics...")
 
         all_items = []
+        all_offsets = {}
 
         # Read TikTok (skip if topic doesn't exist)
         try:
-            tiktok_items = self._read_kafka_batch(settings.kafka.TIKTOK_TOPIC, TIKTOK_VIDEO_SCHEMA)
-            logger.info(f"   ├─ TikTok: {len(tiktok_items)} items")
+            tiktok_items, tiktok_offsets = self._read_kafka_batch(settings.kafka.TIKTOK_TOPIC, TIKTOK_VIDEO_SCHEMA)
+            logger.info(f"   TikTok: {len(tiktok_items)} items")
             all_items.extend(tiktok_items)
+            if tiktok_offsets:
+                all_offsets[settings.kafka.TIKTOK_TOPIC] = tiktok_offsets
         except Exception as e:
             if "UnknownTopicOrPartitionException" in str(e):
-                logger.warning(f"   ├─ TikTok: topic not found, skipping")
+                logger.warning(f"   TikTok: topic not found, skipping")
             else:
                 raise
 
-        # Read VNExpress (skip if topic doesn't exist)
+        # Read News (skip if topic doesn't exist)
         try:
-            news_items = self._read_kafka_batch(settings.kafka.NEWS_TOPIC, NEWS_ARTICLE_SCHEMA)
-            logger.info(f"   ├─ News: {len(news_items)} items")
+            news_items, news_offsets = self._read_kafka_batch(settings.kafka.NEWS_TOPIC, NEWS_ARTICLE_SCHEMA)
+            logger.info(f"   News: {len(news_items)} items")
             all_items.extend(news_items)
+            if news_offsets:
+                all_offsets[settings.kafka.NEWS_TOPIC] = news_offsets
         except Exception as e:
             if "UnknownTopicOrPartitionException" in str(e):
-                logger.warning(f"   ├─ News: topic not found, skipping")
+                logger.warning(f"   News: topic not found, skipping")
             else:
                 raise
 
         # Read YouTube (skip if topic doesn't exist)
         try:
-            youtube_items = self._read_kafka_batch(settings.kafka.YOUTUBE_TOPIC, YOUTUBE_VIDEO_SCHEMA)
-            logger.info(f"   └─ YouTube: {len(youtube_items)} items")
+            youtube_items, youtube_offsets = self._read_kafka_batch(settings.kafka.YOUTUBE_TOPIC, YOUTUBE_VIDEO_SCHEMA)
+            logger.info(f"   YouTube: {len(youtube_items)} items")
             all_items.extend(youtube_items)
+            if youtube_offsets:
+                all_offsets[settings.kafka.YOUTUBE_TOPIC] = youtube_offsets
         except Exception as e:
             if "UnknownTopicOrPartitionException" in str(e):
-                logger.warning(f"   └─ YouTube: topic not found, skipping")
+                logger.warning(f"   YouTube: topic not found, skipping")
             else:
                 raise
 
-        logger.info(f"📦 Total items from all sources: {len(all_items)}")
-        return all_items
+        logger.info(f"Total items from all sources: {len(all_items)}")
+        return all_items, all_offsets
 
     def run_once(self):
         """
@@ -283,50 +290,57 @@ class BatchConsumer:
         1. Read all new messages from Kafka (since last checkpoint)
         2. Check if batch size meets minimum threshold
         3. Process through pipeline
-        4. Save checkpoint
+        4. Save checkpoint ONLY if processing succeeded
         5. Exit
         """
         logger.info("\n" + "=" * 70)
-        logger.info("🚀 BATCH CONSUMER - STARTING")
+        logger.info("BATCH CONSUMER - STARTING")
         logger.info("=" * 70)
 
         try:
             # Step 1: Read from all Kafka topics (multi-source)
-            items = self._read_all_topics()
+            items, all_offsets = self._read_all_topics()
 
             if not items:
-                logger.warning("⚠️  No new messages in Kafka, nothing to process")
+                logger.warning("No new messages in Kafka, nothing to process")
                 return
 
-            logger.info(f"📦 Retrieved {len(items)} items from Kafka")
+            logger.info(f"Retrieved {len(items)} items from Kafka")
 
             # Step 2: Check minimum batch size
             min_batch_size = settings.processing.MIN_BATCH_SIZE
             if len(items) < min_batch_size:
                 logger.warning(
-                    f"⚠️  Batch size ({len(items)}) < minimum ({min_batch_size}), skipping processing"
+                    f"Batch size ({len(items)}) < minimum ({min_batch_size}), skipping processing"
                 )
-                logger.warning(f"   Items will be included in next batch")
-                return
+                logger.warning(f"Items will be included in next batch (checkpoint NOT saved)")
+                return  # Exit without saving checkpoint
 
             # Step 3: Process through pipeline
-            logger.info(f"🔄 Processing {len(items)} items through pipeline...")
+            logger.info(f"Processing {len(items)} items through pipeline...")
             self.pipeline.process(items)
 
+            # Step 4: Save checkpoint ONLY after successful processing
+            for topic, offsets in all_offsets.items():
+                self.checkpoint_manager.save_ending_offsets(topic, offsets)
+
+            logger.info("Checkpoint saved for all topics")
+
             logger.info("=" * 70)
-            logger.info("✅ BATCH CONSUMER - COMPLETED")
+            logger.info("BATCH CONSUMER - COMPLETED")
             logger.info(f"   Processed: {len(items)} items")
             logger.info("=" * 70 + "\n")
 
         except Exception as e:
-            logger.error(f"❌ Batch processing failed: {e}", exc_info=True)
+            logger.error(f"Batch processing failed: {e}", exc_info=True)
+            logger.error("Checkpoint NOT saved due to failure")
             raise
 
         finally:
             # Always cleanup
             self.spark.stop()
             self.mongo_client.close()
-            logger.info("👋 Batch consumer stopped")
+            logger.info("Batch consumer stopped")
 
 
 if __name__ == "__main__":

@@ -79,7 +79,7 @@ class MongoDBSettings:
         "MONGO_URI",
         "mongodb://admin:password@localhost:27017/?authSource=admin"
     )
-    DATABASE = "tiktok_trends"
+    DATABASE = "social_trends"
     COLLECTION = "trends"
 
     # Deduplication

@@ -1,5 +1,5 @@
 """
-VNExpress scraper using RSS feeds.
+News scraper using RSS feeds from multiple Vietnamese news sources.
 """
 
 import logging
@@ -13,19 +13,23 @@ from common.models import NewsArticle
 logger = logging.getLogger(__name__)
 
 
-class VNExpressScraper(BaseScraper):
+class NewsScraper(BaseScraper):
     """
-    VNExpress news scraper using RSS feeds.
+    Generic news scraper using RSS feeds.
 
-    Scrapes articles from VNExpress RSS feeds and filters by keywords.
+    Supports multiple Vietnamese news sources:
+    - VNExpress (vnexpress.net)
+    - Tuổi Trẻ (tuoitre.vn)
+    - VTC News (vtcnews.vn)
+    - Thanh Niên (thanhnien.vn)
 
     Usage:
-        scraper = VNExpressScraper()
+        scraper = NewsScraper()
         articles = scraper.scrape(keywords=["công nghệ"], rss_feeds=["https://..."])
     """
 
     def __init__(self):
-        """Initialize VNExpress scraper."""
+        """Initialize news scraper."""
         super().__init__()
 
     def scrape(
@@ -34,11 +38,11 @@ class VNExpressScraper(BaseScraper):
         rss_feeds: List[str] = None
     ) -> List[NewsArticle]:
         """
-        Scrape VNExpress articles from RSS feeds.
+        Scrape news articles from RSS feeds.
 
         Args:
             keywords: Filter keywords (if None, return all articles)
-            rss_feeds: List of RSS feed URLs
+            rss_feeds: List of RSS feed URLs from any supported news source
 
         Returns:
             List of NewsArticle objects
@@ -77,7 +81,7 @@ class VNExpressScraper(BaseScraper):
                                 continue
 
                         try:
-                            article = self._transform_rss_entry(entry, category)
+                            article = self._transform_rss_entry(entry, category, feed_url)
                             articles.append(article)
                         except Exception as e:
                             self.logger.warning(f"⚠️  Failed to transform entry: {e}")
@@ -98,6 +102,8 @@ class VNExpressScraper(BaseScraper):
         """
         Infer category from RSS feed URL.
 
+        Supports VNExpress, Tuổi Trẻ, VTC News, and Thanh Niên URL patterns.
+
         Args:
             url: RSS feed URL
 
@@ -106,36 +112,103 @@ class VNExpressScraper(BaseScraper):
         """
         url_lower = url.lower()
 
-        if "tin-moi-nhat" in url_lower:
+        # Homepage/Latest news
+        if any(x in url_lower for x in ["tin-moi-nhat", "trang-chu", "home"]):
             return "Tin mới nhất"
-        elif "thoi-su" in url_lower:
+
+        # Politics/Current Affairs
+        elif any(x in url_lower for x in ["thoi-su", "chinh-tri"]):
             return "Thời sự"
+
+        # Entertainment
         elif "giai-tri" in url_lower:
             return "Giải trí"
-        elif "kinh-doanh" in url_lower:
+
+        # Business/Economy
+        elif any(x in url_lower for x in ["kinh-doanh", "kinh-te"]):
             return "Kinh doanh"
+
+        # World news
         elif "the-gioi" in url_lower:
             return "Thế giới"
+
+        # Sports
         elif "the-thao" in url_lower:
             return "Thể thao"
+
+        # Law
         elif "phap-luat" in url_lower:
             return "Pháp luật"
+
+        # Education
         elif "giao-duc" in url_lower:
             return "Giáo dục"
+
+        # Health
         elif "suc-khoe" in url_lower:
             return "Sức khỏe"
+
+        # Lifestyle
         elif "doi-song" in url_lower:
             return "Đời sống"
+
+        # Travel
         elif "du-lich" in url_lower:
             return "Du lịch"
+
+        # Science
         elif "khoa-hoc" in url_lower:
             return "Khoa học"
-        elif "so-hoa" in url_lower:
-            return "Số hóa"
-        elif "xe" in url_lower:
+
+        # Technology/Digital
+        elif any(x in url_lower for x in ["so-hoa", "nhip-song-so", "cong-nghe", "khoa-hoc-cong-nghe"]):
+            return "Công nghệ"
+
+        # Automotive
+        elif any(x in url_lower for x in ["xe", "oto-xe-may"]):
             return "Xe"
+
+        # Youth
+        elif any(x in url_lower for x in ["nhip-song-tre", "gioi-tre"]):
+            return "Giới trẻ"
+
+        # Culture
+        elif "van-hoa" in url_lower:
+            return "Văn hóa"
+
+        # Real estate
+        elif any(x in url_lower for x in ["bat-dong-san", "dia-oc"]):
+            return "Bất động sản"
+
+        # Need to know (VTC specific)
+        elif "can-biet" in url_lower:
+            return "Cần biết"
+
         else:
             return "Tổng hợp"
+
+    def _detect_author_from_url(self, url: str) -> str:
+        """
+        Detect news source (author) from RSS feed URL.
+
+        Args:
+            url: RSS feed URL
+
+        Returns:
+            News source name
+        """
+        url_lower = url.lower()
+
+        if "vnexpress.net" in url_lower:
+            return "VNExpress"
+        elif "tuoitre.vn" in url_lower:
+            return "Tuổi Trẻ"
+        elif "vtcnews.vn" in url_lower:
+            return "VTC News"
+        elif "thanhnien.vn" in url_lower:
+            return "Thanh Niên"
+        else:
+            return "Unknown"
 
     def _matches_keywords(self, entry: dict, keywords: List[str]) -> bool:
         """
@@ -157,7 +230,7 @@ class VNExpressScraper(BaseScraper):
 
         return False
 
-    def _transform_rss_entry(self, entry: dict, category: str) -> NewsArticle:
+    def _transform_rss_entry(self, entry: dict, category: str, feed_url: str) -> NewsArticle:
         """
         Transform RSS entry to NewsArticle model.
 
@@ -172,6 +245,7 @@ class VNExpressScraper(BaseScraper):
         Args:
             entry: RSS feed entry
             category: Inferred category
+            feed_url: RSS feed URL (for author detection)
 
         Returns:
             NewsArticle instance
@@ -196,6 +270,9 @@ class VNExpressScraper(BaseScraper):
         # Generate article ID from link
         article_id = entry.get('id') or entry.get('link', '').split('/')[-1].split('.')[0]
 
+        # Detect author from feed URL
+        author = self._detect_author_from_url(feed_url)
+
         return NewsArticle(
             article_id=article_id,
             title=entry.get('title', ''),
@@ -204,5 +281,5 @@ class VNExpressScraper(BaseScraper):
             category=category,
             published_at=published_at,
             thumbnail=thumbnail,
-            author="VNExpress"
+            author=author
         )

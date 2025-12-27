@@ -8,9 +8,8 @@ import time
 from datetime import datetime
 from collections import Counter
 from .base_stage import BaseStage
-from common.models import ContentItem
+from common.models import ContentItem, Trend
 from consumer.enrichment.base_llm_client import BaseLLMClient
-from consumer.models.schemas import Trend
 from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)

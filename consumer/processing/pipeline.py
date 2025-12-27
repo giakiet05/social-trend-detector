@@ -17,7 +17,7 @@ from .stages import (
 from consumer.enrichment.base_llm_client import BaseEmbeddingClient, BaseLLMClient
 from consumer.storage.mongo_client import MongoDBClient
 from consumer.processing.clusterer import TrendClusterer
-from consumer.models.schemas import Trend
+from common.models import Trend
 
 logger = logging.getLogger(__name__)
 

@@ -73,6 +73,58 @@ st.sidebar.header("Filters")
 
 refresh_button = st.sidebar.button("Refresh Data", use_container_width=True)
 
+# Keyword Submission Form
+st.sidebar.markdown("---")
+st.sidebar.header("Suggest a Trend")
+
+with st.sidebar.form("keyword_submission_form", clear_on_submit=True):
+    keyword_input = st.text_input(
+        "Keyword",
+        placeholder="e.g., Avatar 3",
+        help="Enter a keyword you think is trending"
+    )
+    reason_input = st.text_area(
+        "Why is it trending? (optional)",
+        placeholder="I saw it a lot on TikTok/YouTube...",
+        height=80
+    )
+    name_input = st.text_input(
+        "Your name/email (optional)",
+        placeholder="Anonymous"
+    )
+
+    submit_button = st.form_submit_button("Submit Keyword", use_container_width=True)
+
+    if submit_button:
+        if not keyword_input or keyword_input.strip() == "":
+            st.error("Please enter a keyword")
+        else:
+            # Import keyword manager
+            import sys
+            from pathlib import Path
+            ROOT_DIR = Path(__file__).resolve().parents[1]
+            sys.path.insert(0, str(ROOT_DIR))
+
+            from common.keyword_manager import MongoKeywordManager
+
+            try:
+                manager = MongoKeywordManager()
+                result = manager.submit_keyword(
+                    keyword=keyword_input,
+                    reason=reason_input if reason_input else None,
+                    submitted_by=name_input if name_input else None
+                )
+                manager.close()
+
+                if result["success"]:
+                    st.success(result["message"])
+                else:
+                    st.warning(result["message"])
+            except Exception as e:
+                st.error(f"Error submitting keyword: {e}")
+
+st.sidebar.markdown("---")
+
 sentiment_filter = st.sidebar.multiselect(
     "Sentiment",
     options=["positive", "negative", "neutral"],

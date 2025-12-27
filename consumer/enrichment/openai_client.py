@@ -83,7 +83,6 @@ class OpenAIClient(BaseEmbeddingClient, BaseLLMClient):
                     {"role": "system", "content": "Bạn là chuyên gia phân tích xu hướng xã hội từ nhiều nguồn (TikTok, YouTube, VNExpress). Luôn trả lời bằng tiếng Việt và format JSON hợp lệ."},
                     {"role": "user", "content": prompt}
                 ],
-                max_tokens=settings.openai.MAX_TOKENS,
                 temperature=0.7,
                 response_format={"type": "json_object"}
             )

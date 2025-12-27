@@ -6,7 +6,7 @@ import logging
 import concurrent.futures
 from typing import Dict
 from producer.producers.tiktok_producer import TikTokProducer
-from producer.producers.vnexpress_producer import VNExpressProducer
+from producer.producers.news_producer import NewsProducer
 from producer.producers.youtube_producer import YouTubeProducer
 
 logger = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ class ProducerOrchestrator:
     """
     Orchestrator to run multiple producers concurrently.
 
-    Runs TikTok, VNExpress, and YouTube producers in parallel using ThreadPoolExecutor.
+    Runs TikTok, News (VNExpress, Tuổi Trẻ, VTC News, Thanh Niên), and YouTube producers in parallel using ThreadPoolExecutor.
 
     Usage:
         orchestrator = ProducerOrchestrator()
@@ -27,7 +27,7 @@ class ProducerOrchestrator:
         """Initialize orchestrator with all producers."""
         self.producers = {
             'tiktok': TikTokProducer(),
-            'vnexpress': VNExpressProducer(),
+            'news': NewsProducer(),
             'youtube': YouTubeProducer()
         }
 
@@ -91,7 +91,7 @@ class ProducerOrchestrator:
         Run a single producer by name.
 
         Args:
-            producer_name: Name of producer ('tiktok', 'vnexpress', 'youtube')
+            producer_name: Name of producer ('tiktok', 'news', 'youtube')
 
         Returns:
             Number of items sent

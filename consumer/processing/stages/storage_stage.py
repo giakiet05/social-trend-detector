@@ -6,7 +6,7 @@ from typing import List
 import logging
 from .base_stage import BaseStage
 from consumer.storage.mongo_client import MongoDBClient
-from consumer.models.schemas import Trend
+from common.models import Trend
 
 logger = logging.getLogger(__name__)
 

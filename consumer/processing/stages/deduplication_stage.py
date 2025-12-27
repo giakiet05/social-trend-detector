@@ -9,7 +9,7 @@ from datetime import datetime
 from .base_stage import BaseStage
 from consumer.enrichment.base_llm_client import BaseEmbeddingClient
 from consumer.storage.mongo_client import MongoDBClient
-from consumer.models.schemas import Trend
+from common.models import Trend
 from consumer.config.settings import settings
 
 logger = logging.getLogger(__name__)

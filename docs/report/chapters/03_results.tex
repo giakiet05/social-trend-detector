@@ -43,6 +43,16 @@ Sau khi thu thập và chuẩn hóa, dữ liệu từ ba nguồn được gửi 
 
 Mỗi message trong Kafka chứa một content item được serialize bằng JSON, bao gồm toàn bộ metadata và các chỉ số tương tác. Kafka topics được cấu hình với replication\_factor=1 (do chạy single-node), num\_partitions=1, retention.ms=86400000 (24 giờ). Hệ thống ghi log mỗi lần gửi thành công để theo dõi và debug. Tổng thời gian thu thập và gửi vào Kafka cho cả ba nguồn thường dưới 5 phút.
 
+\subsection{Keyword Extractor}
+
+Keyword Extractor là module hỗ trợ thu thập và đề xuất từ khóa trending mới từ tin tức một cách tự động. Khác với Producer chính chạy 4 giờ một lần và phụ thuộc vào danh sách từ khóa có sẵn, Keyword Extractor hoạt động độc lập, chạy một lần mỗi ngày để phát hiện từ khóa tiềm năng viral từ các tiêu đề báo mới.
+
+Hệ thống sử dụng 23 RSS feeds từ các chuyên mục trending của bốn tờ báo lớn (VNExpress, Tuổi Trẻ, VTC News, Thanh Niên), tập trung vào các lĩnh vực có tiềm năng viral cao: giải trí, công nghệ, lifestyle, sức khỏe, xe, du lịch, thể thao. Các chuyên mục về chính trị, quân sự, kinh tế và pháp luật bị loại trừ vì ít phù hợp cho mục đích marketing.
+
+Quy trình extraction gồm bốn bước: (1) Scraping - thu thập headlines từ 23 RSS feeds, giới hạn tối đa 1000 tiêu đề; (2) Batch Processing - tổng hợp tất cả headlines vào một prompt duy nhất; (3) LLM Analysis - sử dụng GPT-4o-mini hoặc Gemini Flash để phân tích và trích xuất 30 từ khóa có tiềm năng viral cao nhất, kèm theo category (giải trí/công nghệ/lifestyle/...) và reason (lý do trending); (4) Storage - lưu vào MongoDB collection extracted\_keywords với status 'pending' để admin review.
+
+Chi phí cho mỗi lần extraction rất thấp ($\sim$\$0.03-0.05 cho 800-1200 headlines trong một LLM call), so với việc chạy Producer với từ khóa không hiệu quả. Keyword Extractor giúp admin phát hiện xu hướng mới nhanh chóng mà không cần theo dõi tin tức thủ công. Admin có thể approve từ khóa với một click, từ khóa sẽ tự động được thêm vào active\_keywords và áp dụng cho tất cả Producer (TikTok, YouTube, News) trong chu kỳ tiếp theo.
+
 \section{Tầng xử lý phân tích (Consumer)}
 
 \subsection{Kafka Consumer}
@@ -111,13 +121,13 @@ Dashboard cung cấp các chức năng filter và search: (1) Text search - tìm
 
 \subsection{Admin Dashboard}
 
-Admin Dashboard cung cấp các chức năng quản trị hệ thống. Giao diện chia thành ba tabs: Trend Management, Keyword Approval, và Keyword Management.
+Admin Dashboard cung cấp các chức năng quản trị hệ thống. Giao diện chia thành ba tabs: Quản lý xu hướng, Đề xuất từ khóa, và Từ khóa hoạt động.
 
-\textbf{Trend Management:} Admin có thể xem tất cả trends với đầy đủ thông tin, tìm kiếm theo topic, và xóa trends không mong muốn. Mỗi trend hiển thị thêm thông tin kỹ thuật như trend\_id, created\_at, updated\_at. Chức năng xóa có confirmation để tránh xóa nhầm.
+\textbf{Quản lý xu hướng:} Admin có thể xem tất cả trends với đầy đủ thông tin, tìm kiếm theo topic, và xóa trends không mong muốn. Mỗi trend hiển thị thêm thông tin kỹ thuật như trend\_id, created\_at, updated\_at. Chức năng xóa có confirmation để tránh xóa nhầm.
 
-\textbf{Keyword Approval:} Hiển thị danh sách user submissions với status 'pending', bao gồm: keyword, platform, reason (lý do đề xuất), submitted\_by, submitted\_at. Admin có thể approve hoặc reject từng submission. Khi approve, keyword được thêm vào active\_keywords và submission status chuyển thành 'approved'. Khi reject, submission status chuyển thành 'rejected'. Hệ thống ghi log mỗi action vào keyword\_history.
+\textbf{Đề xuất từ khóa:} Tab này chia làm hai cột để quản lý từ khóa từ hai nguồn khác nhau. Cột trái hiển thị đề xuất từ người dùng (user submissions) với thông tin keyword, reason, submitted\_by, status. Admin có thể approve hoặc reject từng submission. Cột phải hiển thị từ khóa được Keyword Extractor tự động trích xuất từ tin tức, bao gồm keyword, category (giải trí/công nghệ/...), reason (lý do trending), status. Mỗi extracted keyword có button "Thêm vào keywords" để approve và tự động thêm vào active\_keywords áp dụng cho tất cả nguồn, hoặc "Bỏ qua" để reject. Cả hai nguồn đều có filter theo status (pending/approved/rejected/all) để dễ quản lý.
 
-\textbf{Keyword Management:} Hiển thị danh sách active\_keywords hiện tại, cho phép admin thêm keyword mới trực tiếp, xóa keyword không còn cần thiết, và xem keyword\_history (audit log). Keyword history ghi lại toàn bộ thay đổi: action (add/remove/approve/reject), keyword, performed\_by, timestamp.
+\textbf{Từ khóa hoạt động:} Hiển thị danh sách active\_keywords hiện tại với các chức năng: (1) Thêm keyword mới thủ công qua form; (2) Sửa keyword hiện có - khi click "Sửa", keyword chuyển thành input field với buttons "Lưu"/"Hủy", cho phép admin chỉnh sửa nhanh; (3) Xóa keyword không còn cần thiết. Tất cả thay đổi được ghi log vào keyword\_history collection để audit: action (add/update/remove/approve), keyword, performed\_by, timestamp, details (old\_keyword, new\_keyword). Mỗi keyword áp dụng cho tất cả ba nguồn TikTok, YouTube và News.
 
 \begin{figure}[H]
     \centering

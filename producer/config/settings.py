@@ -71,7 +71,7 @@ class YouTubeConfig:
     """Static YouTube scraper configuration."""
     def __init__(self):
         self.API_KEY = os.getenv("YOUTUBE_API_KEY")
-        self.MAX_VIDEOS_PER_KEYWORD = int(os.getenv("YOUTUBE_MAX_VIDEOS", "200"))
+        self.MAX_VIDEOS_PER_KEYWORD = int(os.getenv("YOUTUBE_MAX_VIDEOS", "500"))
 
 
 class NewsConfig:

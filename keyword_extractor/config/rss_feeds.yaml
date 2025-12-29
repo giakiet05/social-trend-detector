@@ -1,0 +1,35 @@
+# RSS Feeds for Keyword Extraction
+# Only trending categories: Giải trí, Đời sống, Công nghệ, Xe, Du lịch, Sức khỏe, Thể thao
+# Avoid: Chính trị, Quân sự, Kinh tế, Thời sự
+
+news:
+  feeds:
+    # VNExpress - Trending categories only
+    - https://vnexpress.net/rss/giai-tri.rss          # Giải trí
+    - https://vnexpress.net/rss/doi-song.rss          # Đời sống
+    - https://vnexpress.net/rss/so-hoa.rss            # Công nghệ
+    - https://vnexpress.net/rss/oto-xe-may.rss        # Xe
+    - https://vnexpress.net/rss/du-lich.rss           # Du lịch
+    - https://vnexpress.net/rss/suc-khoe.rss          # Sức khỏe
+    - https://vnexpress.net/rss/the-thao.rss          # Thể thao
+
+    # Tuổi Trẻ - Trending categories only
+    - https://tuoitre.vn/rss/giai-tri.rss             # Giải trí
+    - https://tuoitre.vn/rss/nhip-song-tre.rss        # Giới trẻ
+    - https://tuoitre.vn/rss/nhip-song-so.rss         # Số hóa
+    - https://tuoitre.vn/rss/xe.rss                   # Xe
+    - https://tuoitre.vn/rss/du-lich.rss              # Du lịch
+    - https://tuoitre.vn/rss/the-thao.rss             # Thể thao
+
+    # VTC News - Trending categories only
+    - https://vtcnews.vn/rss/giai-tri.rss             # Giải trí
+    - https://vtcnews.vn/rss/cong-nghe.rss            # Công nghệ
+    - https://vtcnews.vn/rss/oto-xe-may.rss           # Xe
+    - https://vtcnews.vn/rss/du-lich.rss              # Du lịch
+
+    # Thanh Niên - Trending categories only
+    - https://thanhnien.vn/rss/giai-tri.rss           # Giải trí
+    - https://thanhnien.vn/rss/gioi-tre.rss           # Giới trẻ
+    - https://thanhnien.vn/rss/cong-nghe.rss          # Công nghệ
+    - https://thanhnien.vn/rss/xe.rss                 # Xe
+    - https://thanhnien.vn/rss/the-thao.rss           # Thể thao

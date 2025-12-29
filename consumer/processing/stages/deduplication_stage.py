@@ -249,8 +249,8 @@ class DeduplicationStage(BaseStage):
     def _engagement_score(self, video):
         """Calculate engagement score."""
         return (
-            video.get('likes', 0) * 1.0 +
-            video.get('comments', 0) * 2.0 +
-            video.get('shares', 0) * 3.0 +
-            video.get('collects', 0) * 4.0
+            (video.get('likes') or 0) * 1.0 +
+            (video.get('comments') or 0) * 2.0 +
+            (video.get('shares') or 0) * 3.0 +
+            (video.get('collects') or 0) * 4.0
         )

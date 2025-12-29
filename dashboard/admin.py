@@ -64,7 +64,7 @@ keyword_manager = get_keyword_manager()
 st.markdown('<h1 class="main-header">Socitrend - Quản trị</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Quản lý xu hướng, đề xuất và từ khóa</p>', unsafe_allow_html=True)
 
-tab1, tab2, tab3 = st.tabs(["Quản lý xu hướng", "Đề xuất từ người dùng", "Từ khóa hoạt động"])
+tab1, tab2, tab3 = st.tabs(["Quản lý xu hướng", "Đề xuất từ khóa", "Từ khóa hoạt động"])
 
 # ==================== TAB 1: TRENDS MANAGEMENT ====================
 with tab1:
@@ -127,60 +127,53 @@ with tab1:
                         else:
                             st.error("Xóa xu hướng thất bại")
 
-# ==================== TAB 2: USER SUBMISSIONS ====================
+# ==================== TAB 2: KEYWORD SUGGESTIONS ====================
 with tab2:
-    st.header("Đề xuất từ người dùng")
+    st.header("Đề xuất từ khóa")
 
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        filter_status = st.selectbox(
-            "Lọc theo trạng thái",
-            ["pending", "approved", "rejected", "all"],
-            index=0
-        )
-    with col2:
-        refresh_submissions = st.button("Làm mới", key="refresh_submissions", use_container_width=True)
+    col_user, col_extracted = st.columns([1, 1])
 
-    if filter_status == "all":
-        submissions = list(keyword_manager.user_submissions.find().sort("created_at", -1).limit(100))
-    else:
-        submissions = keyword_manager.get_pending_submissions(limit=100) if filter_status == "pending" else \
-                     list(keyword_manager.user_submissions.find({"status": filter_status}).sort("created_at", -1).limit(100))
+    # ========== CỘT TRÁI: USER SUBMISSIONS ==========
+    with col_user:
+        st.subheader("Từ người dùng")
 
-    if not submissions:
-        st.info(f"Không tìm thấy đề xuất {filter_status}")
-    else:
-        st.write(f"**Tổng số đề xuất {filter_status}:** {len(submissions)}")
+        col_filter, col_refresh = st.columns([3, 1])
+        with col_filter:
+            filter_status_user = st.selectbox(
+                "Lọc theo trạng thái",
+                ["pending", "approved", "rejected", "all"],
+                index=0,
+                key="filter_user"
+            )
+        with col_refresh:
+            refresh_user = st.button("Làm mới", key="refresh_user", use_container_width=True)
 
-        for idx, sub in enumerate(submissions):
-            status = sub.get('status', 'pending')
-            status_class = f"status-{status}"
+        if filter_status_user == "all":
+            submissions = list(keyword_manager.user_submissions.find().sort("created_at", -1).limit(50))
+        else:
+            submissions = keyword_manager.get_pending_submissions(limit=50) if filter_status_user == "pending" else \
+                         list(keyword_manager.user_submissions.find({"status": filter_status_user}).sort("created_at", -1).limit(50))
 
-            with st.expander(f"**{sub.get('keyword', 'Không rõ')}** - {status.upper()}"):
-                st.markdown(f"<span class='badge {status_class}'>{status.upper()}</span>", unsafe_allow_html=True)
+        if not submissions:
+            st.info(f"Không có đề xuất {filter_status_user}")
+        else:
+            st.write(f"**Tổng:** {len(submissions)}")
 
-                col1, col2 = st.columns([3, 1])
+            for idx, sub in enumerate(submissions):
+                status = sub.get('status', 'pending')
+                status_class = f"status-{status}"
 
-                with col1:
-                    st.write(f"**Từ khóa:** {sub.get('keyword', 'N/A')}")
+                with st.expander(f"**{sub.get('keyword', 'Không rõ')}**", expanded=False):
+                    st.markdown(f"<span class='badge {status_class}'>{status.upper()}</span>", unsafe_allow_html=True)
+
                     st.write(f"**Lý do:** {sub.get('reason', 'N/A')}")
                     st.write(f"**Người gửi:** {sub.get('submitted_by', 'Ẩn danh')}")
-                    st.write(f"**Ngày tạo:** {sub.get('created_at', 'N/A')}")
 
-                    if sub.get('reviewed_at'):
-                        st.write(f"**Ngày duyệt:** {sub.get('reviewed_at', 'N/A')}")
-                        st.write(f"**Người duyệt:** {sub.get('reviewed_by', 'N/A')}")
-                        if sub.get('notes'):
-                            st.write(f"**Ghi chú:** {sub.get('notes', '')}")
-
-                with col2:
                     if status == "pending":
-                        st.write("**Hành động:**")
-
                         col_approve, col_reject = st.columns(2)
 
                         with col_approve:
-                            if st.button("Duyệt", key=f"approve_{idx}", use_container_width=True):
+                            if st.button("Duyệt", key=f"approve_user_{idx}", use_container_width=True):
                                 result = keyword_manager.approve_submission(
                                     submission_id=str(sub['_id']),
                                     sources=["tiktok", "news", "youtube"],
@@ -193,11 +186,87 @@ with tab2:
                                     st.error(result['message'])
 
                         with col_reject:
-                            if st.button("Từ chối", key=f"reject_{idx}", type="secondary", use_container_width=True):
+                            if st.button("Từ chối", key=f"reject_user_{idx}", type="secondary", use_container_width=True):
                                 result = keyword_manager.reject_submission(
                                     submission_id=str(sub['_id']),
                                     reason="Từ chối bởi admin",
                                     reviewed_by="admin"
+                                )
+                                if result['success']:
+                                    st.success(result['message'])
+                                    st.rerun()
+                                else:
+                                    st.error(result['message'])
+
+    # ========== CỘT PHẢI: EXTRACTED KEYWORDS ==========
+    with col_extracted:
+        st.subheader("Từ Keyword Extractor")
+
+        col_filter, col_refresh = st.columns([3, 1])
+        with col_filter:
+            filter_status_extracted = st.selectbox(
+                "Lọc theo trạng thái",
+                ["pending", "approved", "rejected", "all"],
+                index=0,
+                key="filter_extracted"
+            )
+        with col_refresh:
+            refresh_extracted = st.button("Làm mới", key="refresh_extracted", use_container_width=True)
+
+        extracted_keywords = mongo_client.get_extracted_keywords(
+            status=filter_status_extracted,
+            limit=50
+        )
+
+        if not extracted_keywords:
+            st.info(f"Không có từ khóa {filter_status_extracted}")
+        else:
+            st.write(f"**Tổng:** {len(extracted_keywords)}")
+
+            for idx, kw in enumerate(extracted_keywords):
+                status = kw.get('status', 'pending')
+                status_class = f"status-{status}"
+                category = kw.get('category', 'N/A')
+
+                with st.expander(f"**{kw.get('keyword', 'Không rõ')}** ({category})", expanded=False):
+                    st.markdown(f"<span class='badge {status_class}'>{status.upper()}</span>", unsafe_allow_html=True)
+
+                    st.write(f"**Danh mục:** {category}")
+                    st.write(f"**Lý do trending:** {kw.get('reason', 'N/A')}")
+                    st.write(f"**Nguồn:** {kw.get('source', 'news')}")
+
+                    if status == "pending":
+                        col_approve, col_reject = st.columns(2)
+
+                        with col_approve:
+                            if st.button("Thêm vào keywords", key=f"approve_extracted_{idx}", use_container_width=True):
+                                approve_result = mongo_client.approve_extracted_keyword(
+                                    keyword_id=str(kw['_id']),
+                                    keyword_text=kw.get('keyword', ''),
+                                    approved_by="admin"
+                                )
+
+                                if approve_result['success']:
+                                    add_result = keyword_manager.add_keyword(
+                                        keyword=kw.get('keyword', ''),
+                                        sources=["tiktok", "news", "youtube"],
+                                        added_by="admin (extractor)"
+                                    )
+
+                                    if add_result['success']:
+                                        st.success(f"Đã thêm '{kw.get('keyword')}' vào keywords hoạt động")
+                                        st.rerun()
+                                    else:
+                                        st.warning(add_result['message'])
+                                else:
+                                    st.error(approve_result['message'])
+
+                        with col_reject:
+                            if st.button("Bỏ qua", key=f"reject_extracted_{idx}", type="secondary", use_container_width=True):
+                                result = mongo_client.reject_extracted_keyword(
+                                    keyword_id=str(kw['_id']),
+                                    rejected_by="admin",
+                                    reason="Không phù hợp"
                                 )
                                 if result['success']:
                                     st.success(result['message'])
@@ -224,18 +293,67 @@ with tab3:
 
             st.markdown("---")
 
+            # Initialize editing state
+            if 'editing_keyword' not in st.session_state:
+                st.session_state.editing_keyword = None
+
             for idx, kw in enumerate(sorted(active_keywords, key=lambda x: x['keyword'])):
-                col_text, col_btn = st.columns([4, 1])
-                with col_text:
-                    st.write(f"{idx + 1}. **{kw['keyword']}**")
-                with col_btn:
-                    if st.button("Xóa", key=f"del_{kw['_id']}", type="secondary", use_container_width=True):
-                        result = keyword_manager.remove_keyword(kw['keyword'], removed_by="admin")
-                        if result['success']:
-                            st.success(result['message'])
+                keyword_id = str(kw['_id'])
+                is_editing = st.session_state.editing_keyword == keyword_id
+
+                if is_editing:
+                    col_text, col_save, col_cancel = st.columns([4, 1, 1])
+
+                    with col_text:
+                        new_keyword = st.text_input(
+                            f"Edit {idx + 1}",
+                            value=kw['keyword'],
+                            key=f"edit_input_{keyword_id}",
+                            label_visibility="collapsed"
+                        )
+
+                    with col_save:
+                        if st.button("Lưu", key=f"save_{keyword_id}", use_container_width=True):
+                            if new_keyword and new_keyword != kw['keyword']:
+                                result = keyword_manager.update_keyword(
+                                    old_keyword=kw['keyword'],
+                                    new_keyword=new_keyword,
+                                    updated_by="admin"
+                                )
+                                if result['success']:
+                                    st.success(result['message'])
+                                    st.session_state.editing_keyword = None
+                                    st.rerun()
+                                else:
+                                    st.error(result['message'])
+                            else:
+                                st.session_state.editing_keyword = None
+                                st.rerun()
+
+                    with col_cancel:
+                        if st.button("Hủy", key=f"cancel_{keyword_id}", type="secondary", use_container_width=True):
+                            st.session_state.editing_keyword = None
                             st.rerun()
-                        else:
-                            st.error(result['message'])
+
+                else:
+                    col_text, col_edit, col_del = st.columns([4, 1, 1])
+
+                    with col_text:
+                        st.write(f"{idx + 1}. **{kw['keyword']}**")
+
+                    with col_edit:
+                        if st.button("Sửa", key=f"edit_{keyword_id}", use_container_width=True):
+                            st.session_state.editing_keyword = keyword_id
+                            st.rerun()
+
+                    with col_del:
+                        if st.button("Xóa", key=f"del_{keyword_id}", type="secondary", use_container_width=True):
+                            result = keyword_manager.remove_keyword(kw['keyword'], removed_by="admin")
+                            if result['success']:
+                                st.success(result['message'])
+                                st.rerun()
+                            else:
+                                st.error(result['message'])
 
     with col_add:
         st.subheader("Thêm từ khóa mới")

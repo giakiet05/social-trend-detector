@@ -1,0 +1,202 @@
+{
+  "timestamp": "2026-01-30T21:54:24.972038",
+  "stages": {
+    "NormalizationStage": {
+      "input_count": 3281,
+      "output_count": 3281
+    },
+    "CleaningStage": {
+      "output_count": 3241
+    },
+    "FilteringStage": {
+      "output_count": 2804
+    },
+    "EmbeddingStage": {
+      "output_count": 2804
+    },
+    "ClusteringStage": {
+      "cluster_count": 13,
+      "cluster_sizes": [
+        58,
+        174,
+        104,
+        147,
+        249,
+        105,
+        251,
+        123,
+        120,
+        292,
+        238,
+        127,
+        62
+      ],
+      "noise_count": 0,
+      "noise_rate": "0.0%"
+    },
+    "AnalysisStage": {
+      "output_count": 13
+    },
+    "DeduplicationStage": {
+      "new_trends": 13,
+      "merged_trends": 0
+    },
+    "StorageStage": {
+      "saved_count": 13,
+      "stats": {
+        "trends": [
+          {
+            "topic": "Blockchain",
+            "sentiment": "neutral",
+            "risk_level": "cautious",
+            "content_type": "commercial",
+            "source_counts": {
+              "tiktok": 34,
+              "youtube": 24
+            }
+          },
+          {
+            "topic": "Làm giàu và Tư duy thành công",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 33,
+              "youtube": 141
+            }
+          },
+          {
+            "topic": "Video Shorts Hài Hước và Tỏ Tình Mùa Vu Lan",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 18,
+              "youtube": 86
+            }
+          },
+          {
+            "topic": "Lì Xì và Kiếm Tiền Online Dịp Tết",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "commercial",
+            "source_counts": {
+              "tiktok": 59,
+              "youtube": 88
+            }
+          },
+          {
+            "topic": "Hoa hồng trên ngực trái",
+            "sentiment": "positive",
+            "risk_level": "cautious",
+            "content_type": "drama",
+            "source_counts": {
+              "tiktok": 11,
+              "youtube": 238
+            }
+          },
+          {
+            "topic": "Cây cảnh và phong thủy",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "commercial",
+            "source_counts": {
+              "tiktok": 25,
+              "youtube": 80
+            }
+          },
+          {
+            "topic": "Thử thách thể dục giảm cân",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 51,
+              "youtube": 200
+            }
+          },
+          {
+            "topic": "Ăn vặt và review ẩm thực địa phương",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "commercial",
+            "source_counts": {
+              "tiktok": 91,
+              "youtube": 32
+            }
+          },
+          {
+            "topic": "Du lịch Đà Lạt",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 67,
+              "youtube": 53
+            }
+          },
+          {
+            "topic": "Squid Game Season 2",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 87,
+              "youtube": 205
+            }
+          },
+          {
+            "topic": "ChatGPT và AI Chatbots",
+            "sentiment": "neutral",
+            "risk_level": "cautious",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 52,
+              "youtube": 186
+            }
+          },
+          {
+            "topic": "Streetwear Việt Nam 2025",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "commercial",
+            "source_counts": {
+              "tiktok": 11,
+              "youtube": 116
+            }
+          },
+          {
+            "topic": "TikTok Dance Challenge 2025",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 40,
+              "youtube": 22
+            }
+          }
+        ]
+      }
+    }
+  },
+  "summary": {
+    "source_distribution": {
+      "tiktok": 579,
+      "youtube": 1471,
+      "news": 0
+    },
+    "sentiment": {
+      "neutral": 2,
+      "positive": 11
+    },
+    "risk_level": {
+      "cautious": 3,
+      "safe": 10
+    },
+    "content_type": {
+      "commercial": 5,
+      "entertainment": 7,
+      "drama": 1
+    }
+  }
+}

@@ -2,7 +2,7 @@
 Deduplication stage: Merge similar trends across batches.
 """
 
-from typing import List
+from typing import List, Optional
 import logging
 import numpy as np
 from datetime import datetime
@@ -18,12 +18,14 @@ logger = logging.getLogger(__name__)
 class DeduplicationStage(BaseStage):
     """Deduplicate trends against existing trends in MongoDB."""
 
-    def __init__(self, embedding_client: BaseEmbeddingClient, mongo_client: MongoDBClient):
+    def __init__(self, embedding_client: BaseEmbeddingClient, mongo_client: MongoDBClient,
+                 metrics_logger: Optional['MetricsLogger'] = None):
         super().__init__("DeduplicationStage")
         self.embedding_client = embedding_client
         self.mongo = mongo_client
         self.similarity_threshold = settings.mongodb.SIMILARITY_THRESHOLD
         self.window_hours = settings.mongodb.DEDUP_WINDOW_HOURS
+        self.metrics = metrics_logger
 
     def execute(self, new_trends: List[Trend]) -> List[Trend]:
         """
@@ -105,6 +107,11 @@ class DeduplicationStage(BaseStage):
                 logger.info(f"   New trend: '{new_trend.topic}' (max similarity: {max_similarity:.3f})")
 
         self.log_complete(f"{merged_count} merged, {new_count} new")
+
+        # Log metrics if logger is provided
+        if self.metrics:
+            self.metrics.log_deduplication(new_count, merged_count)
+
         return deduplicated
 
     def _calculate_similarity_score(self, new_trend: Trend, existing_trend: dict, 

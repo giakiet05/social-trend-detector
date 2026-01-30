@@ -1,0 +1,190 @@
+{
+  "timestamp": "2026-01-30T21:33:16.833912",
+  "stages": {
+    "NormalizationStage": {
+      "input_count": 2024,
+      "output_count": 2024
+    },
+    "CleaningStage": {
+      "output_count": 2022
+    },
+    "FilteringStage": {
+      "output_count": 1875
+    },
+    "EmbeddingStage": {
+      "output_count": 1875
+    },
+    "ClusteringStage": {
+      "cluster_count": 12,
+      "cluster_sizes": [
+        260,
+        86,
+        188,
+        190,
+        49,
+        248,
+        138,
+        42,
+        45,
+        138,
+        40,
+        201
+      ],
+      "noise_count": 0,
+      "noise_rate": "0.0%"
+    },
+    "AnalysisStage": {
+      "output_count": 12
+    },
+    "StorageStage": {
+      "saved_count": 12,
+      "stats": {
+        "trends": [
+          {
+            "topic": "Phở anh Hai",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 27,
+              "youtube": 233
+            }
+          },
+          {
+            "topic": "Biohacking",
+            "sentiment": "neutral",
+            "risk_level": "cautious",
+            "content_type": "commercial",
+            "source_counts": {
+              "tiktok": 16,
+              "youtube": 70
+            }
+          },
+          {
+            "topic": "Aura Farming",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 22,
+              "youtube": 166
+            }
+          },
+          {
+            "topic": "Truy Tìm Long Diên Hương",
+            "sentiment": "neutral",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 29,
+              "youtube": 161
+            }
+          },
+          {
+            "topic": "U23 Việt Nam tại U23 Châu Á 2026",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 4,
+              "youtube": 45
+            }
+          },
+          {
+            "topic": "U22 Việt Nam tại SEA Games 2025",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 38,
+              "vnexpress": 2,
+              "youtube": 208
+            }
+          },
+          {
+            "topic": "Tân Binh Toàn Năng 2025",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 14,
+              "youtube": 124
+            }
+          },
+          {
+            "topic": "Lũ lụt miền Trung 2025",
+            "sentiment": "negative",
+            "risk_level": "high_risk",
+            "content_type": "social_issue",
+            "source_counts": {
+              "tiktok": 12,
+              "youtube": 30
+            }
+          },
+          {
+            "topic": "Zootopia 2",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "tiktok": 19,
+              "youtube": 26
+            }
+          },
+          {
+            "topic": "Huy Forum",
+            "sentiment": "neutral",
+            "risk_level": "cautious",
+            "content_type": "drama",
+            "source_counts": {
+              "tiktok": 13,
+              "youtube": 125
+            }
+          },
+          {
+            "topic": "Tour Nhốt Người Thả Thú Vinpearl Safari Phú Quốc",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "commercial",
+            "source_counts": {
+              "tiktok": 18,
+              "youtube": 22
+            }
+          },
+          {
+            "topic": "Anh Trai Say Hi",
+            "sentiment": "positive",
+            "risk_level": "safe",
+            "content_type": "entertainment",
+            "source_counts": {
+              "youtube": 201
+            }
+          }
+        ]
+      }
+    }
+  },
+  "summary": {
+    "source_distribution": {
+      "tiktok": 212,
+      "youtube": 1411,
+      "news": 0
+    },
+    "sentiment": {
+      "positive": 8,
+      "neutral": 3,
+      "negative": 1
+    },
+    "risk_level": {
+      "safe": 9,
+      "cautious": 2,
+      "high_risk": 1
+    },
+    "content_type": {
+      "entertainment": 8,
+      "commercial": 2,
+      "social_issue": 1,
+      "drama": 1
+    }
+  }
+}

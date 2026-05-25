@@ -1,0 +1,204 @@
+% Chương 2: Công trình liên quan
+
+\chapter{Công trình liên quan}
+
+% Trình bày các hướng nghiên cứu, mô hình, phương pháp đã có
+% So sánh, phân loại, nêu rõ điểm mạnh và hạn chế
+% Chỉ ra khoảng trống mà bài của bạn sẽ giải quyết
+
+\section{Các hệ thống phát hiện xu hướng hiện có}
+
+\subsection{Google Trends}
+
+Google Trends là công cụ được phát triển bởi Google để theo dõi tần suất tìm kiếm của các từ khóa trên công cụ tìm kiếm Google. Ưu điểm chính là cung cấp dữ liệu chuẩn xác từ lượng tìm kiếm thực tế, dễ sử dụng, và miễn phí.
+
+Tuy nhiên, Google Trends có nhiều hạn chế:
+\begin{itemize}
+    \item Chỉ theo dõi trên Google Search, không bao gồm mạng xã hội hoặc nền tảng khác
+    \item Không cung cấp phân tích chuyên sâu về chủ đề, cảm xúc, hoặc mức độ rủi ro
+    \item Phải biết từ khóa cụ thể để tìm kiếm, không tự động phát hiện xu hướng mới nổi
+    \item Không hỗ trợ phân tích đa nền tảng
+    \item Dữ liệu được chuẩn hóa (normalized), không cung cấp con số tuyệt đối
+\end{itemize}
+
+\subsection{TikTok Creative Center}
+
+TikTok Creative Center cung cấp các công cụ phân tích xu hướng trên nền tảng TikTok, bao gồm danh sách các hashtag trending, bài hát phổ biến, và các khuyến nghị về nội dung.
+
+Ưu điểm:
+\begin{itemize}
+    \item Dữ liệu từ nền tảng TikTok chính thức, chuẩn xác
+    \item Cung cấp các metrics cụ thể như số lượt xem, lượt share
+    \item Tập trung vào creator, hỗ trợ tạo nội dung xu hướng
+\end{itemize}
+
+Hạn chế:
+\begin{itemize}
+    \item Chỉ theo dõi trên TikTok, không bao gồm các nền tảng khác
+    \item Không phân tích cảm xúc hoặc mức độ rủi ro của xu hướng
+    \item Không cung cấp phân tích về cách lan truyền xu hướng qua các nền tảng
+    \item Chỉ dành cho creator (yêu cầu xác thực tài khoản)
+\end{itemize}
+
+\subsection{YouTube Trending}
+
+YouTube cung cấp tab ``Trending'' hiển thị danh sách video đang được xem nhiều nhất. Tuy nhiên, danh sách này chỉ tập trung vào view count, không cung cấp phân tích sâu hơn.
+
+Hạn chế:
+\begin{itemize}
+    \item Chỉ hiển thị top videos, không phân tích cụ thể về chủ đề hoặc xu hướng
+    \item Không tích hợp với các nền tảng khác
+    \item Không cung cấp dự đoán hoặc phân tích rủi ro
+\end{itemize}
+
+\section{Các phương pháp xử lý dữ liệu lớn và phân cụm}
+
+\subsection{MapReduce và Hadoop}
+
+MapReduce là framework xử lý dữ liệu lớn được phát triển bởi Google. Hadoop là triển khai mã nguồn mở của MapReduce.
+
+Ưu điểm:
+\begin{itemize}
+    \item Khả năng xử lý dữ liệu khổng lồ (petabyte-scale)
+    \item Chịu lỗi tốt thông qua replication
+    \item Có ecosystem phong phú (Hive, Pig, HBase)
+\end{itemize}
+
+Hạn chế:
+\begin{itemize}
+    \item Viết-đọc đĩa nhiều (disk I/O overhead), tốc độ chậm
+    \item Không hỗ trợ xử lý streaming real-time
+    \item Lập trình phức tạp (MapReduce paradigm)
+\end{itemize}
+
+\subsection{Apache Spark}
+
+Apache Spark là framework xử lý dữ liệu lớn hiệu suất cao với in-memory computing.
+
+Ưu điểm:
+\begin{itemize}
+    \item Tốc độ xử lý nhanh (10-100x nhanh hơn Hadoop) nhờ in-memory
+    \item Hỗ trợ batch, streaming, SQL queries, machine learning
+    \item API đơn giản hơn MapReduce (DataFrames, RDDs)
+    \item Hỗ trợ multiple languages (Python, Scala, Java)
+\end{itemize}
+
+Hạn chế:
+\begin{itemize}
+    \item Yêu cầu RAM lớn
+    \item Phục hồi lỗi phức tạp hơn MapReduce
+\end{itemize}
+
+Đề tài sử dụng Apache Spark để xử lý batch dữ liệu từ Kafka, kế thừa lợi thế về tốc độ và tính linh hoạt.
+
+\subsection{Thuật toán phân cụm}
+
+Có nhiều thuật toán phân cụm khác nhau:
+
+\textbf{K-means:} Chia dữ liệu thành K cụm dựa trên khoảng cách. Ưu điểm: đơn giản, nhanh. Hạn chế: phải chỉ định K trước, không xử lý tốt cluster có mật độ khác nhau.
+
+\textbf{DBSCAN:} Phân cụm dựa mật độ, tự động xác định số cụm. Ưu điểm: phát hiện outliers, xử lý cụm hình dạng bất kỳ. Hạn chế: phức tạp O(n²), khó chọn epsilon và min\_points.
+
+\textbf{HDBSCAN:} Cải tiến hierarchical của DBSCAN. Ưu điểm: không cần epsilon, xử lý cụm mật độ khác nhau, kết quả ổn định hơn. Hạn chế: chậm hơn DBSCAN trên dữ liệu siêu lớn.
+
+Đề tài sử dụng HDBSCAN vì khả năng tự động xác định số cụm phù hợp với dữ liệu xu hướng không cố định.
+
+\section{Các phương pháp phân tích ngôn ngữ tự nhiên}
+
+\subsection{TF-IDF và BOW}
+
+TF-IDF (Term Frequency - Inverse Document Frequency) là phương pháp cơ bản để biểu diễn văn bản dưới dạng vector. BoW (Bag of Words) là cách đơn giản hơn.
+
+Hạn chế:
+\begin{itemize}
+    \item Không nắm bắt ngữ nghĩa (semantic), chỉ dựa trên tần suất từ
+    \item Không biết mối quan hệ giữa các từ
+    \item Vector thưa (sparse), chiều cao (high-dimensional)
+\end{itemize}
+
+\subsection{Word2Vec và FastText}
+
+Word2Vec sử dụng neural networks nhỏ để học biểu diễn từ dựa trên ngữ cảnh. FastText mở rộng bằng cách xử lý subword.
+
+Ưu điểm:
+\begin{itemize}
+    \item Nắm bắt ngữ nghĩa tốt hơn TF-IDF
+    \item Vector dense (compact)
+    \item Huấn luyện nhanh
+\end{itemize}
+
+Hạn chế:
+\begin{itemize}
+    \item Chỉ biểu diễn từ riêng lẻ, không xử lý cấp câu/đoạn
+    \item Cần huấn luyện trên dữ liệu phù hợp
+\end{itemize}
+
+\subsection{Sentence Transformers và OpenAI Embeddings}
+
+Sentence Transformers sử dụng Transformer architecture để tạo embedding toàn bộ câu/đoạn văn bản. OpenAI Embeddings cung cấp API để tạo embeddings chất lượng cao.
+
+Ưu điểm:
+\begin{itemize}
+    \item Nắm bắt ngữ nghĩa toàn bộ câu/đoạn, không chỉ từ riêng lẻ
+    \item Embeddings chất lượng cao, có thể compare trực tiếp
+    \item Xử lý đa ngôn ngữ tốt
+\end{itemize}
+
+Hạn chế:
+\begin{itemize}
+    \item Chậm hơn Word2Vec (cần inference Transformer)
+    \item OpenAI Embeddings tính phí (hơn TF-IDF hay Word2Vec tự host)
+\end{itemize}
+
+Đề tài sử dụng OpenAI Embeddings (hoặc Gemini) để chuyển đổi nội dung thành vector 1536 chiều, cho phép so sánh ngữ nghĩa chính xác.
+
+\subsection{Large Language Models (LLM)}
+
+Các mô hình ngôn ngữ lớn như gpt-4.1-mini, Gemini, Claude có khả năng hiểu và sinh văn bản tự nhiên ở mức cao.
+
+Ưu điểm:
+\begin{itemize}
+    \item Xử lý few-shot/zero-shot learning
+    \item Hiểu ngữ cảnh phức tạp
+    \item Tính đa năng (phân tích cảm xúc, trích xuất thông tin, tóm tắt, etc.)
+\end{itemize}
+
+Hạn chế:
+\begin{itemize}
+    \item Tính phí cao
+    \item Latency cao (phải call API)
+    \item Kết quả không hoàn toàn consistent
+\end{itemize}
+
+Đề tài sử dụng LLM (gpt-4.1-mini hoặc Gemini) để phân tích từng cụm xu hướng, trích xuất thông tin như chủ đề, tóm tắt, cảm xúc, mức độ rủi ro một cách tự động mà không cần rules thủ công.
+
+\section{Khoảng trống nghiên cứu và đóng góp của đề tài}
+
+Các hệ thống và công cụ hiện có đều có những hạn chế:
+
+\begin{enumerate}
+    \item \textbf{Thiếu đa nền tảng:} Google Trends chỉ theo dõi search, TikTok Creative Center chỉ có TikTok, YouTube Trending chỉ có YouTube. Chúng không phát hiện xu hướng lan truyền qua nhiều nền tảng.
+
+    \item \textbf{Thiếu phân tích chuyên sâu:} Các công cụ chỉ cung cấp ranking hoặc statistics cơ bản, không phân tích cảm xúc, mức độ rủi ro, hoặc khuyến nghị hành động cụ thể.
+
+    \item \textbf{Phụ thuộc vào từ khóa biết trước:} Phần lớn yêu cầu người dùng biết từ khóa để tìm kiếm, không tự động phát hiện xu hướng mới.
+
+    \item \textbf{Không hỗ trợ tự động hóa:} Hầu hết không cung cấp API hoặc khả năng chạy tự động theo lịch.
+\end{enumerate}
+
+\textbf{Đóng góp của đề tài:}
+
+\begin{enumerate}
+    \item Xây dựng hệ thống \textbf{đa nền tảng} (TikTok, YouTube, News) với xử lý batch tự động mỗi 4 giờ.
+
+    \item Tích hợp \textbf{phân tích chuyên sâu} bằng LLM: phân tích cảm xúc, mức độ rủi ro, loại nội dung, hướng dẫn cho marketer.
+
+    \item Sử dụng \textbf{HDBSCAN + Embeddings} để tự động phát hiện cụm xu hướng mà không cần chỉ định từ khóa riêng lẻ.
+
+    \item Cơ chế \textbf{Gộp xu hướng thông minh} để gộp các xu hướng liên quan từ các batch khác nhau.
+
+    \item Dashboard người dùng và admin với các chức năng quản lý, tìm kiếm, lọc linh hoạt.
+
+    \item Kiến trúc \textbf{scalable} với Kafka + Spark + MongoDB, có thể mở rộng sang các nền tảng mạng xã hội khác.
+\end{enumerate}
+

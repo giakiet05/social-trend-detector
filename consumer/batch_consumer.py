@@ -18,6 +18,7 @@ from consumer.enrichment.llm_factory import create_embedding_client, create_llm_
 from consumer.processing.clusterer import TrendClusterer
 from consumer.processing.pipeline import TrendDetectionPipeline
 from consumer.storage.mongo_client import MongoDBClient
+from consumer.utils.metrics_logger import MetricsLogger
 from common.models import KafkaMessage, TikTokVideo, NewsArticle, YouTubeVideo
 
 # Setup logging
@@ -318,6 +319,17 @@ class BatchConsumer:
 
             # Step 3: Process through pipeline
             logger.info(f"Processing {len(items)} items through pipeline...")
+
+            # Count source distribution
+            source_counts = {}
+            for item in items:
+                source = item.get("source", "unknown")
+                source_counts[source] = source_counts.get(source, 0) + 1
+
+            # Log source distribution in metrics
+            if hasattr(self.pipeline, 'metrics'):
+                self.pipeline.metrics.log_source_distribution(source_counts)
+
             self.pipeline.process(items)
 
             # Step 4: Save checkpoint ONLY after successful processing

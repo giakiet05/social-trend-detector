@@ -137,3 +137,136 @@ class DashboardMongoClient:
         except Exception as e:
             print(f"Error deleting trend: {e}")
             return False
+
+    def get_extracted_keywords(self, status: str = 'pending', limit: int = 100) -> List[Dict]:
+        """
+        Get extracted keywords from keyword extractor service.
+
+        Args:
+            status: Filter by status (pending/approved/rejected), or 'all' for no filter
+            limit: Maximum number of keywords to return
+
+        Returns:
+            List of extracted keyword documents
+        """
+        if self.db is None:
+            self.connect()
+
+        extracted_collection = self.db['extracted_keywords']
+
+        if status == 'all':
+            keywords = list(
+                extracted_collection.find()
+                .sort('extracted_at', -1)
+                .limit(limit)
+            )
+        else:
+            keywords = list(
+                extracted_collection.find({'status': status})
+                .sort('extracted_at', -1)
+                .limit(limit)
+            )
+
+        for kw in keywords:
+            kw['_id'] = str(kw['_id'])
+
+        return keywords
+
+    def approve_extracted_keyword(self, keyword_id: str, keyword_text: str, approved_by: str = "admin") -> Dict:
+        """
+        Approve an extracted keyword and add to active keywords.
+
+        Args:
+            keyword_id: MongoDB ObjectId string of extracted keyword
+            keyword_text: The keyword text to add
+            approved_by: Who approved the keyword
+
+        Returns:
+            Dict with success status and message
+        """
+        if self.db is None:
+            self.connect()
+
+        try:
+            from bson import ObjectId
+            from datetime import datetime
+
+            extracted_collection = self.db['extracted_keywords']
+
+            result = extracted_collection.update_one(
+                {'_id': ObjectId(keyword_id)},
+                {
+                    '$set': {
+                        'status': 'approved',
+                        'approved_at': datetime.utcnow().isoformat(),
+                        'approved_by': approved_by
+                    }
+                }
+            )
+
+            if result.modified_count > 0:
+                return {
+                    'success': True,
+                    'message': f"Đã duyệt từ khóa: {keyword_text}"
+                }
+            else:
+                return {
+                    'success': False,
+                    'message': "Không tìm thấy từ khóa hoặc đã được duyệt"
+                }
+
+        except Exception as e:
+            return {
+                'success': False,
+                'message': f"Lỗi: {str(e)}"
+            }
+
+    def reject_extracted_keyword(self, keyword_id: str, rejected_by: str = "admin", reason: str = "") -> Dict:
+        """
+        Reject an extracted keyword.
+
+        Args:
+            keyword_id: MongoDB ObjectId string of extracted keyword
+            rejected_by: Who rejected the keyword
+            reason: Reason for rejection
+
+        Returns:
+            Dict with success status and message
+        """
+        if self.db is None:
+            self.connect()
+
+        try:
+            from bson import ObjectId
+            from datetime import datetime
+
+            extracted_collection = self.db['extracted_keywords']
+
+            result = extracted_collection.update_one(
+                {'_id': ObjectId(keyword_id)},
+                {
+                    '$set': {
+                        'status': 'rejected',
+                        'rejected_at': datetime.utcnow().isoformat(),
+                        'rejected_by': rejected_by,
+                        'rejection_reason': reason
+                    }
+                }
+            )
+
+            if result.modified_count > 0:
+                return {
+                    'success': True,
+                    'message': "Đã từ chối từ khóa"
+                }
+            else:
+                return {
+                    'success': False,
+                    'message': "Không tìm thấy từ khóa"
+                }
+
+        except Exception as e:
+            return {
+                'success': False,
+                'message': f"Lỗi: {str(e)}"
+            }

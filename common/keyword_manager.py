@@ -291,6 +291,57 @@ class MongoKeywordManager:
 
         return {"success": True, "message": f"Keyword '{keyword}' added"}
 
+    def update_keyword(
+        self,
+        old_keyword: str,
+        new_keyword: str,
+        updated_by: str = "admin"
+    ) -> Dict:
+        """
+        Update an existing keyword.
+
+        Args:
+            old_keyword: The current keyword text
+            new_keyword: The new keyword text
+            updated_by: Admin username
+
+        Returns:
+            Dict with result
+        """
+        # Check if old keyword exists
+        existing = self.active_keywords.find_one({"keyword": old_keyword})
+        if not existing:
+            return {"success": False, "message": "Keyword not found"}
+
+        # Check if new keyword already exists
+        if old_keyword != new_keyword:
+            duplicate = self.active_keywords.find_one({"keyword": new_keyword})
+            if duplicate:
+                return {"success": False, "message": "New keyword already exists"}
+
+        # Update keyword
+        result = self.active_keywords.update_one(
+            {"keyword": old_keyword},
+            {"$set": {"keyword": new_keyword.strip()}}
+        )
+
+        if result.modified_count == 0:
+            return {"success": False, "message": "No changes made"}
+
+        # Log to history
+        self.keyword_history.insert_one({
+            "keyword": new_keyword,
+            "action": "updated",
+            "performed_by": updated_by,
+            "performed_at": datetime.utcnow(),
+            "details": {
+                "old_keyword": old_keyword,
+                "new_keyword": new_keyword
+            }
+        })
+
+        return {"success": True, "message": f"Keyword updated to '{new_keyword}'"}
+
     def remove_keyword(self, keyword: str, removed_by: str = "admin") -> Dict:
         """
         Remove a keyword from active keywords.

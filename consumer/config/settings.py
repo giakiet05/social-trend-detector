@@ -58,14 +58,6 @@ class GeminiSettings:
     # Params (increased to handle thinking tokens + response)
     MAX_TOKENS = int(os.getenv("GEMINI_MAX_TOKENS", "2048"))
 
-
-class DBSCANSettings:
-    """Legacy DBSCAN clustering configuration (deprecated, use HDBSCAN)."""
-    EPS = 0.3  # Distance threshold (tune this)
-    MIN_SAMPLES = 3  # Min videos for a trend
-    METRIC = "cosine"
-
-
 class HDBSCANSettings:
     """HDBSCAN clustering configuration."""
     MIN_CLUSTER_SIZE = 15         # Minimum size of clusters (relaxed for testing)
@@ -118,8 +110,7 @@ class Settings:
     openai = OpenAISettings()
     gemini = GeminiSettings()
     llm_provider = LLMProviderSettings()
-    # Legacy (use HDBSCAN instead)
-    dbscan = DBSCANSettings()
+
     # Current clustering
     hdbscan = HDBSCANSettings()
     mongodb = MongoDBSettings()

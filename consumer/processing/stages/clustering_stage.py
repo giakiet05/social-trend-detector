@@ -2,7 +2,7 @@
 Clustering stage: DBSCAN clustering with min cluster size filter.
 """
 
-from typing import List, Dict
+from typing import List, Dict, Optional
 import logging
 import numpy as np
 from .base_stage import BaseStage
@@ -16,10 +16,11 @@ logger = logging.getLogger(__name__)
 class ClusteringStage(BaseStage):
     """Cluster content items using DBSCAN and filter small clusters."""
 
-    def __init__(self, clusterer: TrendClusterer):
+    def __init__(self, clusterer: TrendClusterer, metrics_logger: Optional['MetricsLogger'] = None):
         super().__init__("ClusteringStage")
         self.clusterer = clusterer
         self.min_cluster_size = settings.processing.MIN_CLUSTER_SIZE
+        self.metrics = metrics_logger
 
     def execute(self, items: List[ContentItem]) -> Dict[int, List[ContentItem]]:
         """
@@ -101,6 +102,11 @@ class ClusteringStage(BaseStage):
             logger.info(f"   Filtered {filtered_count} small clusters (< {adaptive_min_size} items)")
 
         self.log_complete(f"{len(valid_clusters)} valid clusters (from {len(clusters)} total)")
+
+        # Log metrics if logger is provided
+        if self.metrics:
+            cluster_sizes = [len(items) for items in valid_clusters.values()]
+            self.metrics.log_clustering(len(valid_clusters), cluster_sizes, noise_count)
 
         return valid_clusters
 

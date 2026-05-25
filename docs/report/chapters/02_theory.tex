@@ -26,7 +26,7 @@ Vector embeddings là kỹ thuật biểu diễn văn bản dưới dạng vecto
 
 Embeddings được tạo bởi các mô hình học sâu huấn luyện trên dữ liệu lớn, học cách nắm bắt ngữ nghĩa và ngữ cảnh. Ví dụ: "xe hơi" và "ô tô" có vector gần nhau vì cùng ý nghĩa, còn "xe hơi" và "máy bay" xa hơn dù cùng lĩnh vực giao thông.
 
-Trong đề tài này, vector embeddings then chốt cho phân cụm và khử trùng. Hệ thống dùng OpenAI (text-embedding-3-small, 1536 chiều) hoặc Gemini để chuyển văn bản (nội dung + hashtags) thành vector. Vector này làm đầu vào cho HDBSCAN phân cụm nội dung tương đồng. Ở giai đoạn khử trùng, hệ thống tính cosine similarity giữa embedding xu hướng mới và cũ để quyết định có gộp hay không.
+Trong đề tài này, vector embeddings then chốt cho phân cụm và Gộp xu hướng. Hệ thống dùng OpenAI (text-embedding-3-small, 1536 chiều) hoặc Gemini để chuyển văn bản (nội dung + hashtags) thành vector. Vector này làm đầu vào cho HDBSCAN phân cụm nội dung tương đồng. Ở giai đoạn Gộp xu hướng, hệ thống tính cosine similarity giữa embedding xu hướng mới và cũ để quyết định có gộp hay không.
 
 \section{HDBSCAN}
 
@@ -49,6 +49,6 @@ Trong đề tài này, HDBSCAN phân cụm nội dung có embedding tương đ�
 
 Large Language Models (LLM) là mô hình ngôn ngữ lớn huấn luyện trên dữ liệu văn bản khổng lồ, có khả năng hiểu và sinh văn bản tự nhiên. LLM dùng kiến trúc Transformer với hàng tỷ tham số, thực hiện nhiều tác vụ NLP như tóm tắt, phân tích cảm xúc, trích xuất thông tin, dịch máy.
 
-LLM phổ biến: GPT-4 (OpenAI), Gemini (Google), Claude (Anthropic), Llama (mã nguồn mở). Ưu điểm là few-shot và zero-shot learning, chỉ cần mô tả tác vụ bằng ngôn ngữ tự nhiên (prompt engineering).
+LLM phổ biến: gpt-4.1-mini (OpenAI), Gemini (Google), Claude (Anthropic), Llama (mã nguồn mở). Ưu điểm là few-shot và zero-shot learning, chỉ cần mô tả tác vụ bằng ngôn ngữ tự nhiên (prompt engineering).
 
-Trong đề tài này, LLM dùng cho: (1) Embedding - OpenAI text-embedding-3-small hoặc Gemini chuyển văn bản thành vector 1536 chiều cho phân cụm và khử trùng; (2) Phân tích xu hướng - GPT-4 hoặc Gemini phân tích từng cụm. Với mỗi cụm, hệ thống chọn top 10 nội dung engagement cao, xây prompt và yêu cầu LLM trích xuất: topic, summary, sentiment, keywords, content\_type, risk\_level, guidelines cho marketer/social manager. LLM cho phép phân tích tự động mà không cần rules thủ công.
+Trong đề tài này, LLM dùng cho: (1) Embedding - OpenAI text-embedding-3-small hoặc Gemini chuyển văn bản thành vector 1536 chiều cho phân cụm và Gộp xu hướng; (2) Phân tích xu hướng - gpt-4.1-mini hoặc Gemini phân tích từng cụm. Với mỗi cụm, hệ thống chọn top 10 nội dung engagement cao, xây prompt và yêu cầu LLM trích xuất: topic, summary, sentiment, keywords, content\_type, risk\_level, guidelines cho marketer/social manager. LLM cho phép phân tích tự động mà không cần rules thủ công.

@@ -1,0 +1,199 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+% \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+%   \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
+%   \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
+% \end{tabular*}
+
+\begin{center}
+    \textbf{\Huge \scshape Quach Gia Kiet} \\ \vspace{1pt}
+    \small (+84) 919 844 095 $|$ \href{mailto:quachgiakiet.dev@gmail.com}{\underline{quachgiakiet.dev@gmail.com}} $|$ 
+    \href{https://www.linkedin.com/in/quachgiakiet}{\underline{LinkedIn}} $|$
+    \href{https://github.com/giakiet05}{\underline{GitHub}}
+\end{center}
+
+
+%-----------SUMMARY-----------
+\section{Summary}
+ \small{
+  Backend Developer focused on building APIs, real-time features, and backend systems with \textbf{Go}. Comfortable working in Linux-based development environments.
+ }
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {University of Information Technology (UIT)}{Aug 2023 -- June 2026}
+      {Bachelor of Software Engineering}{GPA: 3.5/4.0}
+    
+    \vspace{2pt} % Tạo khoảng cách nhỏ giữa trường và chứng chỉ
+    
+    \resumeProjectHeading
+      {\textbf{Certifications}}{}
+      \resumeItemListStart
+        \resumeItem{TOEIC Listening \& Reading: \textbf{880/990} (2024)}
+        \resumeItem{TOEIC Speaking \& Writing: \textbf{300/400} (2026)}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------PROGRAMMING SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Go, C\#} \\
+     \textbf{Frameworks \& Libraries}{: Gin, ASP.NET Core, Entity Framework, SignalR} \\
+     \textbf{Databases}{: PostgreSQL, MongoDB, Redis} \\
+     \textbf{Developer Tools}{: Git, GitHub, Arch Linux, Postman, Docker, VS Code, Visual Studio, GoLand} \\
+     \textbf{AI \& Productivity}{: Claude Code, Codex, GitHub Copilot, Antigravity} \\
+    }}
+ \end{itemize}
+
+%-----------PROJECTS-----------
+\section{Projects}
+  \resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {\textbf{LKForum} $|$ \emph{Go, Gin, MongoDB, Redis, WebSocket, JWT, Gemini AI}}{Backend Developer -- 2025}
+      \resumeItemListStart
+        \resumeItem{\textit{A Reddit-like forum backend with posts, votes, nested comments, media upload, and real-time updates.}}
+        \resumeItem{Implemented REST APIs in Go/Gin using layered architecture and JWT authentication.}
+        \resumeItem{Designed upvote/downvote and nested comment logic with MongoDB, using Redis to cache frequently accessed data.}
+        \resumeItem{Added an internal event bus for notifications, reputation updates, and moderation workflows.}
+        \resumeItem{Added WebSocket events for real-time updates on posts, comments, and votes.}
+        \resumeItem{Integrated Cloudinary for media upload and Google Gemini for basic content moderation.}
+        \resumeItem{\textbf{GitHub Repo:} \href{https://github.com/giakiet05/LKForum}{\underline{github.com/giakiet05/LKForum}}}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{Memesploding} $|$ \emph{C\#, .NET Core, SignalR, Redis, PostgreSQL, EF Core}}{Backend Developer-- 2026}
+      \resumeItemListStart
+        \resumeItem{\textit{A real-time multiplayer card game backend inspired by Exploding Kittens.}}
+        \resumeItem{Split the backend into API services and a game server for real-time match logic.}
+        \resumeItem{Implemented an event-driven flow with an internal event bus for cross-hub events.}
+        \resumeItem{Stored match events and snapshots to track current game state.}
+        \resumeItem{Used SignalR to sync player actions, card effects, and lobby state in real time.}
+        \resumeItem{Stored player and match data with PostgreSQL, EF Core, and Redis.}
+        \resumeItem{\textbf{GitHub Repo:} \href{https://github.com/giakiet05/memesploding}{\underline{github.com/giakiet05/memesploding}}}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{Pun Programming Language} $|$ \emph{Go}}{Personal Project -- 2025}
+      \resumeItemListStart
+        \resumeItem{\textit{A small programming language with a hand-written compiler and a stack-based virtual machine.}}
+        \resumeItem{Built a lexer and recursive descent parser in Go to convert source code into an AST.}
+        \resumeItem{Implemented bytecode generation with custom opcodes.}
+        \resumeItem{Built a stack-based virtual machine to execute bytecode instructions.}
+        \resumeItem{Added a REPL for interactive expression evaluation and testing.}
+        \resumeItem{\textbf{GitHub Repo:} \href{https://github.com/giakiet05/pun}{\underline{github.com/giakiet05/pun}}}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}
